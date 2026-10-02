@@ -1,0 +1,26 @@
+-- ============================================================
+--  DEPRECATED — YE FILE RUN MAT KARO.
+--  Iski jagah:  supabase_rls_lockdown.sql
+--
+--  Kyun deprecate kiya (real security holes, review me pakde gaye):
+--   1. Purani `anon_*` PERMISSIVE policies drop nahi hoti thin.
+--      Postgres permissive policies ko OR karta hai → purani
+--      `using (true)` policy nayi tight policy ko override kar deti thi.
+--      Sirf nayi restrictive-looking policy add karna kaafi NAHI hai.
+--   2. `auth_read_my_orders ... to authenticated using (true)`
+--      → koi bhi logged-in user SAB customers ke orders padh sakta tha.
+--      `auth_add_orders ... with check (true)` → kisi aur ke user_id par
+--      order forge kiya ja sakta tha. `TO authenticated` alone enough nahi;
+--      ownership condition (auth.uid() = user_id) chahiye.
+--   3. nukto_users ka `anon_all_users` (ALL + true), aur
+--      nukto_returns / nukto_snapshot ki open policies bilkul untouched.
+--   4. nukto_analytics authenticated users ko arbitrary insert deta tha.
+--   5. nukto_transactions me `user_id` par ownership enforce hi nahi tha.
+--
+--  Aur bunyadi masla: ye app Supabase Auth use hi nahi karti (custom
+--  nukto_users + localStorage session, har request anon key se). Isliye
+--  auth.uid() hamesha null hai aur `to authenticated` policies kabhi
+--  trigger hi nahi hotin — ownership-based RLS is app me kaam nahi karega.
+--  Sahi model: anon = sirf public catalog READ, baaki sab service_role
+--  (Edge Functions) ke peeche. Wahi supabase_rls_lockdown.sql karta hai.
+-- ============================================================

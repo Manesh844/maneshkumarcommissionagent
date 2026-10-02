@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+vendor/
+
+# secrets - GitHub par kabhi na jayein
+.env
+.env.local
+
+# build / output
+dist/
+build/
+.next/
+out/
+target/
+
+# system files
+__pycache__/
+.venv/
+venv/
+.local/
+.cache/
+.sudo_as_admin_successful
+
+# misc
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

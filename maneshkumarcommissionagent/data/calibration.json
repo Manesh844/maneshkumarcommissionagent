@@ -1,0 +1,146 @@
+{
+ "buckets": {
+  "Home & Living": {
+   "ratio": 1.85,
+   "samples": [
+    "photo tiles 6pc set: mkt ~2,250 vs cost 859",
+    "3D bedsheet: mkt 1,833 vs 1,673"
+   ]
+  },
+  "Kitchen & Dining": {
+   "ratio": 1.0,
+   "samples": [
+    "3L 1000W food chopper: mkt ~4,200 vs cost 4,973"
+   ]
+  },
+  "Fashion & Apparel": {
+   "ratio": 1.57,
+   "samples": [
+    "ankle socks 10pr: mkt ~1,800 vs 1,112",
+    "heart locket set: 862 vs 550",
+    "satin sleepwear: 3,289 vs 3,849"
+   ]
+  },
+  "Health & Beauty": {
+   "ratio": 1.1,
+   "samples": [
+    "pimple patch / vit-E class: mkt ~cost"
+   ]
+  },
+  "Electronics & Appliances": {
+   "ratio": 1.57,
+   "samples": [
+    "M20 earbuds 1,499 vs 971",
+    "K8 mic 1,770 vs 1,112"
+   ]
+  },
+  "Automotive": {
+   "ratio": 0.76,
+   "samples": [
+    "alto roof spoiler 2,900 vs 3,218",
+    "fog light 1,295 vs 2,305",
+    "scratch compound 1,483 vs 1,954"
+   ]
+  },
+  "Tools & DIY": {
+   "ratio": 1.72,
+   "samples": [
+    "32-in-1 screwdriver 1,399 vs 593",
+    "8-in-1 516 vs 478"
+   ]
+  },
+  "Events & Gifting": {
+   "ratio": 1.43,
+   "samples": [
+    "birthday decor set ~2,000 vs 1,462",
+    "leather wallet 2,300 vs 1,322",
+    "jewelry box 793 vs 556"
+   ]
+  },
+  "Travel & Outdoor": {
+   "ratio": 1.89,
+   "samples": [
+    "tactical sling bag 3,289 vs 1,743",
+    "time-marker bottle 2,499 vs 1,603",
+    "RFID passport cover 2,050 vs 677"
+   ]
+  },
+  "Books & Stationery": {
+   "ratio": 1.46,
+   "samples": [
+    "glue stick 12pk 1,320 vs 690",
+    "LCD pencil box 631 vs 618"
+   ]
+  },
+  "Toys & Games": {
+   "ratio": 1.0,
+   "samples": [
+    "37-key piano 2,955 vs 2,516",
+    "friction aeroplane 620 vs 759"
+   ]
+  },
+  "Islamic & Cultural": {
+   "ratio": 1.47,
+   "samples": [
+    "velvet janamaz 1,950 vs 1,000",
+    "mandala janamaz 2,000 vs 2,067"
+   ]
+  },
+  "Groceries": {
+   "ratio": 1.37,
+   "samples": [
+    "chia seeds 250g ~900 vs 655",
+    "pink salt 250 vs 269",
+    "saffron honey 1,250 vs 410"
+   ]
+  },
+  "Pets & Animals": {
+   "ratio": 1.0,
+   "samples": [
+    "cat food 1kg ~1,200-1,500 vs 1,322"
+   ]
+  },
+  "_overall": {
+   "ratio": 1.44,
+   "samples": [
+    "median of all buckets"
+   ]
+  }
+ },
+ "aliases": {
+  "Women's Fashion": "Fashion & Apparel",
+  "Men's Fashion": "Fashion & Apparel",
+  "Kids Accessories": "Fashion & Apparel",
+  "Kids & Baby Wear": "Fashion & Apparel",
+  "Baby & Kids Accessories": "Fashion & Apparel",
+  "Personal Care": "Health & Beauty",
+  "Beauty & Cosmetics": "Health & Beauty",
+  "Skincare": "Health & Beauty",
+  "Health & Wellness": "Health & Beauty",
+  "Haircare": "Health & Beauty",
+  "Gadgets": "Electronics & Appliances",
+  "Mobile & Accessories": "Electronics & Appliances",
+  "Cameras & Photography": "Electronics & Appliances",
+  "Home Appliances": "Electronics & Appliances",
+  "Electrical Supplies": "Electronics & Appliances",
+  "Computers & Laptops": "Electronics & Appliances",
+  "Audio & Entertainment": "Electronics & Appliances",
+  "Oils & Lubricants": "Automotive",
+  "Islamic Essentials": "Islamic & Cultural",
+  "Baking and Cooking": "Groceries",
+  "Pet Toys & Beds": "Pets & Animals",
+  "Educational & Creative": "Books & Stationery",
+  "Office Supplies": "Books & Stationery",
+  "Chemicals & Raw Materials": "Tools & DIY",
+  "Paint & Renovation": "Tools & DIY",
+  "Fitness Gear": "Travel & Outdoor",
+  "Backpacks & Duffel Bags": "Travel & Outdoor",
+  "Travel Accessories": "Travel & Outdoor",
+  "Dolls & Action Figures": "Toys & Games",
+  "Furniture": "Home & Living",
+  "Bedding & Linen": "Home & Living",
+  "Cleaning & Organization": "Home & Living",
+  "Grooming Products": "Pets & Animals",
+  "Other": "_overall"
+ }
+}

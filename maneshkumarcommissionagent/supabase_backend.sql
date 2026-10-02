@@ -1,0 +1,24 @@
+-- ============================================================
+--  DEPRECATED — YE FILE RUN MAT KARO.
+--  Iski jagah:  supabase_backend_v2.sql
+--
+--  Security audit me is file me 14 issues mile. Sabse critical:
+--   1. reserve_stock / release_stock / wallet_spend / release_order_stock
+--      SECURITY DEFINER thay AUR `grant execute to anon, authenticated`
+--      diya gaya tha → koi bhi visitor RPC se stock badha/ghata sakta tha.
+--   2. wallet_spend(u_id, amt) me koi ownership check nahi tha → kisi
+--      dusre user ka ID jaan kar uska wallet kharch kiya ja sakta tha.
+--   3. place_order_secure() me user_id client ke JSON se aata tha.
+--   5. Coupon per-user limit ka user_key bhi client-controlled tha →
+--      alag-alag user_key bhej kar limit bypass.
+--   4. Coupon check TOCTOU race (count() phir insert(), no unique index).
+--   6. delivery_fee aur delivery_free_above client se aate thay → 0 fee.
+--   7. items_snapshot client se store hota tha (fake naam/qty admin UI me).
+--   8. create/consume_password_reset public RPC expose thay.
+--  15. SECURITY DEFINER functions par `set search_path` nahi tha.
+--
+--  v2 ka model: browser ko KOI privileged RPC grant nahi. Sab kuch
+--  Edge Functions (service_role) ke peeche — checkout, password-reset,
+--  payment-webhook. Identity server-issued session token se derive hoti hai.
+--  Details + verify queries: supabase_backend_v2.sql
+-- ============================================================
