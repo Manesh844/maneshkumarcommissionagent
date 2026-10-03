@@ -3,13 +3,13 @@
 // function ki index.ts me INLINE copy kar diye gaye hain. Yahan koi change
 // karein to teeno functions me bhi update karna hoga.
 
-// Nukto.Shop — shared Edge Function helpers (CORS + timing-safe compare + json)
+// Manesh Kumar Commission Agent — shared Edge Function helpers (CORS + timing-safe compare + json)
 // Issue #10 fix: CORS ab wildcard nahi. Sirf allow-list se match kiya hua
 // origin echo hota hai; unknown origin ko koi ACAO header milta hi nahi.
 
 const ALLOWED = new Set(
   (Deno.env.get("ALLOWED_ORIGINS") ||
-    "https://nukto.shop,https://www.nukto.shop")
+    "https://maneshkumarcommissionagent.dpdns.org,https://www.maneshkumarcommissionagent.dpdns.org")
     .split(",").map((s) => s.trim()).filter(Boolean),
 );
 

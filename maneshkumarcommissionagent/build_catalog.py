@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Nukto.Shop — Catalog builder
-============================
+Manesh Kumar Commission Agent — Catalog builder
+===============================================
 Reads the HHC WooCommerce export CSV and produces `catalog.js` (JS array of all
 products) + `catalog_summary.json`.
 
@@ -35,6 +35,11 @@ _SRC_CANDIDATES = sorted(
     + _glob.glob(os.path.join(_REPO, "csvfiles", "*.csv"))
 )
 SRC = _SRC_CANDIDATES[0] if _SRC_CANDIDATES else os.path.join(_REPO, "uploads", "woocom_products_export.csv")
+# ---- Brand (used by the generated placeholder artwork) ----
+BRAND_NAME   = "Manesh Kumar Commission Agent"
+BRAND_SHORT  = "MK Commission Agent"
+BRAND_DOMAIN = "maneshkumarcommissionagent.dpdns.org"
+
 OUT_JS = os.path.join(ROOT, "catalog.js")
 OUT_JSON = os.path.join(ROOT, "catalog_summary.json")
 
@@ -156,7 +161,7 @@ PLACE_COLORS = {
     "pets":        ["#fdba74", "#ea580c", "#fff7ed"],
     "tools":       ["#94a3b8", "#475569", "#f8fafc"],
     "travel":      ["#34d399", "#059669", "#ecfdf5"],
-    "gifts":       ["#a78bfa", "#7c3aed", "#f5f3ff"],
+    "gifts":       ["#F7D774", "#C8921A", "#FBF0D2"],
     "islamic":     ["#6ee7b7", "#047857", "#ecfdf5"],
     "groceries":   ["#fde047", "#ca8a04", "#fefce8"],
     "other":       ["#d6d3d1", "#78716c", "#f5f5f4"],
@@ -164,7 +169,7 @@ PLACE_COLORS = {
 def place_uri(slug, cat_label, emoji):
     c = PLACE_COLORS.get(slug, PLACE_COLORS["other"])
     g1, g2, _ = c
-    label = (cat_label or "Nukto Shop").replace("&", "&amp;")
+    label = (cat_label or BRAND_SHORT).replace("&", "&amp;")
     # a clean branded placeholder (no emoji) — a subtle gradient + a photo glyph
     glyph = ('<g fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">'
              '<rect x="230" y="150" width="180" height="130" rx="14"/>'
@@ -181,7 +186,7 @@ def place_uri(slug, cat_label, emoji):
         f'<text x="320" y="366" font-size="40" font-weight="700" text-anchor="middle" fill="#ffffff" '
         f'font-family="Segoe UI,Arial,sans-serif">{label}</text>'
         '<text x="320" y="416" font-size="22" text-anchor="middle" fill="#ffffff" opacity="0.75" '
-        'font-family="Segoe UI,Arial,sans-serif">nukto.shop</text>'
+        f'font-family="Segoe UI,Arial,sans-serif">{BRAND_DOMAIN}</text>'
         '</svg>'
     )
     return "data:image/svg+xml," + quote(svg)

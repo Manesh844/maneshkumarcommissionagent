@@ -1,4 +1,4 @@
-// Nukto.Shop — password-reset Edge Function (Supabase)
+// Manesh Kumar Commission Agent — password-reset Edge Function (Supabase)
 // Deploy:  supabase functions deploy password-reset
 // Secrets: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, BREVO_API_KEY, SITE_URL,
 //          ALLOWED_ORIGINS
@@ -22,7 +22,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 // ---------- inlined helpers (dashboard deploy me _shared import kaam nahi karta) ----------
 const ALLOWED = new Set(
   (Deno.env.get("ALLOWED_ORIGINS") ||
-    "https://nukto.shop,https://www.nukto.shop")
+    "https://maneshkumarcommissionagent.dpdns.org,https://www.maneshkumarcommissionagent.dpdns.org")
     .split(",").map((s) => s.trim()).filter(Boolean),
 );
 
@@ -134,10 +134,10 @@ Deno.serve(async (req) => {
         const token = crypto.randomUUID() + crypto.randomUUID();
         const hash = await sha256(token);
         await db.rpc("_create_password_reset", { p_email: em, p_token_hash: hash });
-        const site = Deno.env.get("SITE_URL") || "https://nukto.shop";
+        const site = Deno.env.get("SITE_URL") || "https://maneshkumarcommissionagent.dpdns.org";
         const link = `${site}/#reset:${token}~${encodeURIComponent(em)}`;
-        await sendBrevo(em, "Nukto.Shop — Password Reset",
-          `Assalam-o-Alaikum,\n\nApka password reset link (30 minute ke liye valid):\n\n${link}\n\nAgar aap ne request nahi ki, is email ko ignore karein.\n\n— Nukto.Shop`);
+        await sendBrevo(em, "Manesh Kumar Commission Agent — Password Reset",
+          `Assalam-o-Alaikum,\n\nApka password reset link (30 minute ke liye valid):\n\n${link}\n\nAgar aap ne request nahi ki, is email ko ignore karein.\n\n— Manesh Kumar Commission Agent`);
       }
       // hamesha same jawab → no user enumeration
       return json(SAME, 200, cors);
@@ -177,7 +177,7 @@ async function sendBrevo(to: string, subject: string, text: string) {
     method: "POST",
     headers: { "api-key": key, "Content-Type": "application/json" },
     body: JSON.stringify({
-      sender: { name: "Nukto.Shop", email: "no-reply@nukto.shop" },
+      sender: { name: "Manesh Kumar Commission Agent", email: "no-reply@maneshkumarcommissionagent.dpdns.org" },
       to: [{ email: to }], subject, textContent: text,
     }),
   });

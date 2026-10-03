@@ -1,4 +1,4 @@
-// Nukto.Shop — STOREFRONT-SYNC Edge Function (admin publish → all devices)
+// Manesh Kumar Commission Agent — STOREFRONT-SYNC Edge Function (admin publish → all devices)
 // Deploy:  dashboard → Edge Functions → Create "storefront-sync" → paste → Deploy → Verify JWT OFF
 // Secrets: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ALLOWED_ORIGINS, ADMIN_SYNC_TOKEN
 //
@@ -26,7 +26,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 // ---------- inlined helpers (dashboard deploy me _shared import kaam nahi karta) ----------
 const ALLOWED = new Set(
   (Deno.env.get("ALLOWED_ORIGINS") ||
-    "https://nukto.shop,https://www.nukto.shop")
+    "https://maneshkumarcommissionagent.dpdns.org,https://www.maneshkumarcommissionagent.dpdns.org")
     .split(",").map((s) => s.trim()).filter(Boolean),
 );
 

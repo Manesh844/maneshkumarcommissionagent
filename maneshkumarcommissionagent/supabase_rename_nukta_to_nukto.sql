@@ -1,5 +1,9 @@
 -- ============================================================
---  NUKTO.SHOP — DATABASE RENAME:  nukta_*  →  nukto_*
+--  MANESH KUMAR COMMISSION AGENT — DATABASE RENAME:  nukta_*  →  nukto_*
+--  NOTE: table names stay `nukto_*` ON PURPOSE. They are internal identifiers
+--  no customer ever sees, and the LIVE database is keyed on them — renaming
+--  would orphan every order, wallet balance and user row. Brand = Manesh Kumar
+--  Commission Agent; schema = unchanged.
 --
 --  Ye SIRF tab chalayein jab aapki live DB me purani `nukta_*` tables
 --  maujood hon. Ye pehla step hai — iske BAAD hi baaki SQL files chalein:

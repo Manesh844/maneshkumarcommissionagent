@@ -1,5 +1,9 @@
 -- ============================================================
---  NUKTO.SHOP — SERVER-SIDE SAFETY LAYER  v2  (SECURITY REWRITE)
+--  MANESH KUMAR COMMISSION AGENT — SERVER-SIDE SAFETY LAYER  v2  (SECURITY REWRITE)
+--  NOTE: table names stay `nukto_*` ON PURPOSE. They are internal identifiers
+--  no customer ever sees, and the LIVE database is keyed on them — renaming
+--  would orphan every order, wallet balance and user row. Brand = Manesh Kumar
+--  Commission Agent; schema = unchanged.
 --
 --  Ye file `supabase_backend.sql` ko REPLACE karti hai. Wo v1 file ab
 --  DEPRECATED hai — usme 14 real issues thay (audit me pakde gaye):

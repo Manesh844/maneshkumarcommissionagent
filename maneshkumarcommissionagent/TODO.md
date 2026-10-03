@@ -1,4 +1,4 @@
-# Nukto.Shop — TODO (from user's problem list, 2026-09-05)
+# Manesh Kumar Commission Agent — TODO (from user's problem list, 2026-09-05)
 
 Every item below was verified against `index.html` / `catalog.js` at commit `0ddfdc9`.
 Line numbers refer to the file as it was when the list was written.
@@ -93,7 +93,7 @@ Line numbers refer to the file as it was when the list was written.
   "Try this code" is **not** in the current source (stale cached build).
   → Cart + checkout coupon input stays blank-labelled "Discount / Coupon Code" with an
   empty placeholder, and `DEFAULT_COUPONS` is emptied so the 4 baked-in public codes
-  (`NUKTO10`, `WELCOME15`, `NEW2000`, `EID50`) no longer ship to customers.
+  (`MKCA10`, `WELCOME15`, `NEW2000`, `EID50`) no longer ship to customers.
 
 - [x] **C8. Top-up verification loop actually works end to end.**
   Three real defects found:
@@ -227,7 +227,7 @@ Authoritative: `supabase_rls_lockdown.sql` → `supabase_backend_v2.sql`.
 - [ ] EasyPaisa field mapping in `payment-webhook` once merchant keys arrive (amount key name must be confirmed — webhook rejects verification if amount missing).
 
 ## REBRAND: nukta → nukto (complete)
-- Folder `nukta-shop` → `nukto-shop` (**Vercel Root Directory update karni hogi**).
+- Folder `nukta-shop` → `maneshkumarcommissionagent` (**Vercel Root Directory update karni hogi**).
 - localStorage keys `nukta.*` → `nukto.*` + one-time auto-migration in index.html
   (purani keys copy hoti hain, delete nahi — rollback safe; flag `nukto.keyMigration`).
 - `NUKTA_CATALOG` → `NUKTO_CATALOG`; catalog.js legacy alias set karta hai aur

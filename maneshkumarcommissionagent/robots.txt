@@ -1,0 +1,8 @@
+# Manesh Kumar Commission Agent — maneshkumarcommissionagent.dpdns.org
+User-agent: *
+Allow: /
+
+# Admin panel is a client-side hash route; keep it out of search results.
+Disallow: /#admin
+
+Sitemap: https://maneshkumarcommissionagent.dpdns.org/sitemap.xml

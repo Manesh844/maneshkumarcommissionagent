@@ -1,4 +1,4 @@
-# Nukto.Shop — Guide for You (Beginner-Friendly)
+# Manesh Kumar Commission Agent — Guide for You (Beginner-Friendly)
 
 **Poora dropshipping store** tayyar hai — storefront + full admin. Roman Urdu mein.
 
@@ -21,7 +21,7 @@
 ## ▶️ Chalana (local test)
 
 ```
-cd /home/user/nukto-shop
+cd /home/user/maneshkumarcommissionagent
 python3 -m http.server 4000
 ```
 Browser: `http://localhost:4000/` (ya upar live preview link).
@@ -31,19 +31,19 @@ Browser: `http://localhost:4000/` (ya upar live preview link).
 ## ▶️ Vercel par LIVE karna (GitHub se)
 
 ### STEP 1 — GitHub repo banao
-1. **github.com** → login → **New repository** → naam do (e.g. `nukto-shop`) → **Create** karo. **Kuch bhi add mat karo** (README/LICENSE nahi).
+1. **github.com** → login → **New repository** → naam do (e.g. `maneshkumarcommissionagent`) → **Create** karo. **Kuch bhi add mat karo** (README/LICENSE nahi).
 2. Ab aapko ek page dikhega jisme **"…or push an existing repository from the command line"** likha hai + ek `git remote add origin ...` command.
 
 ### STEP 2 — Files repo mein daalo (command line)
 Apne computer par folder kholo jahan ye files hain, aur yeh run karo (repo URL ki jagah apna daalo):
 
 ```bash
-cd /home/user/nukto-shop
+cd /home/user/maneshkumarcommissionagent
 git init
 git add .
-git commit -m "Nukto.Shop store"
+git commit -m "Manesh Kumar Commission Agent store"
 git branch -M main
-git remote add origin https://github.com/APKA-USERNAME/nukto-shop.git
+git remote add origin https://github.com/APKA-USERNAME/maneshkumarcommissionagent.git
 git push -u origin main
 ```
 
@@ -51,10 +51,10 @@ git push -u origin main
 
 ### STEP 3 — Vercel se connect karo
 1. **vercel.com** → login (GitHub se) → **Add New Project**.
-2. Apna **GitHub repo** select karo (`nukto-shop`).
+2. Apna **GitHub repo** select karo (`maneshkumarcommissionagent`).
 3. **Framework Preset:** kuch select **mat karo** — **"Other"** rehne do (yeh static hai).
-4. **Root Directory:** agar aapne files repo root mein rakhi hain to **`./`** rakho. (Agar `nukto-shop/` subfolder mein hain to **Root Directory = `nukto-shop`** set karo.)
-5. **Deploy** dabao → kuch seconds → **live URL** milta hai (e.g. `https://nukto-shop-xxxxx.vercel.app`).
+4. **Root Directory:** agar aapne files repo root mein rakhi hain to **`./`** rakho. (Agar `maneshkumarcommissionagent/` subfolder mein hain to **Root Directory = `maneshkumarcommissionagent`** set karo.)
+5. **Deploy** dabao → kuch seconds → **live URL** milta hai (e.g. `https://maneshkumarcommissionagent-xxxxx.vercel.app`).
 
 > Har baar GitHub par `git push` ke baad Vercel **apne aap re-deploy** kar deta hai (auto). Koi extra step nahi.
 

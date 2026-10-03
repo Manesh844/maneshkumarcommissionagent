@@ -1,5 +1,9 @@
 -- ============================================================
---  NUKTO.SHOP — GLOBAL STOREFRONT SYNC  (admin → all devices)
+--  MANESH KUMAR COMMISSION AGENT — GLOBAL STOREFRONT SYNC  (admin → all devices)
+--  NOTE: table names stay `nukto_*` ON PURPOSE. They are internal identifiers
+--  no customer ever sees, and the LIVE database is keyed on them — renaming
+--  would orphan every order, wallet balance and user row. Brand = Manesh Kumar
+--  Commission Agent; schema = unchanged.
 --
 --  MASLA: admin ke saare edits (price/stock/name/discount/variants,
 --  categories, coupons, banner/settings) sirf admin ke browser ke
