@@ -1,4 +1,4 @@
-// Nukto.Shop — payment gateway WEBHOOK Edge Function (Supabase)
+// Manesh Kumar Commission Agent — payment gateway WEBHOOK Edge Function (Supabase)
 // Deploy:  supabase functions deploy payment-webhook --no-verify-jwt
 // Secrets: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, WEBHOOK_SECRET
 //
@@ -22,7 +22,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 // ---------- inlined helpers (dashboard deploy me _shared import kaam nahi karta) ----------
 const ALLOWED = new Set(
   (Deno.env.get("ALLOWED_ORIGINS") ||
-    "https://nukto.shop,https://www.nukto.shop")
+    "https://maneshkumarcommissionagent.dpdns.org,https://www.maneshkumarcommissionagent.dpdns.org")
     .split(",").map((s) => s.trim()).filter(Boolean),
 );
 

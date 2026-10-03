@@ -1,5 +1,9 @@
 -- ============================================================
---  NUKTO.SHOP — Supabase Database Setup (ONE TIME)
+--  MANESH KUMAR COMMISSION AGENT — Supabase Database Setup (ONE TIME)
+--  NOTE: table names stay `nukto_*` ON PURPOSE. They are internal identifiers
+--  no customer ever sees, and the LIVE database is keyed on them — renaming
+--  would orphan every order, wallet balance and user row. Brand = Manesh Kumar
+--  Commission Agent; schema = unchanged.
 --  Isse Supabase → SQL Editor mein paste karke RUN karo.
 --  Yeh saari tables + columns + access policies bana deta hai.
 -- ============================================================

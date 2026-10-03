@@ -1,6 +1,6 @@
 /* Headless harness: executes the REAL inline app script from index.html against a
    minimal DOM/localStorage stub, then asserts the behaviour of the changed code.
-   Run: node tests/harness.js   (from nukto-shop/) */
+   Run: node tests/harness.js   (from maneshkumarcommissionagent/) */
 "use strict";
 // Deterministic tests: the live storefront shuffles product order on every fresh
 // page load (intended), but the suite must assert the same result on every run,
@@ -81,6 +81,7 @@ const hooks = `
   get user(){ return user; }, set user(v){ user = v; },
   get complaints(){ return complaints; }, set complaints(v){ complaints = v; },
   get settings(){ return settings; },
+  waNumber, waLink, get DEFAULT_SETTINGS(){ return DEFAULT_SETTINGS; },
   searchProducts, relatedToSearch, stemmedToks, stem, stockLabel, normalizePhone, isValidPhone,
   prettyPhone, uniqueUsername, myTxns, isMyOrder, ordersView, productsPage, hashPw,
   approveTxn, rejectTxn, approveReturn, purgeStaleData, reconcileWallet, saveAll,
@@ -239,9 +240,9 @@ t("saveAll reports ok on healthy storage", app.saveAll() === true);
 /* ---------- E1/E2: admin edits survive a FULL RELOAD (second app instance, same storage) ---------- */
 // simulate the admin typing in the Settings form and pressing Save
 const setVal = (id, v) => { document.getElementById(id).value = v; };
-setVal("s_storeName", "Nukto.Shop TEST");
+setVal("s_storeName", "MKCA TEST");
 setVal("s_tagline", "Test tagline line");
-setVal("s_email", "care@nukto.shop");
+setVal("s_email", "care@maneshkumarcommissionagent.dpdns.org");
 setVal("s_phone", "03001112223");
 setVal("s_deliveryFee", "249");
 setVal("s_deliveryFree", "5000");
@@ -258,7 +259,7 @@ app.editProductField(pid, "price", 7777);
 // --- reload the whole app (fresh instance over the same localStorage) ---
 let app2;
 try { app2 = makeApp(); } catch (e) { console.error("RELOAD INSTANCE FAILED:", e.stack || e); process.exit(2); }
-t("RELOAD: admin store name persisted", app2.settings.storeName === "Nukto.Shop TEST", app2.settings.storeName);
+t("RELOAD: admin store name persisted", app2.settings.storeName === "MKCA TEST", app2.settings.storeName);
 t("RELOAD: admin banner (home description) persisted", app2.settings.banner.includes("NEW HOME DESCRIPTION FROM ADMIN"), app2.settings.banner);
 t("RELOAD: admin delivery fee persisted", app2.settings.deliveryFee === 249, app2.settings.deliveryFee);
 t("RELOAD: landing page SHOWS admin banner text", app2.productsPage("", "", "").includes("NEW HOME DESCRIPTION FROM ADMIN"));
@@ -583,9 +584,9 @@ const opened=attrs["aria-expanded"]==="true" && document.getElementById("charge-
 chargesApp.toggleChargeRow(button);
 t("charges: toggle expands and collapses note",opened && attrs["aria-expanded"]==="false" && document.getElementById("charge-netflix").hidden===true);
 
-/* ---------- K: header brand mark = the real logo.svg asset (favicon parity) ----------
-   The tab icon has always been logo.svg (the Nukto shopping bag); the header was still
-   drawing a purple placeholder tile. These assert the header now uses that same file.
+/* ---------- K: header brand lockup = logo.svg mark + stacked wordmark ----------
+   Brand: MANESH KUMAR (big) over COMMISSION AGENT (small, gold). The tab icon and the
+   header mark must stay the SAME file (logo.svg) so the favicon and the UI never drift.
    The markup comes from the REAL renderHeader(), not from a re-implementation here. */
 const brandApp = makeApp();
 brandApp.renderHeader();
@@ -594,20 +595,30 @@ const logoAnchor = (brandHeader.match(/<a href="#products" class="logo"[\s\S]*?<
 const imgTag = (logoAnchor.match(/<img[^>]*>/) || [""])[0];
 const srcFile = p => fs.readFileSync(path.join(__dirname, "..", p), "utf8");
 
-t("brand: header renders a mark next to the Nukto.Shop name", logoAnchor.length > 0);
+t("brand: header renders a mark next to the business name", logoAnchor.length > 0);
 t("brand: header mark is an <img> of logo.svg (the favicon asset)",
   /class="logo-ico"/.test(imgTag) && /src="logo\.svg"/.test(imgTag), imgTag);
 t("brand: old inline purple placeholder tile is gone from the header",
   !/<svg[^>]*class="logo-ico"/.test(logoAnchor) && !/id="lg1"/.test(logoAnchor));
 t("brand: no emoji stands in for the mark", !/\p{Extended_Pictographic}/u.test(logoAnchor));
 t("brand: img has fixed width/height + empty alt (no layout shift, decorative)",
-  /width="30"/.test(imgTag) && /height="30"/.test(imgTag) && /alt=""/.test(imgTag), imgTag);
-t("brand: brand name text still reads nukto .shop beside the mark",
-  logoAnchor.indexOf("<img") < logoAnchor.indexOf("nukto") && /\.shop<\/small>/.test(logoAnchor));
+  /width="40"/.test(imgTag) && /height="40"/.test(imgTag) && /alt=""/.test(imgTag), imgTag);
+t("brand: wordmark is the stacked MANESH KUMAR / COMMISSION AGENT lockup",
+  logoAnchor.indexOf("<img") < logoAnchor.indexOf("MANESH KUMAR")
+  && /<span class="brand-main">MANESH KUMAR<\/span>/.test(logoAnchor)
+  && /<span class="brand-sub">COMMISSION AGENT<\/span>/.test(logoAnchor), logoAnchor);
+t("brand: no retired nukto/nukta wording left in the header lockup",
+  !/nukt[oa]/i.test(logoAnchor), logoAnchor);
+t("brand: anchor is labelled for screen readers",
+  /aria-label="Manesh Kumar Commission Agent/.test(logoAnchor));
 
 const logoSvg = srcFile("logo.svg");
-t("brand: logo.svg on disk is the shopping-bag mark (bag body + handle + nukto)",
-  /M17 25h30l-2\.4 24\.6/.test(logoSvg) && /a8 8 0 0 1 16 0/.test(logoSvg) && /Nukto\.Shop/.test(logoSvg));
+t("brand: logo.svg on disk is the gold shopping-bag mark (tile + bag body + handle)",
+  /M16\.5 24\.5h31/.test(logoSvg) && /a8 8 0 0 1 16 0/.test(logoSvg)
+  && /rect width="64" height="64" rx="15"/.test(logoSvg));
+t("brand: logo.svg is titled and coloured for the new brand (royal blue + gold)",
+  /Manesh Kumar Commission Agent/.test(logoSvg) && /#1E3A8A/.test(logoSvg) && /#E3B23C/.test(logoSvg)
+  && !/nukt/i.test(logoSvg));
 
 const headSrc = srcFile("index.html");
 t("brand: favicon links untouched (svg + 32px + 192px + apple-touch)",
@@ -622,24 +633,29 @@ t("brand: header and favicon point at the same file",
 // and require .nav-inner inside it to prove we matched the header's block, not a sibling.
 const mq760 = (headSrc.match(/@media\(max-width:760px\)\{\n[\s\S]*?\n  \}/) || [""])[0];
 t("brand: desktop sizing rule for the brand mark",
-  /\.logo img\.logo-ico\{width:30px;height:30px/.test(headSrc));
+  /\.logo img\.logo-ico\{width:40px;height:40px/.test(headSrc));
 t("brand: mobile sizing rule sits inside the 760px nav media query",
-  /\.nav-inner\{/.test(mq760) && /\.logo img\.logo-ico\{width:26px;height:26px/.test(mq760),
+  /\.nav-inner\{/.test(mq760) && /\.logo img\.logo-ico\{width:34px;height:34px/.test(mq760),
   mq760.slice(0, 80));
+t("brand: wordmark shrinks on mobile so a 24-char name still fits",
+  /\.brand-main\{font-size:13px\}/.test(mq760) && /\.brand-sub\{font-size:7\.5px/.test(mq760));
 t("brand: mark cannot be squeezed by the flex row (flex:0 0 auto kept)",
   /\.logo \.logo-ico\{flex:0 0 auto/.test(headSrc));
 
 /* ---------- L: footer + admin sidebar carry the same logo.svg mark ---------- */
-const footMatch = headSrc.match(/<div class="logo" style="color:#fff">[\s\S]*?<\/div>/) || [""];
+const footMatch = headSrc.match(/<div class="logo"><img class="logo-ico"[\s\S]*?<\/span><\/span><\/div>/) || [""];
 const footImg = (footMatch[0].match(/<img[^>]*>/) || [""])[0];
 t("footer: brand area renders the logo.svg mark",
   /class="logo-ico"/.test(footImg) && /src="logo\.svg"/.test(footImg), footImg);
 t("footer: old inline placeholder tile is gone from the footer brand",
   !/<svg[^>]*class="logo-ico"/.test(footMatch[0]) && !/id="lg2"/.test(headSrc));
-t("footer: Nukto.Shop name still sits beside the mark",
-  footMatch[0].indexOf("<img") < footMatch[0].indexOf("nukto") && /\.shop<\/small>/.test(footMatch[0]));
-t("footer: mark keeps its own 26px size (no double corner, no shrink)",
-  /\.foot-in \.logo img\.logo-ico\{width:26px;height:26px/.test(headSrc));
+t("footer: stacked wordmark sits beside the mark",
+  footMatch[0].indexOf("<img") < footMatch[0].indexOf("MANESH KUMAR")
+  && /<span class="brand-sub">COMMISSION AGENT<\/span>/.test(footMatch[0]), footMatch[0]);
+t("footer: mark keeps its own 38px size (no double corner, no shrink)",
+  /\.foot-in \.logo img\.logo-ico\{width:38px;height:38px/.test(headSrc));
+t("footer: wordmark is inverted for the navy field (white name, gold sub)",
+  /\.foot-in \.brand-main\{color:#fff\}/.test(headSrc) && /\.foot-in \.brand-sub\{color:var\(--gold\)\}/.test(headSrc));
 
 // The checks above read the template; this one runs the real renderFooter() so the
 // assertion is about the DOM the browser actually gets, not about a string in the file.
@@ -657,49 +673,53 @@ t("admin: sidebar brand renders the logo.svg mark",
   /class="logo-ico"/.test(asideImg) && /src="logo\.svg"/.test(asideImg), asideImg);
 t("admin: old inline placeholder tile is gone from the sidebar brand",
   !/<svg[^>]*class="logo-ico"/.test(asideMatch[0]) && !/id="lg3"/.test(headSrc));
-t("admin: sidebar keeps the nukto.shop word beside the mark",
-  /<span class="aword">nukto<span>\.<\/span>shop<\/span>/.test(asideMatch[0]));
+t("admin: sidebar keeps the business name beside the mark",
+  /<span class="aword">MANESH KUMAR<span>COMMISSION AGENT<\/span><\/span>/.test(asideMatch[0]), asideMatch[0]);
 t("admin: sidebar row is a flex row (mark and word stay aligned)",
   /\.aside \.alogo\{display:flex;align-items:center/.test(headSrc));
-t("admin: sidebar mark is sized in CSS", /\.aside \.alogo img\.logo-ico\{flex:0 0 auto;width:26px/.test(headSrc));
-t("admin: word colour survives the old .aside .alogo span rule",
-  /\.aside \.alogo \.aword\{color:#fff/.test(headSrc) && /\.aside \.alogo \.aword span\{color:#c9b6ff/.test(headSrc));
+t("admin: sidebar mark is sized in CSS", /\.aside \.alogo img\.logo-ico\{flex:0 0 auto;width:30px/.test(headSrc));
+t("admin: sidebar wordmark is white with a gold sub-line",
+  /\.aside \.alogo \.aword\{[^}]*color:#fff/.test(headSrc)
+  && /\.aside \.alogo \.aword span\{[^}]*color:var\(--gold\)/.test(headSrc));
 
-/* ---------- M: animated GIF + reduced motion ---------- */
-const gifPath = path.join(__dirname, "..", "img", "nukto-shopping-bag-loop.gif");
-const gif = fs.existsSync(gifPath) ? fs.readFileSync(gifPath) : null;
-const gifHeader = gif ? gif.subarray(0, 6).toString("latin1") : "";
-const gifTrailer = gif ? gif.subarray(gif.length - 1).toString("latin1") : "";
-t("gif: file exists at nukto-shop/img/nukto-shopping-bag-loop.gif", !!gif);
-t("gif: real GIF89a/87a file, properly terminated",
-  /^GIF8[79]a$/.test(gifHeader) && gifTrailer === "\x3b",
-  gifHeader + " / trailer " + JSON.stringify(gifTrailer));
-t("gif: light enough for the web (< 500KB)", !!gif && gif.length < 500 * 1024,
-  gif ? Math.round(gif.length / 1024) + " KB" : "missing");
-// Application Extension 21 FF 0B "NETSCAPE2.0" -> loop forever.
-t("gif: loops forever (NETSCAPE2.0 extension present)",
-  !!gif && gif.includes(Buffer.from("\x21\xff\x0bNETSCAPE2.0", "latin1")));
-// Graphic Control Extension with transparency flag: 21 F9 04 <packed & 0x01>.
-let gifTransparent = false;
-if (gif) {
-  for (let i = 0; i < gif.length - 5; i++) {
-    if (gif[i] === 0x21 && gif[i + 1] === 0xf9 && gif[i + 2] === 0x04 && (gif[i + 3] & 0x01)) { gifTransparent = true; break; }
-  }
-}
-t("gif: has a transparent background (GCE transparency flag set)", gifTransparent);
-t("gif: referenced from the boot splash markup", /img\/nukto-shopping-bag-loop\.gif/.test(headSrc));
-t("gif: splash keeps a static logo.svg fallback for reduced motion",
+/* ---------- M: animated brand loop (SVG) + reduced motion ----------
+   The boot splash animation is now an SVG, not a GIF: it stays sharp at any DPR,
+   weighs ~2 KB instead of ~100 KB, and carries its own prefers-reduced-motion
+   rule inside the file. These assert the asset is real, animated and wired up. */
+const animPath = path.join(__dirname, "..", "img", "mkca-shopping-bag-loop.svg");
+const anim = fs.existsSync(animPath) ? fs.readFileSync(animPath, "utf8") : null;
+t("anim: file exists at img/mkca-shopping-bag-loop.svg", !!anim);
+t("anim: valid standalone SVG document", !!anim && /^<svg[\s\S]*<\/svg>\s*$/.test(anim.trim()));
+t("anim: light enough for the web (< 20KB)", !!anim && Buffer.byteLength(anim) < 20 * 1024,
+  anim ? Math.round(Buffer.byteLength(anim) / 1024 * 10) / 10 + " KB" : "missing");
+t("anim: loops forever (infinite CSS animations, no fixed iteration count)",
+  !!anim && /animation:[^;]*infinite/.test(anim) && !/iteration-count:\s*[0-9]/.test(anim));
+t("anim: the shopping bag actually moves (bob + handle draw + items drop)",
+  !!anim && /@keyframes bagBob/.test(anim) && /@keyframes draw/.test(anim) && /@keyframes drop/.test(anim));
+t("anim: transparent background (no opaque backdrop rect)",
+  !!anim && !/<rect[^>]*width="120"[^>]*height="120"/.test(anim));
+t("anim: carries the new brand colours, no retired nukto artwork",
+  !!anim && /#1E3A8A/.test(anim) && /#E3B23C/.test(anim) && !/nukt/i.test(anim));
+t("anim: honours prefers-reduced-motion from inside the asset",
+  !!anim && /@media \(prefers-reduced-motion: reduce\)/.test(anim) && /animation:none/.test(anim));
+t("anim: referenced from the boot splash markup",
+  /img\/mkca-shopping-bag-loop\.svg/.test(headSrc));
+t("anim: retired nukto GIF is gone from disk and from the markup",
+  !fs.existsSync(path.join(__dirname, "..", "img", "nukto-shopping-bag-loop.gif"))
+  && !/nukto-shopping-bag-loop/.test(headSrc));
+t("anim: splash keeps a static logo.svg fallback for reduced motion",
   /class="brand-still" src="logo\.svg"/.test(headSrc));
-t("gif: reduced-motion users get the still logo, not the animation",
+t("anim: reduced-motion users get the still logo, not the animation",
   /@media \(prefers-reduced-motion: reduce\)\{\.load-brand \.brand-anim\{display:none\}\.load-brand \.brand-still\{display:block\}\}/.test(headSrc));
-t("gif: navigation branding stays static logo.svg (no animated img in header/footer/admin)",
-  !/<img[^>]*class="logo-ico"[^>]*\.gif/.test(headSrc));
-t("gif: logo.svg source file is still the unchanged favicon asset",
+t("anim: navigation branding stays the static logo.svg (no animated img in header/footer/admin)",
+  !/<img[^>]*class="logo-ico"[^>]*\.(gif|svg#)/.test(headSrc)
+  && !/<img class="logo-ico" src="img\//.test(headSrc));
+t("anim: logo.svg source file is still the favicon asset",
   /<link rel="icon" type="image\/svg\+xml" href="logo\.svg" \/>/.test(headSrc)
   && !/<link[^>]*rel="icon"[^>]*\.gif/.test(headSrc));
 
 const deploy = srcFile("DEPLOY_BACKEND.md");
-t("deploy guide: repo link points at main", /blob\/main\/nukto-shop\//.test(deploy));
+t("deploy guide: repo link points at main", /blob\/main\/maneshkumarcommissionagent\//.test(deploy));
 t("deploy guide: no stale arena branch link left", !/arena\/01/.test(deploy));
 
 /* ---------- M: merge-9 — responsive rows/columns, endless home feed, categories, polish ---------- */
@@ -723,7 +743,7 @@ t("m9: categories page shows every category up top (chip per category)", app.CAT
 t("m9: categories page renders a product rail per category", (cats9.match(/class="cat-rail"/g) || []).length === catsWithProducts);
 t("m9: categories page 'Show more' links to each category", (cats9.match(/href="#category:/g) || []).length >= catsWithProducts);
 // hero banner now reads like a heading (bigger) not a tiny caption
-t("m9: hero banner line uses heading style", /class="banner-line"/.test(home9) && /\.hero p\.banner-line\{font-size:clamp\(20px/.test(src9));
+t("m9: hero banner line uses heading style", /class="banner-line"/.test(home9) && /\.hero p\.banner-line\{font-size:clamp\(19px/.test(src9));
 // charges: bigger heading + professional tagline, readable T&C
 t("m9: charges heading is larger (19px)", /\.tax-box-head\{[^}]*font-size:19px/.test(src9));
 t("m9: charges box carries the tagline", typeof app.CHARGE_TAGLINE === "string" && app.CHARGE_TAGLINE.length > 10);
@@ -759,14 +779,36 @@ t("m11: sections use Show more instead of weak subs", !src9.includes("High deman
     t("shop info: guest settings links to "+route, guestSettings.includes('href="#'+route+'"'));
     location.hash="#"+route;
     app.render();
-    t("shop info: public route renders "+route, document.getElementById("app").innerHTML.includes(route==="about"?"About Nukto.Shop":label));
+    t("shop info: public route renders "+route, document.getElementById("app").innerHTML.includes(route==="about"?app.settings.storeName:label));
   }
   const contact=app.contact();
-  t("contact: confirmed name and callable number", contact.includes("Nukto.Shop") && contact.includes('href="tel:+923420286170"') && contact.includes("03420286170"));
-  t("contact: WhatsApp uses correct international number", contact.includes('href="https://wa.me/923420286170"'));
-  t("contact: working email link uses settings support email", contact.includes('href="mailto:'+app.settings.supportEmail+'"') && !contact.includes("nukta.shop"));
+  t("contact: confirmed name and callable number", contact.includes(app.settings.storeName) && contact.includes('href="tel:+'+app.waNumber(app.settings.phone)+'"') && contact.includes(app.settings.phone));
+  t("contact: business phone defaults to the owner's real number", app.DEFAULT_SETTINGS.phone==="03420286170" && app.waNumber(app.DEFAULT_SETTINGS.whatsapp)==="923420286170");
+  t("contact: WhatsApp uses correct international number", contact.includes('href="https://wa.me/'+app.waNumber(app.settings.whatsapp||app.settings.phone)+'"') && /wa\.me\/92\d{10}/.test(contact));
+  t("contact: working email link uses settings support email", contact.includes('href="mailto:'+app.settings.supportEmail+'"') && !/nukt[oa]\.shop/i.test(contact));
   t("contact: verification labels + exact address", contact.includes("Business Name:") && contact.includes("Business Address:") && contact.includes("Correspondence Address:") && contact.includes("Phone / WhatsApp:") && !contact.includes("Same as Business Address"));
   t("contact: correspondence address spells out the full address", (contact.match(/Mohallah Shaikh, Berani, Jam Nawaz Ali, Sanghar, Sindh, Pakistan/g)||[]).length>=2);
+  // WhatsApp deep links: wa.me only accepts "92" + 10 digits. Guard every shape the
+  // owner (or an old cached setting) can produce.
+  t("whatsapp: waNumber normalises local, 0092, 920-glued and bare forms", (function(){
+    const w = app.waNumber;
+    return w("03420286170")==="923420286170"
+        && w("9203420286170")==="923420286170"
+        && w("00923420286170")==="923420286170"
+        && w("3420286170")==="923420286170"
+        && w("923420286170")==="923420286170"
+        && w("+92 342 0286170")==="923420286170"
+        && w("")==="" && w(null)==="";
+  })());
+  t("whatsapp: default setting is a dialable international number", /^92\d{10}$/.test(app.waNumber(app.settings.whatsapp)));
+  t("whatsapp: every wa.me link in the source is normalised, never raw settings", (function(){
+    const src = srcFile("index.html");
+    // no hard-coded broken number anywhere, and no template that drops the raw setting in
+    return !/wa\.me\/9203/.test(src)
+        && !/wa\.me\/\$\{settings\.whatsapp\}/.test(src)
+        && (src.match(/wa\.me\/\$\{waNumber\(/g) || []).length >= 2;
+  })());
+  t("whatsapp: rendered contact page emits a dialable link", /wa\.me\/92\d{10}/.test(app.contact()) && !/wa\.me\/9203/.test(app.contact()));
   t("privacy: cookie banner links to dedicated page", html.includes('See our <a href="#privacy">Privacy Policy</a>'));
   t("refund: retains 48 hour window and consumer rights", app.refundPolicy().includes("48 hours") && app.refundPolicy().includes("statutory rights"));
   app.user={id:"policy-test", fullName:"Test Shopper", email:"test@example.com", phone:"03001234567"};

@@ -1,4 +1,4 @@
-# Nukto.Shop — Ecommerce Professional Audit & Roadmap
+# Manesh Kumar Commission Agent — Ecommerce Professional Audit & Roadmap
 > Ek experienced ecommerce owner ki nazar se — kya missing hai, kya logic hai, kya errors hain.
 > Date: 2026-09-03 (updated same day)
 
@@ -25,7 +25,7 @@
 
 ## 1. Baseline (sahi hai) — as of today
 - 9,804 products, clean categories, emoji+placeholder fallback, video thumbnail auto-detect, smart search + related searches.
-- Nukto Wallet, EasyPaisa/JazzCash, coupons, returns, complaints, tracking, order flow.
+- MK Wallet, EasyPaisa/JazzCash, coupons, returns, complaints, tracking, order flow.
 - Admin: products (edit/delete + tag filter), coupons, orders, delivery, wallet verify, users, settings, integrations, backups.
 - Theme switcher (7 looks). SHA-256 admin hash, Supabase anon key only, SEO tags, favicon, fixed delivery charge.
 

@@ -1,5 +1,9 @@
 -- ============================================================
---  NUKTO.SHOP — RLS LOCKDOWN (authoritative)
+--  MANESH KUMAR COMMISSION AGENT — RLS LOCKDOWN (authoritative)
+--  NOTE: table names stay `nukto_*` ON PURPOSE. They are internal identifiers
+--  no customer ever sees, and the LIVE database is keyed on them — renaming
+--  would orphan every order, wallet balance and user row. Brand = Manesh Kumar
+--  Commission Agent; schema = unchanged.
 --  Ye file `supabase_hardened.sql` ko REPLACE karti hai. Wo file
 --  deprecated hai — usme 3 real security holes thay:
 --    (a) purani `anon_*` PERMISSIVE policies drop nahi hoti thin, aur

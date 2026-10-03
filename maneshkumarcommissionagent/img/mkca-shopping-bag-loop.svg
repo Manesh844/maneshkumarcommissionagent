@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Manesh Kumar Commission Agent — loading">
+  <title>Manesh Kumar Commission Agent</title>
+  <defs>
+    <linearGradient id="bagGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F7D774"/>
+      <stop offset="0.55" stop-color="#E3B23C"/>
+      <stop offset="1" stop-color="#C8921A"/>
+    </linearGradient>
+    <linearGradient id="bagTile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2E57C4"/>
+      <stop offset="0.52" stop-color="#1E3A8A"/>
+      <stop offset="1" stop-color="#0C1733"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="bagClip">
+      <path d="M30 48h60l-5 50a6 6 0 0 1-6 5.4H41a6 6 0 0 1-6-5.4z"/>
+    </clipPath>
+  </defs>
+
+  <style><![CDATA[
+    .bag      { animation: bagBob 1.8s ease-in-out infinite; transform-origin: 60px 78px; }
+    .handle   { stroke-dasharray: 78; animation: draw 1.8s ease-in-out infinite; }
+    .item     { animation: drop 1.8s cubic-bezier(.45,0,.3,1) infinite; }
+    .item.i2  { animation-delay: .22s; }
+    .item.i3  { animation-delay: .44s; }
+    .shineBar { animation: sweep 1.8s ease-in-out infinite; }
+    .ring     { transform-origin: 60px 60px; animation: spin 2.4s linear infinite; opacity:.9 }
+
+    @keyframes bagBob  { 0%,100%{transform:translateY(0) scale(1)} 42%{transform:translateY(-4px) scale(1.03)} 70%{transform:translateY(1px) scale(.99)} }
+    @keyframes draw    { 0%{stroke-dashoffset:78} 45%,100%{stroke-dashoffset:0} }
+    @keyframes drop    { 0%{opacity:0;transform:translateY(-40px) scale(.45)} 18%{opacity:1} 60%,100%{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes sweep   { 0%,18%{transform:translateX(-70px)} 62%,100%{transform:translateX(90px)} }
+    @keyframes spin    { to{transform:rotate(360deg)} }
+
+    @media (prefers-reduced-motion: reduce){
+      .bag,.handle,.item,.shineBar,.ring{animation:none}
+      .handle{stroke-dashoffset:0}
+      .item{opacity:1}   /* at rest they are behind the bag body = invisible */
+    }
+  ]]></style>
+
+  <!-- progress ring -->
+  <circle class="ring" cx="60" cy="60" r="55" fill="none" stroke="#1E3A8A" stroke-opacity=".14" stroke-width="4"/>
+  <circle class="ring" cx="60" cy="60" r="55" fill="none" stroke="url(#bagGold)" stroke-width="4"
+          stroke-linecap="round" stroke-dasharray="62 284"/>
+
+  <g class="bag">
+    <!-- items dropping into the bag -->
+    <circle class="item i1" cx="45" cy="58" r="6" fill="#3E6BE0"/>
+    <rect   class="item i2" x="53" y="51" width="14" height="14" rx="3.6" fill="#E3B23C"/>
+    <circle class="item i3" cx="77" cy="58" r="5.2" fill="#F7D774"/>
+
+    <!-- handle -->
+    <path class="handle" d="M45 48v-9a15 15 0 0 1 30 0v9" fill="none" stroke="url(#bagGold)"
+          stroke-width="6.5" stroke-linecap="round"/>
+
+    <!-- bag body -->
+    <path d="M30 48h60l-5 50a6 6 0 0 1-6 5.4H41a6 6 0 0 1-6-5.4z" fill="url(#bagTile)"/>
+
+    <!-- MK monogram on the bag -->
+    <g clip-path="url(#bagClip)">
+      <g transform="translate(60 76.6) scale(0.94) translate(-64.5 -76.6)">
+        <path d="M45.4 85.5V67.8h4.5l5.1 8.9 5.1-8.9h4.5v17.7h-4.3v-10l-4.1 7h-2.4l-4.1-7v10z" fill="url(#bagGold)"/>
+        <path d="M67.6 85.5V67.8h4.4v7.2l6.1-7.2h5.3l-6.9 8 7.2 9.7h-5.3l-4.9-6.7-1.5 1.6v5.1z" fill="url(#bagGold)" opacity=".92"/>
+      </g>
+      <rect class="shineBar" x="-20" y="40" width="26" height="80" transform="skewX(-18)" fill="url(#shine)"/>
+    </g>
+  </g>
+</svg>

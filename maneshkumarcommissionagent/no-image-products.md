@@ -1,4 +1,4 @@
-# Nukto.Shop — Products With No Image
+# Manesh Kumar Commission Agent — Products With No Image
 
 Total products without an image: **253** (out of 9604)
 

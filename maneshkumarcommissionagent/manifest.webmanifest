@@ -1,0 +1,28 @@
+{
+  "name": "Manesh Kumar Commission Agent",
+  "short_name": "MK Commission Agent",
+  "description": "Manesh Kumar Commission Agent — Pakistan ki bharosemand online commission agency & store. Poore Pakistan mein delivery, MK Wallet, 48 ghanton mein easy returns.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F5F8FD",
+  "theme_color": "#1E3A8A",
+  "lang": "en-PK",
+  "dir": "ltr",
+  "categories": ["shopping", "business"],
+  "icons": [
+    { "src": "logo.svg",      "sizes": "any",     "type": "image/svg+xml", "purpose": "any" },
+    { "src": "favicon-32.png", "sizes": "32x32",   "type": "image/png" },
+    { "src": "logo-192.png",  "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "logo-512.png",  "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "logo-512.png",  "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "All Products", "url": "/#products" },
+    { "name": "My Cart",      "url": "/#cart" },
+    { "name": "My Orders",    "url": "/#orders" },
+    { "name": "MK Wallet",    "url": "/#wallet" }
+  ]
+}
