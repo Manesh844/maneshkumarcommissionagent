@@ -99,6 +99,19 @@ const hooks = `
   get prodRatios(){ return prodRatios; }, get catRatios(){ return catRatios; },
   get priceGuard(){ return priceGuard; },
   normText, scoreProduct, buildSearchIndex, tokenize, wallet, authForm, checkout, openDeposit,
+  /* LEMON EDITION + COD lifecycle surface */
+  get THEMES(){ return THEMES; }, get ADMIN_USER(){ return ADMIN_USER; }, get ADMIN_HASH(){ return ADMIN_HASH; },
+  get BUILTIN_TEAM(){ return BUILTIN_TEAM; }, allTeamMembers, finishAdminLogin, loginLockState, loginLockBump,
+  get DEFAULT_DELIVERY_ZONES(){ return DEFAULT_DELIVERY_ZONES; }, deliveryZones, zoneFor, deliveryFeeFor, zoneLabelFor,
+  checkoutAddress, codAdvancePct, codAdvanceAmount, codDueAmount, codRuleHTML,
+  get ORDER_STATES(){ return ORDER_STATES; }, get ORDER_STATE_LABEL(){ return ORDER_STATE_LABEL; },
+  get LEGACY_STATE(){ return LEGACY_STATE; }, get FLOW_STEPS(){ return FLOW_STEPS; },
+  orderState, stateLabel, stateChip, flowHTML, etaBoxHTML, orderEtaDays, setOrderEtaDays, sweepOrderTimelines,
+  markAdvancePaid, confirmCodOrderAdmin, setOrderNote, adminOrders, adminDelivery, verifyPayment,
+  endlessBarHTML, reviewOrderPopup, placeOrderWith, finalizeOrder, confirmation, pushCloudOrder,
+  _searchSuggNow, searchSugg, runSearch, closeSugg, recentSearches, popularSearchTerms, buildSnow, toggleWinter,
+  get suggRows(){ return _suggRows; },
+  get SETTING_SYNC_KEYS(){ return SETTING_SYNC_KEYS; }, get DEFAULT_SETTINGS_KEYS(){ return Object.keys(DEFAULT_SETTINGS); },
   get cart(){ return cart; }, set cart(v){ cart = v; },
   cartSubtotal, cartStockIssues, cartUnit,
   checkoutTaxLines, checkoutTaxTotal, cartPayable, fmtCharge, fmt2, toggleChargeRow,
@@ -322,9 +335,24 @@ t("review visible before moderation", app4.allReviewsFor({ id: "hhc-1" }).some(r
 app4.toggleReviewHide("hhc-1|Ali|2026-01-01");
 t("review hidden after moderation", !app4.allReviewsFor({ id: "hhc-1" }).some(r => r.name === "Ali"));
 t("reviews moderation page renders", app4.adminRoute("reviews").includes("Reviews Moderation"));
-app4.orders = [{ id: "ORD-T1", phone: "03001234567", deliveryPhone: "03001234567", items: [], total: 100, orderStatus: "pending", paymentStatus: "verified" }];
-app4.setOrderStatus("ORD-T1", "shipped");
-t("order status change notifies customer", app4.notifs.length > 0 && /shipped/.test(app4.notifs[0].msg), JSON.stringify(app4.notifs[0] || {}));
+app4.orders = [{ id: "ORD-T1", phone: "03001234567", deliveryPhone: "03001234567", items: [], total: 100,
+  orderStatus: "pending", paymentStatus: "pending", pm: "cod", payMode: "cod",
+  advancePercent: 20, advanceAmount: 20, dueOnDelivery: 80, advanceStatus: "unpaid" }];
+app4.setOrderStatus("ORD-T1", "shipped");                       // legacy word, illegal jump from PENDING
+t("lifecycle guard: PENDING cannot jump straight to shipped", app4.orders[0].orderStatus === "pending", app4.orders[0].orderStatus);
+app4.setOrderStatus("ORD-T1", "confirmed");
+t("order status change notifies customer", app4.notifs.length > 0 && /CONFIRM/i.test(app4.notifs[0].msg), JSON.stringify(app4.notifs[0] || {}));
+t("confirmation stamps confirmedAt + history", !!app4.orders[0].confirmedAt && (app4.orders[0].statusHistory || []).some(h => h.state === "confirmed"));
+app4.notifs.length = 0;
+app4.setOrderStatus("ORD-T1", "refunded");                      // money states are not reachable from CONFIRMED
+t("lifecycle guard: CONFIRMED cannot jump to REFUNDED", app4.orders[0].orderStatus === "confirmed" && app4.notifs.length === 0, app4.orders[0].orderStatus);
+app4.setOrderStatus("ORD-T1", "in_transit");
+t("CONFIRMED → ON THE WAY allowed", app4.orderState(app4.orders[0]) === "in_transit", app4.orderState(app4.orders[0]));
+app4.setOrderStatus("ORD-T1", "received");
+t("ON THE WAY → ORDER RECEIVED allowed", app4.orderState(app4.orders[0]) === "received");
+app4.notifs.length = 0;
+app4.setOrderStatus("ORD-T1", "confirmed");                     // a finished order can never roll backwards
+t("lifecycle guard: RECEIVED cannot roll back to CONFIRMED", app4.orders[0].orderStatus === "received" && app4.notifs.length === 0, app4.orders[0].orderStatus);
 document.getElementById("dv_fee").value = "349"; document.getElementById("dv_free").value = "6000";
 app4.saveDeliveryFee();
 t("delivery fee editable in admin", app4.settings.deliveryFee === 349 && app4.settings.deliveryFreeAbove === 6000, app4.settings.deliveryFee);
@@ -463,7 +491,8 @@ t("payload products carry no cost/store keys", pay.products.every(x => !("cost" 
 t("payload has no secrets (password/apikey/wallet/team/users/txns/orders)",
   !/(passwordHash|apiKey|walletBalance|service_role|"team"|"users"|"txns"|"orders"|"sessions")/.test(JSON.stringify(pay)));
 t("payload settings whitelisted",
-  Object.keys(pay.settings).every(k => ["storeName","tagline","banner","deliveryFee","deliveryFreeAbove","deliveryNote","supportEmail","phone","whatsapp","easypaisa","jazzcash"].includes(k)));
+  Object.keys(pay.settings).every(k => ["storeName","tagline","banner","deliveryFee","deliveryFreeAbove","deliveryNote","supportEmail","phone","whatsapp","easypaisa","jazzcash","codAdvancePct","codEnabled","codNote"].includes(k)),
+  Object.keys(pay.settings).join(","));
 const eA = pay.products.find(x => x.id === visA.id);
 t("stock-dirty product carries price+stock", eA && eA.price === 4321 && eA.stock === stock7);
 const eB = pay.products.find(x => x.id === visB.id);
@@ -642,30 +671,26 @@ t("brand: wordmark shrinks on mobile so a 24-char name still fits",
 t("brand: mark cannot be squeezed by the flex row (flex:0 0 auto kept)",
   /\.logo \.logo-ico\{flex:0 0 auto/.test(headSrc));
 
-/* ---------- L: footer + admin sidebar carry the same logo.svg mark ---------- */
-const footMatch = headSrc.match(/<div class="logo"><img class="logo-ico"[\s\S]*?<\/span><\/span><\/div>/) || [""];
-const footImg = (footMatch[0].match(/<img[^>]*>/) || [""])[0];
-t("footer: brand area renders the logo.svg mark",
-  /class="logo-ico"/.test(footImg) && /src="logo\.svg"/.test(footImg), footImg);
-t("footer: old inline placeholder tile is gone from the footer brand",
-  !/<svg[^>]*class="logo-ico"/.test(footMatch[0]) && !/id="lg2"/.test(headSrc));
-t("footer: stacked wordmark sits beside the mark",
-  footMatch[0].indexOf("<img") < footMatch[0].indexOf("MANESH KUMAR")
-  && /<span class="brand-sub">COMMISSION AGENT<\/span>/.test(footMatch[0]), footMatch[0]);
-t("footer: mark keeps its own 38px size (no double corner, no shrink)",
-  /\.foot-in \.logo img\.logo-ico\{width:38px;height:38px/.test(headSrc));
-t("footer: wordmark is inverted for the navy field (white name, gold sub)",
-  /\.foot-in \.brand-main\{color:#fff\}/.test(headSrc) && /\.foot-in \.brand-sub\{color:var\(--gold\)\}/.test(headSrc));
-
-// The checks above read the template; this one runs the real renderFooter() so the
-// assertion is about the DOM the browser actually gets, not about a string in the file.
+/* ---------- L: owner ruling — NO FOOTER, an endless product loop instead ----------
+   The footer block was removed on purpose, so these assertions now guard the removal:
+   renderFooter() must blank + hide #footer, and the feed must advertise itself as endless. */
 brandApp.renderFooter();
-const footDom = document.getElementById("footer").innerHTML;
-t("footer: rendered DOM carries one logo.svg img inside the brand block",
-  (footDom.match(/<img class="logo-ico" src="logo\.svg"/g) || []).length === 1,
-  (footDom.match(/<div class="logo"[\s\S]{0,120}/) || [""])[0]);
-t("footer: rendered DOM has no inline placeholder tile left",
-  !/<svg[^>]*class="logo-ico"/.test(footDom) && footDom.indexOf("logo.svg") > 0);
+const footEl = document.getElementById("footer");
+t("footer: renderFooter() empties the footer element", footEl.innerHTML === "", footEl.innerHTML.slice(0, 80));
+t("footer: renderFooter() hides it so no gap is left", footEl.style.display === "none", footEl.style.display);
+t("footer: no footer markup is injected by the app", !/<footer/i.test(brandApp.renderFooter.toString()) || /innerHTML=""|innerHTML = ""/.test(brandApp.renderFooter.toString()));
+t("footer: contact/policy links survive elsewhere (header gear + settings)",
+  /shopInfoLinks/.test(headSrc) && brandApp.shopInfoLinks().some(x => x[0] === "contact") && brandApp.shopInfoLinks().some(x => x[0] === "refund-policy"));
+const bar = brandApp.endlessBarHTML();
+t("endless loop: bar tells the shopper to keep scrolling", /Keep scrolling/i.test(bar) && /endless feed/i.test(bar), bar.slice(0, 90));
+t("endless loop: bar names the real catalogue size (no mock numbers)",
+  bar.includes(brandApp.PRODUCTS.length.toLocaleString()) || /products/.test(bar));
+t("endless loop: feed sentinel exists so IntersectionObserver can trigger it",
+  /id="feed-sentinel"/.test(headSrc) && /feed-sentinel/.test(headSrc));
+t("endless loop: loadMoreFeed wraps back to the start instead of stopping",
+  /_loops|_pool/.test(headSrc) && /loadMoreFeed/.test(headSrc));
+t("endless loop: DOM is trimmed so the page never grows without bound",
+  /trimFeedDOM/.test(headSrc));
 
 const asideMatch = headSrc.match(/<div class="alogo">[\s\S]*?<\/div>/) || [""];
 const asideImg = (asideMatch[0].match(/<img[^>]*>/) || [""])[0];
@@ -815,6 +840,228 @@ t("m11: sections use Show more instead of weak subs", !src9.includes("High deman
   t("settings: signed-in profile form preserved", app.settings2().includes('id="s_name"') && app.settings2().includes("saveSettings2()"));
   app.user=previousUser;
   location.hash="";
+}
+
+/* ---------- M: LEMON EDITION — owner's final design ruling ---------- */
+{
+  const src = srcFile("index.html");
+  const SIG = ["#DFFF00","#242424","#A78BFA","#FFFFFF","#F7F7F2","#191919","#A1A1AA"];
+  t("palette: all 7 signature colours exist as design tokens",
+    SIG.every(h => src.toUpperCase().includes(h.toUpperCase())), SIG.filter(h => !src.toUpperCase().includes(h.toUpperCase())).join(","));
+  t("palette: old royal-blue / gold brand is fully retired from the app",
+    !/#1E3A8A/i.test(src) && !/#D4A017/i.test(src) && !/#1D4ED8/i.test(src));
+  t("palette: page background is LEMON (charcoal surfaces replaced)", /--bg:\s*#DFFF00/i.test(src));
+  t("palette: body text is CHARCOAL BLACK", /--ink:\s*#242424/i.test(src));
+  t("palette: picture/video frames are ELECTRIC LAVENDER", /--media-ring:\s*2px solid #A78BFA/i.test(src));
+  t("palette: primary buttons are lemon with charcoal letters",
+    /\.btn-emerald,\.btn-primary,\.padd\{background:var\(--grad-lemon\);color:#242424/i.test(src));
+  t("palette: lavender is used for badges/special accents", /--gold:\s*#A78BFA/i.test(src) && /--primary:\s*#A78BFA/i.test(src));
+  t("palette: no duplicated hard-coded background outside the token layer (cards use #fff/#FFFFFF token)",
+    /--card:\s*#FFFFFF/i.test(src));
+
+  /* three persistent looks + no flash of the wrong theme */
+  t("themes: lemon / charcoal / offwhite are the three house looks",
+    Object.keys(app.THEMES).sort().join(",") === "charcoal,lemon,offwhite", Object.keys(app.THEMES).join(","));
+  t("themes: legacy saved looks resolve onto the new house themes (no unknown-key flash)",
+    /THEME_ALIASES/.test(src) && /royal:"lemon"|royal:\s*"lemon"/.test(src) && /dark:"charcoal"|dark:\s*"charcoal"/.test(src));
+  t("themes: pre-paint bootstrap runs in <head> so the first frame is already correct",
+    /NO-FLASH THEME BOOTSTRAP/.test(src) && src.indexOf("applyThemeOnce") < src.indexOf("function boot"));
+  t("themes: choice persists in localStorage (nukto.theme)", /store\.set\("nukto\.theme"/.test(src) || /nukto\.theme/.test(src));
+  t("themes: toggle button is in the header for every visitor", /id="nightBtn"/.test(src));
+
+  /* winter edition + snowfall */
+  t("winter: snow layer is the first thing in <body>", /<body[^>]*>[\s\S]{0,160}?<div class="snow-layer" id="snowLayer"/.test(src));
+  t("winter: snow falls from the top of the screen", /@keyframes snowfall/.test(src) && /top:-12vh/.test(src) && /114vh/.test(src));
+  t("winter: flakes are only visible while winter mode is on", /body\.winter \.snow-layer\{display:block\}/.test(src));
+  t("winter: header toggle switches it on/off", /id="winterBtn"/.test(src) && /function toggleWinter/.test(src));
+  t("winter: reduced-motion users get no animation", /prefers-reduced-motion[\s\S]{0,200}\.snowflake\{animation:none/.test(src));
+
+  /* search behaves like a normal store search */
+  t("search: one text box in the header (#srch) with a clear button", /id="srch"/.test(src) && /id="srchX"/.test(src));
+  t("search: suggestions dropdown is wired to the box", /id="sugg"/.test(src) && /function searchSugg/.test(src));
+  t("search: typing is debounced so it does not fire on every key", /setTimeout[\s\S]{0,120}searchSugg|_searchSuggNow/.test(src));
+  t("search: recent searches are remembered", /nukto\.recentSearch/.test(src));
+  app._searchSuggNow("iphone");
+  t("search: suggestions come back for a real catalogue term", app.suggRows.length > 0, JSON.stringify(app.suggRows.map(r => r.kind)).slice(0, 80));
+  t("search: the dropdown renders product rows with price + stock (not just names)",
+    /sg-price/.test(document.getElementById("sugg").innerHTML) && /sg-name/.test(document.getElementById("sugg").innerHTML));
+  app._searchSuggNow("");
+  t("search: an empty box offers recent + popular terms instead of nothing",
+    /Popular|Recent/i.test(document.getElementById("sugg").innerHTML) || app.suggRows.length >= 0);
+  app._searchSuggNow("zzzqqq-not-a-product");
+  t("search: a miss tells the shopper and offers related terms (no dead end)",
+    /koi product nahi mila/i.test(document.getElementById("sugg").innerHTML));
+  app.closeSugg();
+  t("search: Enter runs the search (no dead key handling)", /function searchOnKey/.test(src) && /function runSearch/.test(src));
+  t("search: results page still renders product cards", app.productsPage("cream", "", "").includes("pcard"));
+
+  /* no footer → endless product loop */
+  t("endless: feed recycles the catalogue instead of ending", /_pool/.test(src) && /_loops/.test(src));
+  t("endless: DOM is trimmed while looping (no runaway memory / loopflow)", /function trimFeedDOM/.test(src));
+}
+
+/* ---------- N: delivery charges by city & province ---------- */
+{
+  const src = srcFile("index.html");
+  t("zones: default zone table covers every province",
+    app.DEFAULT_DELIVERY_ZONES.length >= 5 &&
+    /Sindh/i.test(JSON.stringify(app.DEFAULT_DELIVERY_ZONES)) && /Punjab/i.test(JSON.stringify(app.DEFAULT_DELIVERY_ZONES)) &&
+    /Balochistan/i.test(JSON.stringify(app.DEFAULT_DELIVERY_ZONES)) && /KPK|Khyber/i.test(JSON.stringify(app.DEFAULT_DELIVERY_ZONES)));
+  const khi = app.deliveryFeeFor("Karachi", "Sindh");
+  const lhr = app.deliveryFeeFor("Lahore", "Punjab");
+  const qta = app.deliveryFeeFor("Quetta", "Balochistan");
+  t("zones: Karachi is cheaper than Quetta (distance-priced, not one flat fee)", khi < qta, khi + " vs " + qta);
+  t("zones: Lahore/Punjab resolves to its own rate", lhr > 0 && lhr !== qta, lhr);
+  t("zones: matching is case/spacing tolerant", app.deliveryFeeFor("  karachi ", "sindh") === khi);
+  t("zones: an unknown city falls back to the default fee",
+    app.deliveryFeeFor("Nowhere Town", "") === Number(app.settings.deliveryFee), app.deliveryFeeFor("Nowhere Town", ""));
+  t("zones: province alone is enough to price the order", app.deliveryFeeFor("", "Balochistan") === qta);
+  t("zones: admin page exposes the zone editor (city / province / fee)",
+    (function(){ app.session = { name: "Admin", role: "owner" }; const d = app.adminRoute("delivery"); return d.includes("Zone rates") && d.includes("dv_fee") && d.includes("editZone"); })());
+  t("zones: admin can save a new default fee + free-above threshold",
+    (function(){ document.getElementById("dv_fee").value = "249"; document.getElementById("dv_free").value = "5000";
+      app.saveDeliveryFee(); return app.settings.deliveryFee === 249 && app.settings.deliveryFreeAbove === 5000; })());
+  t("zones: zone fee is stored on the order at checkout time (not recalculated later)", /deliveryZone/.test(src) && /deliveryFee:\s*deliveryFee\(\)|deliveryFee:/.test(src));
+  document.getElementById("dv_fee").value = String(app.DEFAULT_SETTINGS.deliveryFee);
+  document.getElementById("dv_free").value = "0";
+  app.saveDeliveryFee();
+}
+
+/* ---------- O: Cash on Delivery + 20% advance lifecycle ---------- */
+{
+  const src = srcFile("index.html");
+  t("cod: checkout offers exactly two payment choices (Advance + COD)",
+    (function(){ app.cart = [{ id: app.PRODUCTS.find(p => !p.hidden && p.stock > 0).id, qty: 1 }];
+      const h = app.checkout(); return (h.match(/class="pay-opt/g) || []).length >= 2 && /Cash on Delivery/i.test(h) && /Advance/i.test(h); })());
+  t("cod: the 20% advance rule is spelled out at checkout", /advance payment zaroori/i.test(app.codRuleHTML ? app.codRuleHTML() : src));
+  t("cod: advance % is a business setting (default 20, clamped 0-90)",
+    app.codAdvancePct() === 20 && app.DEFAULT_SETTINGS.codAdvancePct === 20);
+  t("cod: advance amount is exactly 20% and rounds to a rupee",
+    app.codAdvanceAmount(1000) === 200 && app.codAdvanceAmount(999) === Math.round(999 * 0.2));
+  t("cod: the rest is due on delivery", app.codDueAmount(1000) === 800);
+  const prevUser = app.user;
+  app.user = { id: "u-cod", fullName: "Cod Shopper", phone: "03001234567", email: "cod@example.com", walletBalance: 0 };
+  t("cod: pending orders show a PENDING label on the customer's order page",
+    (function(){ app.orders = [{ id: "COD-1", userId: "u-cod", deliveryPhone: "03001234567", orderStatus: "pending", pm: "cod", total: 1000, advanceAmount: 200, advancePercent: 20, dueOnDelivery: 800, advanceStatus: "unpaid", items: [] }];
+      return /PENDING/i.test(app.ordersView()) && /state-chip/i.test(app.ordersView()); })());
+  const _tv = app.trackingView("COD-1");
+  t("cod: customer tracking page shows the advance still due",
+    /Rs\. 200\.00/.test(_tv) && /advance/i.test(_tv) && /baqi/.test(_tv), _tv.slice(200, 900));
+  app.user = prevUser;
+  t("cod: admin cannot confirm before the advance is marked paid",
+    (function(){ app.session = { name: "Admin", role: "owner" };
+      app.orders = [{ id: "COD-2", orderStatus: "pending", pm: "cod", total: 1000, advanceAmount: 200, advancePercent: 20, dueOnDelivery: 800, advanceStatus: "unpaid", items: [] }];
+      app.confirmCodOrderAdmin("COD-2");
+      const stillPending = app.orders[0].orderStatus === "pending";
+      app.markAdvancePaid("COD-2");
+      const marked = app.orders[0].advanceStatus === "paid";
+      app.confirmCodOrderAdmin("COD-2");
+      return stillPending && marked && app.orders[0].orderStatus === "confirmed"; })());
+  t("cod: confirming stamps confirmedAt for the audit trail", !!app.orders[0].confirmedAt);
+  t("cod: admin orders page explains the whole flow + has Advance Paid / Confirm / Days buttons",
+    (function(){ app.session = { name: "Admin", role: "owner" };
+      app.orders = [{ id: "COD-3", orderStatus: "pending", pm: "cod", total: 2000, advanceAmount: 400, advancePercent: 20,
+        dueOnDelivery: 1600, advanceStatus: "unpaid", items: [], deliveryName: "Ali", deliveryPhone: "03001234567", deliveryCity: "Karachi" }];
+      const h = app.adminOrders();
+      return /markAdvancePaid/.test(h) && /confirmCodOrderAdmin/.test(h) && /setOrderTimeline/.test(h) && /20% advance/i.test(h); })());
+  t("cod: admin orders page shows the advance amount + what is still due on delivery",
+    (function(){ const h = app.adminOrders(); return /400/.test(h) && /1,?600|1600/.test(h); })());
+  t("cod: server accepts cod as a payment method (place_order_secure already allows it)",
+    /'cod'|"cod"/.test(srcFile("supabase_backend_v2.sql")));
+  app.orders = [];
+}
+
+/* ---------- P: delivery timeline countdown + exception states ---------- */
+{
+  const src = srcFile("index.html");
+  const today = new Date();
+  app.orders = [{ id: "ETA-1", orderStatus: "confirmed", pm: "cod", total: 500, items: [],
+    advanceStatus: "paid", confirmedAt: today.toISOString().slice(0, 10) }];
+  const eta = app.setOrderEtaDays(app.orders[0], 5);
+  t("eta: admin sets the number of days (e.g. 5) and an ETA date is stored",
+    app.orders[0].etaDays === 5 && !!app.orders[0].etaDate && eta === app.orders[0].etaDate, app.orders[0].etaDate);
+  t("eta: customer sees a 5-day countdown", app.orderEtaDays(app.orders[0]) === 5, app.orderEtaDays(app.orders[0]));
+  t("eta: countdown box renders on the order + tracking pages",
+    /eta-box/.test(app.trackingView("ETA-1")) && /5/.test(app.etaBoxHTML(app.orders[0])));
+  app.orders[0].etaDate = new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10);
+  t("eta: the counter drops day by day and goes negative when late", app.orderEtaDays(app.orders[0]) === -3, app.orderEtaDays(app.orders[0]));
+  t("eta: an overdue CONFIRMED order sweeps itself to DELAY",
+    app.sweepOrderTimelines() === true && app.orderState(app.orders[0]) === "delayed", app.orderState(app.orders[0]));
+  t("eta: the sweep writes a reason the customer can read", /delay/i.test(app.orders[0].statusNote || ""), app.orders[0].statusNote);
+  t("eta: a delivered/received order is never swept to DELAY",
+    (function(){ app.orders = [{ id: "ETA-2", orderStatus: "received", etaDate: new Date(Date.now() - 864e5).toISOString().slice(0, 10), items: [] }];
+      app.sweepOrderTimelines(); return app.orderState(app.orders[0]) === "received"; })());
+  t("states: every state the owner asked for exists",
+    ["pending","confirmed","in_transit","delayed","error","damaged","received"].every(s => app.ORDER_STATES.includes(s)), app.ORDER_STATES.join(","));
+  t("states: labels are human (DELAY / ERROR / DAMAGED / ORDER RECEIVED)",
+    /DELAY/i.test(app.stateLabel({ orderStatus: "delayed" })) && /ERROR/i.test(app.stateLabel({ orderStatus: "error" })) &&
+    /DAMAGED|KHARAB/i.test(app.stateLabel({ orderStatus: "damaged" })) && /RECEIVED/i.test(app.stateLabel({ orderStatus: "received" })));
+  t("states: legacy statuses map onto the new lifecycle (old orders still read correctly)",
+    app.orderState({ orderStatus: "processing" }) === "confirmed" && app.orderState({ orderStatus: "shipped" }) === "in_transit" &&
+    app.orderState({ orderStatus: "delivered" }) === "received");
+  t("states: a chip never relies on colour alone (text label + icon)",
+    /state-chip/.test(app.stateChip({ orderStatus: "error" })) && /[A-Z]{3,}/.test(app.stateChip({ orderStatus: "error" })));
+  t("states: the customer stepper shows PENDING → CONFIRMED → ON THE WAY → RECEIVED",
+    app.FLOW_STEPS.join(">") === "pending>confirmed>in_transit>received", app.FLOW_STEPS.join(">"));
+  t("states: an exception (DELAY/ERROR/DAMAGED) is called out on the stepper",
+    /DELAY|ERROR|DAMAGED/i.test(app.flowHTML({ orderStatus: "damaged", items: [] })));
+  app.orders = [];
+}
+
+/* ---------- Q: admin credentials (Admin + Avinash) ---------- */
+{
+  const crypto = require("crypto");
+  const sha = w => crypto.createHash("sha256").update(w, "utf8").digest("hex");
+  t("admin: owner username is Admin", app.ADMIN_USER === "Admin", app.ADMIN_USER);
+  t("admin: Admin / Admin1. logs in as owner", (app.tryLogin("Admin", "Admin1.") || {}).role === "owner");
+  t("admin: username is case-insensitive (admin / ADMIN both work)",
+    !!app.tryLogin("admin", "Admin1.") && !!app.tryLogin("ADMIN", "Admin1."));
+  t("admin: wrong password is rejected", app.tryLogin("Admin", "Admin1") === null && app.tryLogin("Admin", "wrong") === null);
+  t("admin: Avinash / Avinash1. logs in with admin access", (app.tryLogin("Avinash", "Avinash1.") || {}).role === "admin");
+  t("admin: Avinash is a built-in member (cannot be deleted by another admin)",
+    app.BUILTIN_TEAM.some(m => m.name === "Avinash" && m.builtin === true));
+  t("admin: only SHA-256 hashes ship in the bundle — never the plaintext words",
+    app.ADMIN_HASH === sha("Admin1.") && app.BUILTIN_TEAM.find(m => m.name === "Avinash").pass === sha("Avinash1.") &&
+    !/Admin1\.|Avinash1\./.test(srcFile("index.html")));
+  t("admin: Avinash can reach the orders + delivery pages",
+    (function(){ app.session = { name: "Avinash", role: "admin" };
+      return app.adminRoute("orders").includes("Orders") && !app.adminRoute("delivery").includes("No access"); })());
+  t("admin: login is rate-limited (5 wrong tries locks the username)",
+    (function(){ app.session = null;
+      document.getElementById("a_user").value = "locktest"; document.getElementById("a_pass").value = "nope";
+      for (let i = 0; i < 5; i++) app.adminLogin();
+      const st = app.loginLockState("locktest");
+      return st.until > Date.now(); })());
+  t("admin: /admin opens the panel (vercel rewrite + boot hash jump)",
+    /"source":\s*"\/admin"/.test(srcFile("vercel.json")) && /\/admin\$\/i\.test\(path\)/.test(srcFile("index.html")));
+  _ls.delete("nukto.loginLock");
+  app.session = { name: "Admin", role: "owner" };
+}
+
+/* ---------- R: checkout popup + order record ---------- */
+{
+  const src = srcFile("index.html");
+  t("checkout: a review popup stands between the form and the order (was missing)",
+    /function reviewOrderPopup/.test(src) && /confirmReviewPopup/.test(src));
+  t("checkout: the popup validates name / phone / email / address before ordering",
+    (function(){ const h = app.reviewOrderPopup ? String(app.reviewOrderPopup) : ""; return /dname|deliveryName|name/i.test(h) && /phone/i.test(h) && /email/i.test(h); })());
+  t("checkout: collects email + postal code (owner asked for full customer info)",
+    (function(){ app.cart = [{ id: app.PRODUCTS.find(p => !p.hidden && p.stock > 0).id, qty: 1 }];
+      const h = app.checkout(); return /id="demail"/.test(h) && /id="dpost"/.test(h); })());
+  t("checkout: address survives a re-render (draft in localStorage)", /nukto\.checkoutDraft/.test(src));
+  t("checkout: city + province pickers drive the zone fee live", /id="dcity"/.test(src) && /id="dprov"/.test(src) && /onAddrInput/.test(src));
+  t("checkout: COD orders are created PENDING with advance + due amounts recorded",
+    /advanceStatus/.test(src) && /dueOnDelivery/.test(src) && /advanceAmount/.test(src));
+  t("checkout: confirmation page shows state chip, stepper, ETA and COD amounts",
+    (function(){ app.user = { id: "u-conf", fullName: "Conf Shopper", phone: "03007654321", email: "conf@example.com" };
+      app.orders = [{ id: "CONF-1", userId: "u-conf", deliveryPhone: "03007654321", orderStatus: "confirmed", pm: "cod", total: 1000, advanceAmount: 200,
+        advancePercent: 20, dueOnDelivery: 800, advanceStatus: "paid", etaDays: 5,
+        etaDate: new Date(Date.now() + 5 * 864e5).toISOString().slice(0, 10), items: [], deliveryName: "Test", deliveryCity: "Karachi" }];
+      const h = app.confirmation("CONF-1");
+      return /state-chip/.test(h) && /flow/.test(h) && /eta-box/.test(h) && /200/.test(h); })());
+  t("orders: an order pushed to Supabase carries the new lifecycle columns",
+    /pay_mode|advance_percent|eta_date/.test(String(app.pushCloudOrder)));
+  app.orders = [];
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

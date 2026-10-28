@@ -8,7 +8,7 @@
 <meta name="keywords" content="Manesh Kumar Commission Agent, maneshkumarcommissionagent, commission agent Pakistan, Sanghar commission agent, online shopping Pakistan, wholesale Pakistan, MK Wallet, easy returns, EasyPaisa, JazzCash" />
 <meta name="author" content="Manesh Kumar Commission Agent" />
 <meta name="robots" content="index,follow,max-image-preview:large" />
-<meta name="theme-color" content="#1E3A8A" />
+<meta name="theme-color" content="#DFFF00" />
 <meta name="apple-mobile-web-app-title" content="MK Commission Agent" />
 <meta name="format-detection" content="telephone=yes" />
 <!-- Brand mark: royal-blue tile + gold shopping bag carrying the MK monogram.
@@ -72,37 +72,64 @@
 <style>
   :root{
     /* ===========================================================
-       MANESH KUMAR COMMISSION AGENT — brand palette
-       Royal Blue #1E3A8A (trust/trade) + Gold #D4A017 (value)
-       navy #0C1733 · bg #F5F8FD · ink #121C33 · line #DEE6F3
+       MANESH KUMAR COMMISSION AGENT — LEMON EDITION palette
+       Owner's brief (final):  "jahan charcoal black tha wahan LEMON,
+       letters/visible cheezein CHARCOAL BLACK, pictures + videos ke
+       borders ELECTRIC LAVENDER, aur design lavender se attractive ho."
+
+       Lemon            #DFFF00  → every surface that used to be dark
+       Charcoal Black   #242424  → all text / letters (maximum legibility)
+       Electric Lavender#A78BFA  → media frames, accents, décor, badges
+       White / Off-white #FFFFFF / #F7F7F2 → cards & panels on the lemon field
+       Muted gray       #A1A1AA  → decorative only (readable text uses #6B6B73)
+
+       The variable NAMES below are unchanged on purpose: ~450 existing rules
+       read var(--primary)/var(--bg)/var(--ink)/…, so repointing the tokens
+       re-skins the whole storefront + admin without duplicating styles.
        =========================================================== */
-    --primary:#1E3A8A; --primary-d:#152C6B; --primary-l:#E7EDFB;
-    --emerald:#1E3A8A; --emerald-d:#152C6B; --emerald-l:#E7EDFB;
-    --navy:#0C1733; --navy2:#17264D;
-    --bg:#F5F8FD; --card:#ffffff; --ink:#121C33; --ink2:#4C5B78; --muted:#8C9AB5;
-    --err:#DC2626; --ok:#15803D; --warn:#B45309; --line:#DEE6F3;
-    --teal:#1E3A8A; --amber:#E3B23C; --rose:#C2410C; --indigo:#2E57C4;
-    --gold:#D4A017; --gold-d:#A87A0C; --gold-l:#FBF0D2;
-    --pimg-bg:#EDF2FB; --sk1:#E2EAF9; --sk2:#F7FAFF;
-    --dark1:#0C1733; --dark2:#17264D;
+    --lemon:#DFFF00; --lemon-d:#C7E600; --lemon-dd:#A8C400; --lemon-l:#F3FFAE; --lemon-xl:#FAFFDC;
+    --charcoal:#242424; --charcoal-2:#1A1A1A; --charcoal-3:#3A3A3A;
+    --lav:#A78BFA; --lav-d:#7C5CFA; --lav-dd:#6D4AFF; --lav-l:#F0EAFF; --lav-xl:#F8F5FF;
+    --offwhite:#F7F7F2; --mist:#A1A1AA;
+    --ink-strong:#191919;   /* brief: "Readable Dark Text" — used for headings */
+
+    --primary:#A78BFA; --primary-d:#6D4AFF; --primary-l:#F0EAFF;
+    --emerald:#A78BFA; --emerald-d:#6D4AFF; --emerald-l:#F0EAFF;
+    --navy:#242424; --navy2:#1A1A1A;
+    --bg:#DFFF00; --card:#FFFFFF; --ink:#242424; --ink2:#3F3F46; --muted:#6B6B73;
+    --err:#C02626; --ok:#157F3D; --warn:#9A5B00; --line:rgba(36,36,36,.16);
+    --teal:#7C5CFA; --amber:#9A6A00; --rose:#D61F4E; --indigo:#6D4AFF;
+    --gold:#A78BFA; --gold-d:#6D4AFF; --gold-l:#F0EAFF;
+    --pimg-bg:#F5F1FF; --sk1:#EFE9FF; --sk2:#FBF9FF;
+    --dark1:#242424; --dark2:#1A1A1A;
+    /* media (pictures + videos) always sit in an Electric Lavender frame */
+    --media-ring:2px solid #A78BFA;
+    --media-glow:0 0 0 4px rgba(167,139,250,.22);
     /* brand gradients reused across hero / buttons / wallet / admin */
-    --grad-brand:linear-gradient(100deg,#0C1733 0%,#152C6B 26%,#1E3A8A 54%,#2E57C4 80%,#3E6BE0 100%);
-    --grad-gold:linear-gradient(135deg,#F7D774 0%,#E3B23C 50%,#C8921A 100%);
+    --grad-brand:linear-gradient(115deg,#FBF9FF 0%,#DDD6FE 24%,#A78BFA 62%,#C4B5FD 100%);
+    --grad-lav:linear-gradient(135deg,#C4B5FD 0%,#A78BFA 45%,#7C5CFA 100%);
+    --grad-gold:linear-gradient(135deg,#F6FF85 0%,#DFFF00 48%,#C7E600 100%);
+    --grad-lemon:linear-gradient(135deg,#F6FF85 0%,#DFFF00 48%,#C7E600 100%);
     --radius:16px; --radius-lg:22px;
-    --shadow:0 10px 30px rgba(30,58,138,.13);
-    --shadow-sm:0 2px 8px rgba(12,23,51,.07);
-    --shadow-lg:0 20px 48px rgba(12,23,51,.16);
-    --ring:0 0 0 3px rgba(30,58,138,.18);
+    --shadow:0 10px 30px rgba(36,36,36,.14);
+    --shadow-sm:0 2px 8px rgba(36,36,36,.08);
+    --shadow-lg:0 20px 48px rgba(36,36,36,.18);
+    --shadow-lemon:0 8px 22px rgba(168,196,0,.45);
+    --shadow-lav:0 8px 22px rgba(124,92,250,.32);
+    --ring:0 0 0 3px rgba(167,139,250,.5);
   }
   *{box-sizing:border-box}
-  /* Theme switcher (the "dongle") */
+  /* ---------- NIGHT (Charcoal) mode — the same design, inverted ----------
+     Lemon stays the signature: on charcoal the lemon surfaces become the
+     light source and text flips to white/off-white for contrast. Media keeps
+     its Electric Lavender frame in both modes. */
   body.dark{background:var(--bg);color:var(--ink)}
-  body.dark .hero{background:linear-gradient(90deg,#081023 0%,#152C6B 30%,#152C6B 62%,#3E6BE0 100%)}
+  body.dark .hero{background:linear-gradient(115deg,#1A1A1A 0%,#4C1D95 34%,#7C3AED 68%,#A78BFA 100%)}
   body.dark .hero h1{color:#fff}
-  body.dark .hero p{color:#DCE6F8}
-  body.dark .hero .urdu{color:#C6D4EE}
-  body.dark .btn-cream{background:#17264D;color:#EAF0FD}
-  body.dark .search{background:#142247}
+  body.dark .hero p{color:#EDE9FE}
+  body.dark .hero .urdu{color:#DDD6FE}
+  body.dark .btn-cream{background:#2F2F2F;color:#F5F5F5}
+  body.dark .search{background:#2F2F2F}
   .pimg{background:var(--pimg-bg)}
   .theme-fab{position:fixed;right:18px;bottom:18px;z-index:1000;width:52px;height:52px;border-radius:16px;background:var(--primary);color:#fff;font-size:24px;border:0;box-shadow:var(--shadow);cursor:pointer;display:grid;place-items:center;transition:.2s}
   .theme-fab:hover{transform:translateY(-2px) scale(1.05)}
@@ -204,6 +231,7 @@
         background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(4px)}
   .hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:14px;font-weight:700;border:0;transition:.2s;font-size:15px;cursor:pointer;line-height:1.2}
+  h1,h2{color:var(--ink-strong)}
   .btn:hover{transform:translateY(-2px)}
   .btn:active{transform:translateY(0)}
   .btn:focus-visible,.input:focus-visible,.select:focus-visible,.textarea:focus-visible,.chip:focus-visible{outline:none;box-shadow:var(--ring)}
@@ -357,7 +385,7 @@
   .field{margin-bottom:14px}
   .label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
   .input,.select,.textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:14px;outline:none;transition:.15s;background:#fff;font-family:inherit}
-  .select{appearance:none;-webkit-appearance:none;padding-right:36px;font-weight:600;color:var(--ink);cursor:pointer;background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%231E3A8A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>') no-repeat right 12px center/14px;border-radius:11px}
+  .select{appearance:none;-webkit-appearance:none;padding-right:36px;font-weight:600;color:var(--ink);cursor:pointer;background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23242424" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>') no-repeat right 12px center/14px;border-radius:11px}
   .select:hover{border-color:var(--primary)}
   .select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-l)}
   .input:focus,.select:focus,.textarea:focus{border-color:var(--emerald);box-shadow:0 0 0 3px var(--emerald-l)}
@@ -367,7 +395,7 @@
   .notice{border-radius:16px;padding:16px 18px;margin:12px 0;border:1.5px solid;position:relative;overflow:hidden}
   .notice:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:currentColor;opacity:.55}
   .notice.warn{background:#FEF8E7;border-color:#EBC968;color:#8A5A06}
-  .notice.info{background:#EFF4FE;border-color:#BFD0F4;color:#1E3A8A}
+  .notice.info{background:#F0EAFF;border-color:#D8CBFF;color:#5B3FD6}
   .notice.ok{background:#ECFDF3;border-color:#8ADFB2;color:#116A3C}
   .notice .urdu{display:block;margin-top:8px;color:inherit;opacity:.9}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -391,7 +419,7 @@
   .pill.crazy{background:#e0f2fe;color:#0369a1}
   .pill.gadget{background:var(--primary-l);color:var(--primary-d)}
   .pill.musttry{background:#d1fae5;color:#047857}
-  .pill.winter{background:#dbeafe;color:#1d4ed8}
+  .pill.winter{background:#F0EAFF;color:#5B3FD6}
   .pill.special{background:#fae8ff;color:#a21caf}
   .admin-body{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
   @media(max-width:820px){.admin-body{grid-template-columns:1fr}}
@@ -527,9 +555,377 @@
     .padd{font-size:11px}
     .icon-btn{width:36px;height:36px}
   }
+
+  /* =====================================================================
+     LEMON EDITION 2026 — owner's final colour ruling
+     · every surface that used to be charcoal/dark  → LEMON  #DFFF00
+     · every letter / label / price                → CHARCOAL #242424
+     · every picture + video frame + décor accent   → ELECTRIC LAVENDER #A78BFA
+     These rules sit LAST in the sheet, so they re-skin the storefront and the
+     admin panel without duplicating component styles above.
+     ===================================================================== */
+  body{
+    color:#242424;
+    background:
+      radial-gradient(1100px 520px at 10% -10%, rgba(167,139,250,.34), transparent 62%),
+      radial-gradient(880px 460px at 98% 2%, rgba(255,255,255,.6), transparent 58%),
+      linear-gradient(180deg,#EBFF63 0%,#DFFF00 30%,#D8F70A 68%,#D2F000 100%);
+    background-attachment:fixed;
+  }
+  body.dark{
+    color:#F4F4F5;
+    background:
+      radial-gradient(1100px 520px at 10% -10%, rgba(167,139,250,.28), transparent 62%),
+      linear-gradient(180deg,#2A2A2A 0%,#242424 40%,#1A1A1A 100%);
+    background-attachment:fixed;
+  }
+  body.dark h1,body.dark h2,body.dark h3,body.dark .ptitle{color:#FFFFFF}
+  body.dark .pcard,body.dark .panel,body.dark .auth-card,body.dark .cat,body.dark .cat-row,
+  body.dark .tb,body.dark .step,body.dark .search,body.dark .icon-btn,body.dark .modal{background:#2E2E2E;border-color:rgba(255,255,255,.14);color:#F4F4F5}
+  body.dark .input,body.dark .select,body.dark .textarea{background:#242424;border-color:rgba(255,255,255,.2);color:#F4F4F5}
+  body.dark .btn-outline{background:transparent;border-color:rgba(255,255,255,.3);color:#F4F4F5}
+  body.dark .muted{color:#C7C7CE}
+  body.dark .main-admin{background:#1A1A1A}
+
+  /* ---------- pre-paint mirror ----------
+     `html.night` / `html.frost` are set by the bootstrap script in <head> (before
+     <body> exists) so the very first frame is already the saved palette — the page
+     never flashes lemon→charcoal or snow-less→snow on reload. */
+  html.night body{color:#F4F4F5;
+    background:radial-gradient(1100px 520px at 10% -10%, rgba(167,139,250,.28), transparent 62%),
+      linear-gradient(180deg,#2A2A2A 0%,#242424 40%,#1A1A1A 100%);background-attachment:fixed}
+  html.frost body{background:
+      radial-gradient(1200px 620px at 50% -14%, rgba(255,255,255,.9), transparent 62%),
+      radial-gradient(900px 480px at 8% 6%, rgba(167,139,250,.4), transparent 60%),
+      linear-gradient(180deg,#F4FFB4 0%,#E4FA5C 34%,#DFFF00 100%);background-attachment:fixed}
+  html.frost.night body{background:
+      radial-gradient(1200px 620px at 50% -14%, rgba(167,139,250,.32), transparent 62%),
+      linear-gradient(180deg,#2E2E38 0%,#242424 44%,#191920 100%);background-attachment:fixed}
+
+  /* ---------- header: lemon field, charcoal letters, lavender hairline ---------- */
+  header.top{background:rgba(223,255,0,.9);backdrop-filter:blur(14px) saturate(150%);
+    border-bottom:2px solid rgba(167,139,250,.75);box-shadow:0 6px 22px rgba(36,36,36,.16)}
+  body.dark header.top{background:rgba(26,26,26,.92);border-bottom-color:rgba(167,139,250,.6)}
+  .brand-main{color:#242424}
+  .brand-sub{color:#6D4AFF}
+  body.dark .brand-main{color:#FFFFFF}
+  body.dark .brand-sub{color:#DFFF00}
+  .logo .logo-ico{box-shadow:0 4px 12px rgba(124,92,250,.35)}
+  nav.nav a{color:#242424;font-weight:700}
+  nav.nav a:hover{background:rgba(167,139,250,.26);color:#242424}
+  body.dark nav.nav a{color:#EDEDED}
+  body.dark nav.nav a:hover{background:rgba(223,255,0,.16);color:#DFFF00}
+
+  /* ---------- search: normal, calm, theme-aware ---------- */
+  .search{background:#FFFFFF;border:1.5px solid rgba(36,36,36,.2);border-radius:999px;
+    box-shadow:0 4px 14px rgba(36,36,36,.08);transition:border-color .18s,box-shadow .18s}
+  .search:focus-within{border-color:#A78BFA;box-shadow:0 0 0 4px rgba(167,139,250,.24),0 0 0 9px rgba(223,255,0,.45)}
+  .search>span{color:#6D4AFF;display:grid;place-items:center}
+  .search input{color:#242424;font-weight:600}
+  .search input::placeholder{color:#7A7A82;font-weight:500}
+  body.dark .search input{color:#F4F4F5}
+  .srch-x{border:0;background:#F0EAFF;color:#5B3FD6;width:24px;height:24px;border-radius:50%;
+    font-size:13px;line-height:1;display:none;place-items:center;flex:0 0 auto;padding:0}
+  .srch-x:hover{background:#A78BFA;color:#242424}
+  .search.has-q .srch-x{display:grid}
+  .icon-btn{background:#FFFFFF;border:1.5px solid rgba(36,36,36,.16);color:#242424}
+  .icon-btn:hover{background:#F0EAFF;border-color:#A78BFA;color:#5B3FD6;transform:translateY(-2px)}
+  .icon-btn.on{background:#DFFF00;border-color:rgba(36,36,36,.5);color:#242424}
+  body.dark .icon-btn{background:#2E2E2E;border-color:rgba(255,255,255,.18);color:#F4F4F5}
+  body.dark .icon-btn.on{background:#DFFF00;color:#242424;border-color:#DFFF00}
+  .badge{background:#7C5CFA;color:#fff}
+  .checkout-link{background:#DFFF00;color:#242424;border:1.5px solid rgba(36,36,36,.55);
+    box-shadow:0 6px 16px rgba(168,196,0,.5)}
+  .checkout-link:hover{background:#EAFF5C;transform:translateY(-2px)}
+  .avatar{background:var(--grad-lav);color:#242424;border:2px solid #fff}
+  .user-menu{background:#fff;border:1.5px solid rgba(167,139,250,.5);box-shadow:0 18px 40px rgba(36,36,36,.2)}
+  .user-menu a{color:#242424}
+  .user-menu a:hover{background:#F3EEFF}
+  body.dark .user-menu{background:#2E2E2E}
+  body.dark .user-menu a{color:#F4F4F5}
+  body.dark .user-menu a:hover{background:rgba(223,255,0,.14)}
+
+  /* ---------- search suggestions (the "normal" dropdown) ---------- */
+  .sugg{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;padding:6px;
+    border:1.5px solid rgba(167,139,250,.55);border-radius:16px;
+    box-shadow:0 18px 40px rgba(36,36,36,.18);display:none;z-index:80;max-height:min(60vh,420px);overflow-y:auto}
+  .sugg div{padding:0}
+  .sugg .sg-head{padding:8px 10px 6px;font-size:10.5px;letter-spacing:1.2px;font-weight:800;color:#6B6B73;text-transform:uppercase}
+  .sugg .sg-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;cursor:pointer}
+  .sugg .sg-item:hover,.sugg .sg-item.cur{background:#F3EEFF}
+  .sugg .sg-thumb{width:38px;height:38px;border-radius:10px;border:2px solid #A78BFA;object-fit:cover;background:#F5F1FF;flex:0 0 auto}
+  .sugg .sg-txt{min-width:0;flex:1}
+  .sugg .sg-name{font-size:13px;font-weight:700;color:#242424;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sugg .sg-meta{font-size:11px;color:#6B6B73;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sugg .sg-price{font-size:12.5px;font-weight:800;color:#242424;background:#DFFF00;border:1px solid rgba(36,36,36,.35);
+    padding:2px 8px;border-radius:999px;flex:0 0 auto}
+  .sugg .sg-all{margin-top:4px;padding:10px 12px;border-radius:12px;background:#DFFF00;color:#242424;
+    font-weight:800;font-size:13px;cursor:pointer;border:1px solid rgba(36,36,36,.35);text-align:center}
+  .sugg .sg-all:hover{background:#EAFF5C}
+  .sugg .sg-empty{padding:12px 10px;color:#6B6B73;font-size:13px}
+  body.dark .sugg{background:#2E2E2E;border-color:rgba(167,139,250,.5)}
+  body.dark .sugg .sg-name,body.dark .sugg .sg-price{color:#F4F4F5}
+  body.dark .sugg .sg-item:hover,body.dark .sugg .sg-item.cur{background:rgba(167,139,250,.18)}
+  body.dark .sugg .sg-all{background:#DFFF00;color:#242424}
+
+  /* ---------- buttons: lemon primary, lavender special, charcoal letters ---------- */
+  .btn-emerald,.btn-primary,.padd{background:var(--grad-lemon);color:#242424;
+    border:1.5px solid rgba(36,36,36,.55);box-shadow:var(--shadow-lemon)}
+  .btn-emerald:hover,.btn-primary:hover,.padd:hover{background:#EAFF5C;box-shadow:0 12px 28px rgba(168,196,0,.6)}
+  .btn-gold{background:var(--grad-lav);color:#242424;border:1.5px solid rgba(36,36,36,.35);box-shadow:var(--shadow-lav)}
+  .btn-gold:hover{background:#B79BFF}
+  .btn-outline{background:#FFFFFF;border:1.5px solid rgba(36,36,36,.3);color:#242424}
+  .btn-outline:hover{border-color:#A78BFA;background:#F8F5FF;color:#242424}
+  .btn-cream{background:#FFFFFF;color:#242424;border:1.5px solid rgba(36,36,36,.25)}
+  .btn-ghost{background:rgba(255,255,255,.55);color:#242424;border:1.5px solid rgba(36,36,36,.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,.8)}
+  .btn-danger{background:#FDECEC;color:#A31D1D;border:1.5px solid #F3BDBD}
+  .btn:disabled,.padd:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn:active{transform:translateY(0) scale(.99)}
+  body.dark .btn-outline{background:transparent;border-color:rgba(255,255,255,.3);color:#F4F4F5}
+  body.dark .btn-cream,body.dark .btn-ghost{background:#3A3A3A;color:#F4F4F5;border-color:rgba(255,255,255,.2)}
+
+  /* ---------- cards: white on lemon, thin lavender/lemon hover ---------- */
+  .pcard,.panel,.auth-card,.cat,.cat-row,.tb,.step{background:#FFFFFF;
+    border:1px solid rgba(36,36,36,.12);box-shadow:0 6px 18px rgba(36,36,36,.08)}
+  .pcard{border-radius:18px;overflow:hidden}
+  .pcard:hover{transform:translateY(-5px);border-color:#DFFF00;
+    box-shadow:0 16px 34px rgba(36,36,36,.16),0 0 0 3px rgba(223,255,0,.6)}
+  .cat:hover,.cat-row:hover{transform:translateY(-4px);border-color:#A78BFA;box-shadow:0 12px 26px rgba(124,92,250,.22)}
+  .pcat{color:#6D4AFF}
+  .ptitle{color:#242424}
+  body.dark .ptitle{color:#FFFFFF}
+  .pprice{color:#242424}
+  .pprice .old{color:#8A8A92}
+  .pbody .muted{color:#6B6B73}
+
+  /* ---------- PICTURES + VIDEOS: Electric Lavender frames ---------- */
+  .pimg{background:var(--pimg-bg);border:2px solid #A78BFA;border-radius:16px 16px 0 0}
+  .pimg img.pimage,.pimg video.pimage{border-radius:0}
+  .media-sk{border:2px solid #A78BFA}
+  .vid-thumb,.vid-detail{border:2px solid #A78BFA}
+  .gal-thumb{border:2px solid rgba(167,139,250,.55);background:var(--pimg-bg)}
+  .gal-thumb:hover{border-color:#A78BFA}
+  .gal-thumb.on{border-color:#A78BFA;box-shadow:var(--media-glow)}
+  .vplay{background:rgba(124,92,250,.94);border:2px solid #fff;color:#fff}
+  .vplay:hover{background:#A78BFA}
+  .vbadge{background:rgba(36,36,36,.82);color:#DFFF00}
+  .pimg .off{background:var(--grad-lemon);color:#242424;border:1px solid rgba(36,36,36,.45)}
+  .pimg .tag{background:rgba(167,139,250,.95);color:#242424;border:1px solid rgba(36,36,36,.25)}
+  .pimg .fav{background:#fff;border:1.5px solid rgba(167,139,250,.6)}
+
+  /* ---------- hero / promo: lavender field, lemon accents, charcoal copy ---------- */
+  .hero{background:var(--grad-brand);border:2px solid rgba(167,139,250,.65);
+    box-shadow:0 22px 54px rgba(76,29,149,.26);color:#242424}
+  .hero:before{background:
+    radial-gradient(760px 320px at 90% -18%, rgba(223,255,0,.55), transparent 62%),
+    radial-gradient(620px 280px at 4% 118%, rgba(255,255,255,.6), transparent 60%)}
+  .hero:after{background:var(--grad-lemon);height:5px;opacity:1}
+  .hero h1,.hero p,.hero p.banner-line,.hero p.hero-meta,.hero .urdu{color:#242424}
+  .hero-eyebrow{background:rgba(223,255,0,.92);border:1px solid rgba(36,36,36,.5);color:#242424}
+  .hero-eyebrow .pip{background:var(--grad-lemon);box-shadow:0 0 0 3px rgba(36,36,36,.18)}
+  .hero-pills span{background:rgba(255,255,255,.74);border:1px solid rgba(36,36,36,.24);color:#242424}
+  .promo{background:var(--grad-brand);color:#242424;border:2px solid rgba(167,139,250,.55)}
+  .promo .urdu{color:#3F3F46}
+  .promo b,.promo h2,.promo h3{color:#242424}
+  .step .n{background:#A78BFA;color:#242424}
+  .sec-head h2{color:#242424}
+  .sec-head h2:before{background:var(--grad-lemon);width:6px;box-shadow:0 0 0 2px rgba(167,139,250,.45)}
+  .sec-head a{color:#6D4AFF;font-weight:800}
+  .sec-head .sub{color:#4F4F57}
+  body.dark .sec-head h2{color:#fff}
+  body.dark .sec-head a{color:#DFFF00}
+  .cat .ci,.cat-row .ci{background:#F0EAFF;color:#6D4AFF;border:1px solid rgba(167,139,250,.5)}
+  .cat-more{background:rgba(255,255,255,.7);border-color:rgba(167,139,250,.5);color:#5B3FD6}
+  .cat-more:hover{background:#DFFF00;color:#242424;border-color:rgba(36,36,36,.4)}
+  .stars{color:#7C5CFA}
+  .stars .sc{color:#D8D8DE}
+  .chip{background:#fff;border:1.5px solid rgba(36,36,36,.18);color:#242424}
+  .chip.on,.chip:hover{background:#DFFF00;border-color:rgba(36,36,36,.5);color:#242424}
+
+  /* ---------- pills, notices, forms, tables ---------- */
+  .pill.ok{background:#EAFBF0;color:#0E6B34;box-shadow:inset 0 0 0 1px #A9E7C2}
+  .pill.pend{background:#FFF8DC;color:#8A5A06;box-shadow:inset 0 0 0 1px #EBD48A}
+  .pill.bad{background:#FDECEC;color:#A31D1D;box-shadow:inset 0 0 0 1px #F3BDBD}
+  .pill.info{background:#F0EAFF;color:#5B3FD6;box-shadow:inset 0 0 0 1px #D8CBFF}
+  .pill.neutral{background:#F4F4F5;color:#3F3F46;box-shadow:inset 0 0 0 1px rgba(36,36,36,.14)}
+  .pill.hosell,.pill.trending{background:#F3EEFF;color:#5B3FD6;box-shadow:inset 0 0 0 1px #D8CBFF}
+  .pill.hot{background:#FDECEC;color:#A31D1D;box-shadow:inset 0 0 0 1px #F3BDBD}
+  .pill.crazy{background:#EAFBF0;color:#0E6B34;box-shadow:inset 0 0 0 1px #A9E7C2}
+  .pill.gadget{background:#DFFF00;color:#242424;box-shadow:inset 0 0 0 1px rgba(36,36,36,.35)}
+  .pill.musttry{background:#F0EAFF;color:#5B3FD6;box-shadow:inset 0 0 0 1px #D8CBFF}
+  .pill.winter{background:#F0EAFF;color:#5B3FD6;box-shadow:inset 0 0 0 1px #A78BFA}
+  .pill.special{background:#F0EAFF;color:#5B3FD6;box-shadow:inset 0 0 0 1px #D8CBFF}
+  .notice.warn{background:#FFFBEA;border-color:#EBC968;color:#7A4E05}
+  .notice.info{background:#F3EEFF;border-color:#CDBBFF;color:#4C2FBF}
+  .notice.ok{background:#EDFBF2;border-color:#9BE3B7;color:#0F6B39}
+  .notice .urdu{color:inherit}
+  .input,.select,.textarea{background:#fff;color:#242424;border:1.5px solid rgba(36,36,36,.2);border-radius:12px}
+  .input::placeholder,.textarea::placeholder{color:#8A8A92}
+  .input:focus,.select:focus,.textarea:focus{border-color:#A78BFA;box-shadow:0 0 0 4px rgba(167,139,250,.22);outline:none}
+  .label{color:#3F3F46;font-weight:700}
+  table th{background:#F3EEFF;color:#242424}
+  table td{color:#242424}
+  body.dark table th{background:#3A3A3A;color:#fff}
+  body.dark table td{color:#EDEDED}
+  .divider{border-color:rgba(36,36,36,.14)}
+  .summary-line.total{color:#242424}
+  .progress .pstep.on{color:#5B3FD6}
+  .progress .pstep.on .pdot,.progress .pdot.on{background:#A78BFA;color:#242424}
+  .progress .pbar.on{background:#DFFF00}
+  .radio{background:#fff;border:1.5px solid rgba(36,36,36,.16);color:#242424}
+  .radio.on{border-color:#A78BFA;background:#F8F5FF;box-shadow:0 0 0 3px rgba(167,139,250,.2)}
+
+  /* ---------- modals / popups (checkout confirmation lives here) ---------- */
+  .modal-bg{background:rgba(36,36,36,.62);backdrop-filter:blur(5px)}
+  .modal{background:#fff;border:2px solid #A78BFA;border-top:7px solid #DFFF00;border-radius:22px;
+    box-shadow:0 30px 70px rgba(36,36,36,.4);color:#242424}
+  body.dark .modal{color:#F4F4F5}
+  .modal h3{color:#242424}
+  body.dark .modal h3{color:#fff}
+  #toast{background:#242424;color:#DFFF00;border:1.5px solid rgba(167,139,250,.7)}
+  #cartpop{background:#242424;color:#fff;border:1.5px solid rgba(223,255,0,.55)}
+  #cartpop a{color:#DFFF00 !important}
+  .cookie{background:linear-gradient(135deg,#1A1A1A,#242424);color:#F4F4F5;border-top:3px solid #DFFF00}
+  .cookie a{color:#DFFF00}
+  .cookie .btn-outline{background:transparent;border-color:rgba(255,255,255,.4);color:#fff}
+
+  /* ---------- admin: charcoal rail + lemon/lavender accents ---------- */
+  .aside{background:linear-gradient(180deg,#1A1A1A 0%,#242424 58%,#2E2E2E 100%);color:#EDEDED;
+    border-right:2px solid #A78BFA}
+  .aside .alogo .aword{color:#fff}
+  .aside .alogo .aword span{color:#DFFF00}
+  .aside .asub{color:#C9C9D0}
+  .aside a{color:#D9D9DE}
+  .aside a.on,.aside a:hover{background:rgba(223,255,0,.14);color:#DFFF00;border-left-color:#DFFF00}
+  .aside .sect{color:#A1A1AA}
+  .main-admin{background:#F7F7F2}
+  .toolbar{background:#fff;border:1px solid rgba(36,36,36,.12);border-radius:14px}
+
+  /* ---------- NO FOOTER: the product feed loops forever instead ---------- */
+  footer#footer{display:none !important}
+  .endless-bar{display:flex;align-items:center;justify-content:center;gap:10px;margin:26px auto 34px;
+    padding:12px 18px;border-radius:999px;background:rgba(255,255,255,.82);border:1.5px solid rgba(167,139,250,.55);
+    color:#242424;font-weight:800;font-size:13px;box-shadow:0 8px 22px rgba(36,36,36,.12);width:max-content;max-width:92vw;text-align:center}
+  .endless-bar .dot{width:8px;height:8px;border-radius:50%;background:#A78BFA;animation:pulse 1.8s infinite}
+  .feed-sentinel{width:100%;height:2px;margin-top:-2px}
+
+  /* ---------- payment choice cards + COD 20% advance notice ---------- */
+  .pay-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  .pay-opt{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:18px;cursor:pointer;
+    background:#fff;border:2px solid rgba(36,36,36,.14);transition:.18s;color:#242424}
+  .pay-opt:hover{border-color:#A78BFA;transform:translateY(-2px);box-shadow:0 12px 26px rgba(124,92,250,.2)}
+  .pay-opt.on{border-color:#242424;background:linear-gradient(180deg,#FAFFDC,#F2FFB0);box-shadow:0 0 0 4px rgba(223,255,0,.5)}
+  .pay-opt input{position:absolute;opacity:0;pointer-events:none}
+  .pay-opt .po-t{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px}
+  .pay-opt .po-d{font-size:12.5px;color:#4F4F57;line-height:1.5}
+  .pay-opt .po-tag{position:absolute;top:-11px;right:12px;background:#A78BFA;color:#242424;font-size:10.5px;
+    font-weight:900;letter-spacing:.6px;padding:3px 9px;border-radius:999px;border:1px solid rgba(36,36,36,.3);text-transform:uppercase}
+  .pay-sub{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .cod-rule{background:linear-gradient(135deg,#F0EAFF 0%,#FBF9FF 55%,#F6FFB0 100%);border:2px solid #A78BFA;
+    border-radius:18px;padding:14px 16px;color:#242424;box-shadow:0 10px 26px rgba(124,92,250,.18)}
+  .cod-rule b{color:#5B3FD6}
+  .cod-rule .big{font-size:15px;font-weight:900;color:#242424;display:block;margin-bottom:4px}
+  .cod-rule code{background:#DFFF00;color:#242424;border:1px solid rgba(36,36,36,.35);border-radius:8px;padding:1px 6px;font-weight:800}
+  .cod-rule a{color:#5B3FD6;font-weight:800}
+  .cod-steps{margin:8px 0 0;padding-left:18px;line-height:1.7;font-size:13px}
+
+  /* ---------- order lifecycle: state chips + delivery countdown ---------- */
+  .state-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;
+    font-size:11.5px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;border:1.5px solid transparent}
+  .st-pending{background:#FFF8DC;color:#8A5A06;border-color:#EBD48A}
+  .st-confirmed{background:#DFFF00;color:#242424;border-color:rgba(36,36,36,.45)}
+  .st-in_transit{background:#F0EAFF;color:#5B3FD6;border-color:#D8CBFF}
+  .st-delayed{background:#FFF1E6;color:#9A4B00;border-color:#F3CFA8}
+  .st-error{background:#FDECEC;color:#A31D1D;border-color:#F3BDBD}
+  .st-damaged{background:#FDECEC;color:#A31D1D;border-color:#F3BDBD}
+  .st-received{background:#EAFBF0;color:#0E6B34;border-color:#A9E7C2}
+  .st-cancelled{background:#F4F4F5;color:#3F3F46;border-color:rgba(36,36,36,.2)}
+  .st-returned,.st-refunded{background:#F4F4F5;color:#3F3F46;border-color:rgba(36,36,36,.2)}
+  .eta-box{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0;padding:12px 14px;border-radius:16px;
+    background:#F8F5FF;border:1.5px solid rgba(167,139,250,.55)}
+  .eta-days{min-width:62px;height:62px;border-radius:16px;background:#DFFF00;border:1.5px solid rgba(36,36,36,.45);
+    display:grid;place-items:center;font-weight:900;font-size:22px;color:#242424;line-height:1}
+  .eta-days small{display:block;font-size:9.5px;letter-spacing:1px;font-weight:800;text-align:center}
+  .eta-txt{font-size:13.5px;color:#242424;font-weight:700}
+  .eta-txt span{display:block;font-size:12px;color:#4F4F57;font-weight:600;margin-top:2px}
+  .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:12px 0}
+  .flow .fstep{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:#6B6B73;
+    padding:6px 10px;border-radius:999px;background:#F4F4F5;border:1px solid rgba(36,36,36,.12)}
+  .flow .fstep.on{background:#DFFF00;color:#242424;border-color:rgba(36,36,36,.45)}
+  .flow .fstep.bad{background:#FDECEC;color:#A31D1D;border-color:#F3BDBD}
+  .flow .fbar{width:18px;height:2px;background:rgba(36,36,36,.2);border-radius:2px}
+  .flow .fbar.on{background:#A78BFA}
+
+  /* ---------- WINTER MODE + snowfall ---------- */
+  .snow-layer{position:fixed;inset:0;pointer-events:none;z-index:900;overflow:hidden;display:none}
+  body.winter .snow-layer{display:block}
+  .snowflake{position:absolute;top:-12vh;color:#fff;user-select:none;
+    text-shadow:0 0 8px rgba(167,139,250,.95),0 0 2px rgba(255,255,255,.9);
+    animation-name:snowfall;animation-timing-function:linear;animation-iteration-count:infinite;will-change:transform}
+  @keyframes snowfall{
+    0%{transform:translate3d(0,-12vh,0) rotate(0deg)}
+    100%{transform:translate3d(var(--dx,24px),114vh,0) rotate(360deg)}
+  }
+  body.winter{background:
+      radial-gradient(1200px 620px at 50% -14%, rgba(255,255,255,.9), transparent 62%),
+      radial-gradient(900px 480px at 8% 6%, rgba(167,139,250,.4), transparent 60%),
+      linear-gradient(180deg,#F4FFB4 0%,#E4FA5C 34%,#DFFF00 100%);
+      background-attachment:fixed}
+  body.winter.dark{background:
+      radial-gradient(1200px 620px at 50% -14%, rgba(167,139,250,.32), transparent 62%),
+      linear-gradient(180deg,#2E2E38 0%,#242424 44%,#191920 100%);background-attachment:fixed}
+  body.winter header.top{border-bottom-color:#A78BFA;box-shadow:0 6px 22px rgba(124,92,250,.24)}
+  body.winter .hero{box-shadow:0 22px 54px rgba(124,92,250,.34)}
+  body.winter .hero:after{background:linear-gradient(90deg,#FFFFFF,#A78BFA 45%,#DFFF00 100%)}
+  body.winter .pcard{box-shadow:0 6px 18px rgba(124,92,250,.16)}
+  body.winter .pcard:hover{box-shadow:0 16px 34px rgba(124,92,250,.28),0 0 0 3px rgba(223,255,0,.6)}
+  .winter-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:#F0EAFF;
+    border:1px solid #A78BFA;color:#5B3FD6;font-size:11.5px;font-weight:800;letter-spacing:.4px}
+
+  /* ---------- accessibility + motion ---------- */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;box-shadow:var(--ring)}
+  @media (prefers-reduced-motion: reduce){
+    .snowflake{animation:none !important;display:none}
+    .pcard:hover,.btn:hover,.icon-btn:hover,.pay-opt:hover{transform:none}
+    *{animation-duration:.001s !important;transition-duration:.06s !important}
+  }
+  @media(max-width:640px){
+    .pay-opts{grid-template-columns:1fr}
+    .eta-days{min-width:54px;height:54px;font-size:19px}
+    .sugg .sg-thumb{width:32px;height:32px}
+  }
 </style>
+<script>
+/* ---------- NO-FLASH THEME BOOTSTRAP ----------
+   Runs in <head> before the first paint: reads the saved look from localStorage and
+   marks <html> so the initial frame is already Lemon / Charcoal-Night / Winter.
+   The full theme engine (THEMES + applyTheme) still owns runtime switching; this is
+   only the pre-paint hint, and it must never throw (a broken localStorage read
+   should not stop the store from booting). */
+(function(){
+  try{
+    var read=function(k,d){ try{ var v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } };
+    var ALIAS={royal:"lemon",orange:"lemon",violet:"lemon",dark:"charcoal",white:"offwhite",
+               confident:"lemon",trust:"lemon",premium:"lemon",fresh:"lemon",warm:"lemon",
+               lemon:"lemon",charcoal:"charcoal",offwhite:"offwhite"};
+    var t=ALIAS[read("nukto.theme","lemon")]||"lemon";
+    var w=!!read("nukto.winter",false);
+    var h=document.documentElement;
+    h.setAttribute("data-theme",t);
+    h.className=h.className.replace(/\b(night|frost)\b/g,"").trim();
+    if(t==="charcoal") h.className+=" night";
+    if(w) h.className+=" frost";
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", t==="charcoal"?"#242424":"#DFFF00");
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
+
+<!-- Winter Mode: snow falls from the top of the page (CSS-animated, reduced-motion safe) -->
+<div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
 
 <header class="top" id="header"></header>
 <div id="loading" style="max-width:none;margin:0 auto;padding:20px">
@@ -590,11 +986,14 @@ const DEFAULT_SETTINGS = {
   whatsapp:"923420286170",
   easypaisa:"03420286170",
   jazzcash:"03420286170",
-  deliveryFee:199,          // fixed delivery charge (PKR), added at checkout only
+  deliveryFee:199,          // default charge when no city/province zone matches
   deliveryFreeAbove:0,      // free delivery above this amount (0 = never)
+  deliveryZones:[],         // empty = DEFAULT_DELIVERY_ZONES (city/province wise rates)
   deliveryNote:"📦 Delivery nationwide",
   freeDeliveryMsg:"🚚 Delivery nationwide",
-  codNote:"Cash via EasyPaisa/JazzCash — advance payment required",
+  codAdvancePct:20,         // COD orders confirm only after this % advance is paid
+  codEnabled:true,          // Cash on Delivery on/off
+  codNote:"Cash on Delivery — 20% advance payment zaroori hai, warna order confirm nahi hoga",
   salePct:0,
   banner:"Easy returns within 48 hours · 24/7 WhatsApp support · secure advance payment",
 };
@@ -660,109 +1059,144 @@ const store = {
 };
 const $id = s => document.getElementById(s);
 
-/* ---------- THEME SWITCHER (the "dongle") ---------- */
-/* Anyone can pick a look that suits them (light/dark + 4 psychological palettes).
-   The choice is stored per-device (localStorage) and applied via CSS variables. */
-const THEMES = {
-  royal:   { name:"🔵 Royal Blue (default)", bg:"#F5F8FD", dark:false, vars:{
-      "--primary":"#1E3A8A","--primary-d":"#152C6B","--primary-l":"#E7EDFB",
-      "--emerald":"#1E3A8A","--emerald-d":"#152C6B","--emerald-l":"#E7EDFB",
-      "--bg":"#F5F8FD","--card":"#FFFFFF","--ink":"#121C33","--ink2":"#4C5B78","--muted":"#8C9AB5",
-      "--err":"#DC2626","--ok":"#16A34A","--warn":"#d97706","--line":"#DEE6F3",
-      "--teal":"#1E3A8A","--amber":"#f59e0b","--rose":"#e11d48","--indigo":"#1E3A8A",
-      "--gold":"#D4A017","--gold-d":"#A87A0C","--gold-l":"#FBF0D2",
-      "--pimg-bg":"#EDF2FB","--shadow":"0 10px 30px rgba(30,58,138,.12)" } },
-  white:   { name:"⚪ White",      bg:"#ffffff", dark:false, vars:{
-      "--primary":"#1f5f8b","--primary-d":"#17456a","--primary-l":"#e5f0f8",
-      "--emerald":"#1f5f8b","--emerald-d":"#17456a","--emerald-l":"#e5f0f8",
-      "--bg":"#ffffff","--card":"#ffffff","--ink":"#1e2a36","--ink2":"#5b6875","--muted":"#98a4b0",
-      "--err":"#dc2626","--ok":"#16a34a","--warn":"#d97706","--line":"#e6ebf1",
-      "--teal":"#0ea5e9","--amber":"#f59e0b","--rose":"#e11d48","--indigo":"#1f5f8b",
-      "--gold":"#D4A017","--gold-d":"#c8791f","--gold-l":"#FBF0D2",
-      "--pimg-bg":"#f2f6f9","--shadow":"0 10px 30px rgba(15,23,42,.12)" } },
-  dark:    { name:"🌙 Dark",      bg:"#0f0d0d", dark:true, vars:{
-      "--primary":"#e0635a","--primary-d":"#c95148","--primary-l":"#3a2422",
-      "--emerald":"#e0635a","--emerald-d":"#f0f0f0","--emerald-l":"#3a2422",
-      "--bg":"#0C1733","--card":"#142247","--ink":"#f3ece9","--ink2":"#cbbcb7","--muted":"#8f817c",
-      "--err":"#ef4444","--ok":"#22c55e","--warn":"#f59e0b","--line":"#3b302d",
-      "--teal":"#2dd4bf","--amber":"#f59e0b","--rose":"#f43f5e","--indigo":"#818cf8",
-      "--gold":"#D4A017","--gold-d":"#d8861f","--gold-l":"#3a2f1a",
-      "--pimg-bg":"#2c2422","--shadow":"0 10px 30px rgba(0,0,0,.4)" } },
-  confident:{ name:"🟢 Confident (Teal+Coral)", bg:"#eef6f5", dark:false, vars:{
-      "--primary":"#0f766e","--primary-d":"#0b5d57","--primary-l":"#dcf2ef",
-      "--emerald":"#0f766e","--emerald-d":"#0b5d57","--emerald-l":"#dcf2ef",
-      "--bg":"#eef6f5","--card":"#ffffff","--ink":"#134e4a","--ink2":"#4b6a67","--muted":"#8aa39f",
-      "--err":"#e11d48","--ok":"#16a34a","--warn":"#ea580c","--line":"#d5e9e5",
-      "--teal":"#0d9488","--amber":"#f97316","--rose":"#f43f5e","--indigo":"#0f766e",
-      "--gold":"#f6a01a","--gold-d":"#ce7f11","--gold-l":"#FBF0D2",
-      "--pimg-bg":"#e8f2ef","--shadow":"0 10px 30px rgba(15,76,70,.12)" } },
-  trust:   { name:"🔵 Trust (Blue+Orange)", bg:"#eef4fb", dark:false, vars:{
-      "--primary":"#1d4ed8","--primary-d":"#173db0","--primary-l":"#e3ecfb",
-      "--emerald":"#1d4ed8","--emerald-d":"#173db0","--emerald-l":"#e3ecfb",
-      "--bg":"#eef4fb","--card":"#ffffff","--ink":"#111827","--ink2":"#4b5563","--muted":"#9aa4b1",
-      "--err":"#dc2626","--ok":"#16a34a","--warn":"#ea580c","--line":"#d9e2f0",
-      "--teal":"#0284c7","--amber":"#f97316","--rose":"#e11d48","--indigo":"#1d4ed8",
-      "--gold":"#f59e0b","--gold-d":"#d97706","--gold-l":"#fef3c7",
-      "--pimg-bg":"#eaf1fa","--shadow":"0 10px 30px rgba(30,58,138,.13)" } },
-  premium: { name:"💗 Premium (Magenta+Coral)", bg:"#fdf1f6", dark:false, vars:{
-      "--primary":"#c026d3","--primary-d":"#a21caf","--primary-l":"#f7e3fb",
-      "--emerald":"#c026d3","--emerald-d":"#a21caf","--emerald-l":"#f7e3fb",
-      "--bg":"#fdf1f6","--card":"#ffffff","--ink":"#4a044e","--ink2":"#7a4b80","--muted":"#b78fbd",
-      "--err":"#e11d48","--ok":"#16a34a","--warn":"#ea580c","--line":"#f0dbe8",
-      "--teal":"#db2777","--amber":"#f97316","--rose":"#f43f5e","--indigo":"#c026d3",
-      "--gold":"#e6a01a","--gold-d":"#c8791f","--gold-l":"#FBF0D2",
-      "--pimg-bg":"#f9eaf2","--shadow":"0 10px 30px rgba(162,28,175,.12)" } },
-  fresh:   { name:"🌿 Fresh (Green+Orange)", bg:"#f0f8ef", dark:false, vars:{
-      "--primary":"#16a34a","--primary-d":"#15803d","--primary-l":"#e2f5e6",
-      "--emerald":"#16a34a","--emerald-d":"#15803d","--emerald-l":"#e2f5e6",
-      "--bg":"#f0f8ef","--card":"#ffffff","--ink":"#14532d","--ink2":"#4c6b52","--muted":"#8aa391",
-      "--err":"#dc2626","--ok":"#16a34a","--warn":"#ea580c","--line":"#d8ecd7",
-      "--teal":"#059669","--amber":"#f97316","--rose":"#e11d48","--indigo":"#16a34a",
-      "--gold":"#f59e0b","--gold-d":"#d97706","--gold-l":"#fef3c7",
-      "--pimg-bg":"#e8f5e8","--shadow":"0 10px 30px rgba(21,128,61,.12)" } },
-  warm:    { name:"🏜️ Warm (default)", bg:"#FFF1E6", dark:false, vars:{
-      "--primary":"#8C1C13","--primary-d":"#6f150e","--primary-l":"#f6e1d4",
-      "--emerald":"#8C1C13","--emerald-d":"#6f150e","--emerald-l":"#f6e1d4",
-      "--bg":"#FFF1E6","--card":"#ffffff","--ink":"#3D2C2E","--ink2":"#6d5a55","--muted":"#a4918a",
-      "--err":"#c0392b","--ok":"#2e9a6b","--warn":"#c96a1e","--line":"#eedfd3",
-      "--teal":"#C97C5D","--amber":"#c96a1e","--rose":"#c0392b","--indigo":"#8C1C13",
-      "--gold":"#E9A93C","--gold-d":"#c9881f","--gold-l":"#fdeccb",
-      "--pimg-bg":"#fbf0e3","--shadow":"0 10px 30px rgba(61,44,46,.14)" } },
+/* ---------- THEME ENGINE — LEMON EDITION (owner's final ruling) ----------
+   "jahan charcoal black tha wahan LEMON · letters CHARCOAL BLACK ·
+    pictures + videos ke borders ELECTRIC LAVENDER · design lavender se attractive"
+
+   lemon    (default) — lemon field, white cards, charcoal letters, lavender media frames
+   charcoal (night)   — charcoal field, lemon + lavender accents, white letters
+   offwhite (calm)    — soft off-white field for long browsing sessions
+
+   Winter Mode is a SEPARATE switch (snowfall + frost accents) that layers on any
+   look. Both choices persist in localStorage and are re-applied before first paint
+   by the head bootstrap, so a reload never flashes the wrong palette. */
+const LEMON_VARS = {
+  "--primary":"#A78BFA","--primary-d":"#6D4AFF","--primary-l":"#F0EAFF",
+  "--emerald":"#A78BFA","--emerald-d":"#6D4AFF","--emerald-l":"#F0EAFF",
+  "--bg":"#DFFF00","--card":"#FFFFFF","--ink":"#242424","--ink2":"#3F3F46","--muted":"#6B6B73",
+  "--err":"#C02626","--ok":"#157F3D","--warn":"#9A5B00","--line":"rgba(36,36,36,.16)",
+  "--teal":"#7C5CFA","--amber":"#9A6A00","--rose":"#D61F4E","--indigo":"#6D4AFF",
+  "--gold":"#A78BFA","--gold-d":"#6D4AFF","--gold-l":"#F0EAFF",
+  "--pimg-bg":"#F5F1FF","--shadow":"0 10px 30px rgba(36,36,36,.14)",
+  "--grad-brand":"linear-gradient(115deg,#FBF9FF 0%,#DDD6FE 24%,#A78BFA 62%,#C4B5FD 100%)",
+  "--grad-lav":"linear-gradient(135deg,#C4B5FD 0%,#A78BFA 45%,#7C5CFA 100%)",
+  "--grad-gold":"linear-gradient(135deg,#F6FF85 0%,#DFFF00 48%,#C7E600 100%)",
+  "--grad-lemon":"linear-gradient(135deg,#F6FF85 0%,#DFFF00 48%,#C7E600 100%)"
 };
-// Brand default = Royal Blue + Gold. Customers may still pick another look in
-// Settings; "orange" is the legacy key the old violet default used, so devices
-// that saved it keep resolving to the (new) house theme instead of crashing.
-let themeKey = "royal";
-const THEME_ALIASES = { orange:"royal", violet:"royal" };
-function themeObj(){ return THEMES[themeKey] || THEMES.royal; }
+const CHARCOAL_VARS = Object.assign({}, LEMON_VARS, {
+  "--primary":"#A78BFA","--primary-d":"#C4B5FD","--primary-l":"#332B4D",
+  "--emerald":"#A78BFA","--emerald-d":"#C4B5FD","--emerald-l":"#332B4D",
+  "--bg":"#242424","--card":"#2E2E2E","--ink":"#FFFFFF","--ink2":"#DCDCE1","--muted":"#A1A1AA",
+  "--err":"#F87171","--ok":"#4ADE80","--warn":"#FBBF24","--line":"rgba(255,255,255,.16)",
+  "--teal":"#A78BFA","--amber":"#FBBF24","--rose":"#FB7185","--indigo":"#A78BFA",
+  "--gold":"#DFFF00","--gold-d":"#DFFF00","--gold-l":"#333A1A",
+  "--pimg-bg":"#2A2A33","--shadow":"0 10px 30px rgba(0,0,0,.5)",
+  "--grad-brand":"linear-gradient(115deg,#2A2A2A 0%,#4C1D95 34%,#7C3AED 70%,#A78BFA 100%)"
+});
+const OFFWHITE_VARS = Object.assign({}, LEMON_VARS, {
+  "--bg":"#F7F7F2","--card":"#FFFFFF","--pimg-bg":"#F5F1FF",
+  "--shadow":"0 10px 30px rgba(36,36,36,.10)"
+});
+const THEMES = {
+  lemon:    { name:"🍋 Lemon (default)", bg:"#DFFF00", dark:false, vars:LEMON_VARS },
+  charcoal: { name:"🌑 Charcoal Night",  bg:"#242424", dark:true,  vars:CHARCOAL_VARS },
+  offwhite: { name:"🤍 Soft Off-White",  bg:"#F7F7F2", dark:false, vars:OFFWHITE_VARS },
+};
+// Devices that saved an older look (royal/violet/dark/…) resolve onto the new house
+// themes instead of falling back to an unknown key.
+let themeKey = "lemon";
+let winterMode = false;
+const THEME_ALIASES = { royal:"lemon", orange:"lemon", violet:"lemon", confident:"lemon",
+  trust:"lemon", premium:"lemon", fresh:"lemon", warm:"lemon", dark:"charcoal", white:"offwhite" };
+function themeObj(){ return THEMES[themeKey] || THEMES.lemon; }
+function resolveThemeKey(k){ k=String(k||""); k=THEME_ALIASES[k]||k; return THEMES[k]?k:"lemon"; }
 function applyTheme(k){
-  if(k) themeKey = k;
+  if(k) themeKey = resolveThemeKey(k);
   const t = themeObj();
-  const el = document.documentElement;
-  el.setAttribute("data-theme", themeKey);
-  el.style.setProperty("--pimg-bg", t.vars["--pimg-bg"]); // ensure var exists
-  // skeleton shimmer must follow the active theme (not a hard-coded grey)
-  el.style.setProperty("--sk1", t.vars["--primary-l"] || t.vars["--pimg-bg"]);
-  el.style.setProperty("--sk2", t.dark ? t.vars["--card"] : "#ffffff");
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.setAttribute("content", t.vars["--primary"]);
-  t.dark ? document.body.classList.add("dark") : document.body.classList.remove("dark");
-  for(const [prop,val] of Object.entries(t.vars)){ el.style.setProperty(prop, val); }
+  const el = (typeof document!=="undefined") ? document.documentElement : null;
+  const body = (typeof document!=="undefined") ? document.body : null;
+  if(el){
+    el.setAttribute("data-theme", themeKey);
+    for(const [prop,val] of Object.entries(t.vars)) el.style.setProperty(prop, val);
+    // skeleton shimmer follows the active theme (never a hard-coded grey)
+    el.style.setProperty("--sk1", t.vars["--primary-l"] || t.vars["--pimg-bg"]);
+    el.style.setProperty("--sk2", t.dark ? t.vars["--card"] : "#FFFFFF");
+    // pre-paint hints kept in sync so a later reload matches what the shopper sees
+    if(el.classList && el.classList.toggle){
+      el.classList.toggle("night", !!t.dark);
+      el.classList.toggle("frost", !!winterMode);
+    }
+  }
+  if(body && body.classList){
+    if(t.dark) body.classList.add("dark"); else body.classList.remove("dark");
+    if(winterMode) body.classList.add("winter"); else body.classList.remove("winter");
+  }
+  const meta = (typeof document!=="undefined"&&document.querySelector) ? document.querySelector('meta[name="theme-color"]') : null;
+  if(meta) meta.setAttribute("content", t.dark ? "#242424" : "#DFFF00");
+  buildSnow();
 }
-function openThemePanel(){ $id("themePanel").classList.toggle("open"); }
-function chooseTheme(k){ applyTheme(k); store.set("nukto.theme", themeKey); renderHeader(); renderFooter(); render(); toast("Theme: "+themeObj().name+" ✅"); }
+/* ---------- WINTER MODE (snow falling from the top of the page) ---------- */
+const SNOW_GLYPHS = ["❄","❅","❆","•","∗"];
+function snowCount(){
+  const w = (typeof window!=="undefined" && window.innerWidth) ? window.innerWidth : 1200;
+  return w < 640 ? 26 : (w < 1100 ? 40 : 56);
+}
+function buildSnow(){
+  const layer = (typeof document!=="undefined"&&document.getElementById) ? document.getElementById("snowLayer") : null;
+  if(!layer) return;
+  const want = winterMode ? snowCount() : 0;
+  if(layer.childElementCount === want) return;          // already correct — do no work
+  layer.innerHTML = "";
+  if(!want) return;
+  if(typeof window!=="undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let html = "";
+  for(let i=0;i<want;i++){
+    const size = (8 + Math.random()*16).toFixed(1);
+    const left = (Math.random()*100).toFixed(2);
+    const dur  = (7 + Math.random()*11).toFixed(2);
+    const delay= (-Math.random()*16).toFixed(2);
+    const drift= ((Math.random()*160)-80).toFixed(0);
+    const op   = (0.45 + Math.random()*0.5).toFixed(2);
+    html += '<span class="snowflake" style="left:'+left+'%;font-size:'+size+'px;opacity:'+op+
+            ';animation-duration:'+dur+'s;animation-delay:'+delay+'s;--dx:'+drift+'px">'+
+            SNOW_GLYPHS[i % SNOW_GLYPHS.length]+'</span>';
+  }
+  layer.innerHTML = html;
+}
+function applyWinter(on){
+  winterMode = !!on;
+  store.set("nukto.winter", winterMode);
+  applyTheme();
+  try{ renderHeader(); }catch(e){}
+  toast(winterMode ? "❄️ Winter Mode ON — barf gir rahi hai" : "☀️ Winter Mode OFF");
+}
+function toggleWinter(){ applyWinter(!winterMode); try{ render(); }catch(e){} }
+/* Lemon ⇄ Charcoal Night: one tap in the header, remembered across reloads. */
+function toggleNight(){
+  chooseTheme(themeObj().dark ? "lemon" : "charcoal");
+}
+function openThemePanel(){ const p=$id("themePanel"); if(p) p.classList.toggle("open"); }
+function chooseTheme(k){
+  applyTheme(k); store.set("nukto.theme", themeKey);
+  try{ renderHeader(); renderFooter(); render(); }catch(e){}
+  toast("Theme: "+themeObj().name+" ✅");
+}
 function injectThemePanel(){
+  if(typeof document==="undefined" || !document.createElement || !document.body || !document.body.appendChild) return;
   const div=document.createElement("div");
   div.id="themePanel"; div.className="theme-panel";
-  div.innerHTML = `<div class="tp-head"><b>🎨 Theme</b><button class="tp-x" onclick="openThemePanel()">✕</button></div>`+
-    `<div class="tp-sub">Choose a look for this store — saved on this device.</div>`+
+  div.innerHTML = `<div class="tp-head"><b>🎨 Look</b><button class="tp-x" onclick="openThemePanel()">✕</button></div>`+
+    `<div class="tp-sub">Lemon Edition · saved on this device.</div>`+
     `<div class="tp-list">`+
       Object.keys(THEMES).map(k=>{
         const t=THEMES[k];
         return `<button class="tp-item ${k===themeKey?"on":""}" onclick="chooseTheme('${k}')">`+
-          `<span class="tp-swatch" style="background:${t.vars["--primary"]}"></span>`+
+          `<span class="tp-swatch" style="background:${t.vars["--bg"]};box-shadow:inset 0 0 0 2px ${t.vars["--primary"]}"></span>`+
           `<span>${t.name}</span>${k===themeKey?"<span class='tp-chk'>✓</span>":""}</button>`;
-      }).join("")+`</div>`;
+      }).join("")+
+      `<button class="tp-item ${winterMode?"on":""}" onclick="toggleWinter();openThemePanel()">`+
+      `<span class="tp-swatch" style="background:#E8F4FF">❄</span><span>Winter Mode (snow)</span>${winterMode?"<span class='tp-chk'>✓</span>":""}</button>`+
+    `</div>`;
   document.body.appendChild(div);
   const fab=document.createElement("button");
   fab.id="themeFab"; fab.className="theme-fab"; fab.title="Change theme"; fab.innerHTML="🎨";
@@ -770,15 +1204,12 @@ function injectThemePanel(){
   document.body.appendChild(fab);
 }
 let _tpApplied=false;
-// BUGFIX: chooseTheme() saved "nukto.theme" but boot never read it back, so a
-// customer's pick was silently lost on every reload. Restore it here, mapping
-// legacy keys (the old violet default) onto the new house theme.
 function applyThemeOnce(){
   if(_tpApplied) return; _tpApplied=true;
-  let saved = "";
+  let saved="";
   try{ saved = store.get("nukto.theme", "") || ""; }catch(e){}
-  saved = THEME_ALIASES[saved] || saved;
-  applyTheme(THEMES[saved] ? saved : "royal");
+  try{ winterMode = !!store.get("nukto.winter", false); }catch(e){}
+  applyTheme(resolveThemeKey(saved));
 }
 
 /* ---------- In-memory product catalog ---------- */
@@ -1305,12 +1736,22 @@ async function secureOrder(pm){
       tax_total: checkoutTaxTotal(), taxes: checkoutTaxLines(),
       coupon: promo?promo.code:"", pm: pm,
       name:$id("dname")?$id("dname").value.trim():"", phone:$id("dphone")?$id("dphone").value.trim():"",
+      email:$id("demail")?$id("demail").value.trim():"", postal:$id("dpost")?$id("dpost").value.trim():"",
       city:$id("dcity")?$id("dcity").value.trim():"", address:$id("daddr")?$id("daddr").value.trim():"",
-      province:$id("dprov")?$id("dprov").value.trim():"", note:$id("dnote")?$id("dnote").value.trim():""
+      province:$id("dprov")?$id("dprov").value.trim():"", note:$id("dnote")?$id("dnote").value.trim():"",
+      pay_mode:(pm==="cod"?"cod":pm), advance_percent:(pm==="cod"?codAdvancePct():0)
     })});
     let d=null; try{ d=await r.json(); }catch(e){}
     if(r.ok && d && d.id) return d;
-    if(r.status && r.status<500){ toast((d&&d.error)||"Order server-side reject \u2014 stock/coupon/wallet check fail \u274c"); return false; }
+    /* 404 / 405 / 501 / 502 / 503 = the `checkout` Edge Function is not deployed, or the
+       platform is hiccuping. That must NOT stop a customer from ordering: return null so the
+       caller keeps the order locally and pushCloudOrder() syncs it once Supabase is reachable. */
+    if(!r.status || r.status===403 || r.status===404 || r.status===405 || r.status===429 ||
+       r.status===501 || r.status===502 || r.status===503){
+      console.warn("[secure] checkout function unavailable ("+(r.status||"net")+") \u2014 order kept locally");
+      return null;
+    }
+    if(r.status<500){ toast((d&&d.error)||"Order server-side reject \u2014 stock/coupon/wallet check fail \u274c"); return false; }
     return null;
   }catch(e){ return null; }
 }
@@ -1415,7 +1856,7 @@ async function loadCloud(){
    hai + server par whitelist hai), users/orders/carts/wallets/passwords,
    team/sessions, aur koi bhi API key ya secret.
    ============================================================ */
-const SETTING_SYNC_KEYS = ["storeName","tagline","banner","deliveryFee","deliveryFreeAbove","deliveryNote","supportEmail","phone","whatsapp","easypaisa","jazzcash"];
+const SETTING_SYNC_KEYS = ["storeName","tagline","banner","deliveryFee","deliveryFreeAbove","deliveryNote","supportEmail","phone","whatsapp","easypaisa","jazzcash","codAdvancePct","codEnabled","codNote"];
 const SYNC_PROD_COLS = "id,name,cat,cat_label,emoji,price,img,description,stock,data,edited,updated_at";
 // prodEdit key → canonical id (hidden merge-alias rows canonical par fold hote hain,
 // taake cloud me dangling alias rows na banein jo pull par "custom" ban kar zinda hon)
@@ -1752,12 +2193,171 @@ const cartDisc = () => {
   if(promo.type==="flat") return Math.min(promo.value, sub);
   return 0;
 };
+/* ---------- DELIVERY CHARGES — city / province wise (owner requirement) ----------
+   "delivery charges citys and privince ke hassab se working hai?" — yes:
+   a courier zone is matched from the checkout City first, then Province, then the
+   store default. Zones are plain data in settings, so the admin edits them in
+   Admin → Delivery without touching code, and they sync to every device. */
+const DEFAULT_DELIVERY_ZONES = [
+  {id:"z-khi", label:"Karachi & Sindh", cities:"karachi,hyderabad,sanghar,sukkur,larkana,nawabshah,shaheed benazirabad,thatta,badin,mirpur khas,umarkot,jam nawaz ali,berani", province:"sindh", fee:179},
+  {id:"z-lhr", label:"Punjab (major cities)", cities:"lahore,multan,faisalabad,gujranwala,sialkot,rawalpindi,bahawalpur,sargodha,sheikhupura,jhang,gujrat,okara,sahiwal,rahim yar khan,d.g. khan,dera ghazi khan,kasur,narowal,pakpattan,vehari,bhakkar,layyah,miawali,mianwali", province:"punjab", fee:199},
+  {id:"z-isb", label:"Islamabad capital", cities:"islamabad", province:"islamabad,federal capital territory,ict", fee:189},
+  {id:"z-kpk", label:"Khyber Pakhtunkhwa", cities:"peshawar,abbottabad,mardan,swat,mansehra,dera ismail khan,d.i. khan,nowshera,charsadda,kohat,bannu,haripur,malakand,shangla,batagram,chitral", province:"khyber pakhtunkhwa,kpk,nwfp", fee:219},
+  {id:"z-bal", label:"Balochistan", cities:"quetta,gwadar,khuzdar,turbat,hub,chaman,sibi,zhob,barkhan,nushki", province:"balochistan,baluchistan", fee:249},
+  {id:"z-ajk", label:"AJK & Gilgit-Baltistan", cities:"muzaffarabad,mirpur,rawalakot,bhimber,bagh,hunza,gilgit,skardu,chilas,astore", province:"azad kashmir,ajk,azad jammu kashmir,gilgit baltistan,gilgit-baltistan", fee:259},
+];
+function deliveryZones(){
+  let z = settings.deliveryZones;
+  if(!Array.isArray(z) || !z.length){ z = DEFAULT_DELIVERY_ZONES; }
+  return z;
+}
+function _zoneNorm(x){ return normText(x).replace(/\s+/g," ").trim(); }
+function zoneFor(city, province){
+  const c=_zoneNorm(city), pv=_zoneNorm(province);
+  const zones=deliveryZones();
+  if(c){
+    for(const z of zones){
+      const cities=_zoneNorm(z.cities||"").split(",").map(x=>x.trim()).filter(Boolean);
+      if(cities.some(x=>x===c || x.indexOf(c)===0 && c.length>3 || c.indexOf(x)===0 && x.length>3)) return z;
+    }
+  }
+  if(pv){
+    for(const z of zones){
+      const provs=_zoneNorm(z.province||"").split(",").map(x=>x.trim()).filter(Boolean);
+      const zlabel=_zoneNorm(z.label||"");
+      if(provs.some(x=>x && (pv.indexOf(x)>=0 || x.indexOf(pv)>=0)) || (zlabel && pv.indexOf(zlabel)>=0)) return z;
+    }
+  }
+  return null;
+}
+function deliveryFeeFor(city, province){
+  const z=zoneFor(city, province);
+  const base = z ? Number(z.fee) : Number(settings.deliveryFee||0);
+  return Math.max(0, Math.round(base));
+}
+function zoneLabelFor(city, province){
+  const z=zoneFor(city, province);
+  return z ? z.label : "Other areas (default rate)";
+}
+/* Where the checkout address currently points — draft first (what the shopper is
+   typing), then their saved profile, then nothing. */
+function checkoutAddress(){
+  const d = (typeof checkoutDraft!=="undefined" && checkoutDraft) ? checkoutDraft : {};
+  const dcityEl=$id("dcity"), dprovEl=$id("dprov");
+  const city = (dcityEl && dcityEl.value ? dcityEl.value : (d.city || (user&&user.city) || ""));
+  const prov = (dprovEl && dprovEl.value ? dprovEl.value : (d.province || (user&&user.province) || ""));
+  return {city:String(city||"").trim(), province:String(prov||"").trim()};
+}
 const deliveryFee = () => {
   const sub=cartSubtotal()-cartDisc();
   if(settings.deliveryFreeAbove && sub>=settings.deliveryFreeAbove) return 0;
   if(promo && promo.type==="ship") return 0;
-  return settings.deliveryFee;
+  const a=checkoutAddress();
+  return deliveryFeeFor(a.city, a.province);
 };
+
+/* =====================================================================
+   CASH ON DELIVERY + ADVANCE PAYMENT + ORDER LIFECYCLE
+   Owner's flow (verbatim intent):
+     1. Checkout par do options: ADVANCE PAYMENT aur CASH ON DELIVERY.
+     2. COD par saaf-saaf likha ho: "20% advance payment zaroori hai".
+     3. Order pehle PENDING banta hai (customer ko order page par PENDING dikhta hai).
+     4. Customer 20% advance bhejta hai → ADMIN panel mein payment dekh kar
+        PENDING → CONFIRMED karta hai.  Without advance = no confirmation.
+     5. Confirm hone ke baad ADMIN delivery days set karta hai (e.g. 5 days) →
+        customer ko 5 days dikhte hain aur roz roz kam hote jaate hain.
+     6. Masla ho to ERROR / DELAY / "order kharab tha" (DAMAGED) — aur aakhir mein
+        ORDER RECEIVED.
+   ===================================================================== */
+const COD_ADVANCE_PCT_DEFAULT = 20;
+function codAdvancePct(){
+  const n = Number(settings.codAdvancePct!=null?settings.codAdvancePct:COD_ADVANCE_PCT_DEFAULT);
+  return Math.max(0, Math.min(90, isNaN(n)?COD_ADVANCE_PCT_DEFAULT:n));
+}
+function codAdvanceAmount(total){ return Math.max(0, Math.round((Number(total)||0) * codAdvancePct()/100)); }
+function codDueAmount(total){ return Math.max(0, round2((Number(total)||0) - codAdvanceAmount(total))); }
+
+const ORDER_STATES = ["pending","confirmed","in_transit","delayed","error","damaged","received","cancelled","returned"];
+const ORDER_STATE_LABEL = {
+  pending:"PENDING", confirmed:"CONFIRMED", in_transit:"ON THE WAY", delayed:"DELAY",
+  error:"ERROR", damaged:"ORDER KHARAB THA (DAMAGED)", received:"ORDER RECEIVED",
+  cancelled:"CANCELLED", returned:"RETURNED", refunded:"REFUNDED",
+  // legacy values already stored on older orders map onto the new wording
+  processing:"CONFIRMED", shipped:"ON THE WAY", delivered:"ORDER RECEIVED"
+};
+const LEGACY_STATE = { processing:"confirmed", shipped:"in_transit", delivered:"received" };
+function orderState(o){ const s=String((o&&o.orderStatus)||"pending").toLowerCase(); return LEGACY_STATE[s]||s; }
+function stateLabel(o){ const s=orderState(o); return ORDER_STATE_LABEL[s]||String(s).toUpperCase(); }
+function stateChip(o){ return `<span class="state-chip st-${esc(orderState(o))}">${esc(stateLabel(o))}</span>`; }
+/* The stepper customers see: Pending → Confirmed → On the way → Received,
+   with DELAY / ERROR / DAMAGED shown as an exception banner instead of a step. */
+const FLOW_STEPS = ["pending","confirmed","in_transit","received"];
+const FLOW_STEP_LABEL = {pending:"Pending",confirmed:"Confirmed",in_transit:"On the way",received:"Received"};
+function flowHTML(o){
+  const st=orderState(o);
+  const cur = FLOW_STEPS.indexOf(st);
+  const dead = (st==="cancelled"||st==="returned"||st==="refunded");
+  return `<div class="flow">`+FLOW_STEPS.map((s,i)=>{
+      const on = dead ? false : (cur>=0 ? i<=cur : false);
+      return `${i?`<span class="fbar ${on?"on":""}"></span>`:""}`+
+        `<span class="fstep ${on?"on":""}">${on?"✓ ":""}${FLOW_STEP_LABEL[s]}</span>`;
+    }).join("")+`</div>`+
+    (st==="delayed"?`<div class="notice warn"><b>⏳ DELAY:</b> ${esc(o.statusNote||"Delivery mein thora waqt lag raha hai — team aap se rabta karegi.")}</div>`:"")+
+    (st==="error"?`<div class="notice warn" style="background:#FDECEC;border-color:#F3BDBD;color:#A31D1D"><b>⚠️ ERROR:</b> ${esc(o.statusNote||"Order mein masla aaya hai — support se rabta karein.")}</div>`:"")+
+    (st==="damaged"?`<div class="notice warn" style="background:#FDECEC;border-color:#F3BDBD;color:#A31D1D"><b>📦 ORDER KHARAB THA:</b> ${esc(o.statusNote||"Parcel damaged report hua — return/refund ke liye support se baat karein.")}</div>`:"")+
+    (dead?`<div class="notice info"><b>${esc(stateLabel(o))}</b>${o.statusNote?" — "+esc(o.statusNote):""}</div>`:"");
+}
+/* Days left on the admin-set timeline. Counts down as real days pass, and goes
+   negative when the ETA is missed (the sweep below then flips it to DELAYED). */
+/* Whole calendar days left until the ETA date: 5 the day admin sets it, 4 tomorrow,
+   0 on delivery day, negative once it is late. Calendar maths (not ms/86400000) so the
+   number the customer sees always drops by exactly one per day. */
+function orderEtaDays(o){
+  if(!o || !o.etaDate) return null;
+  const eta=new Date(String(o.etaDate).slice(0,10)+"T00:00:00");
+  if(isNaN(eta.getTime())) return null;
+  const now=new Date(); now.setHours(0,0,0,0);
+  return Math.round((eta.getTime()-now.getTime())/86400000);
+}
+function setOrderEtaDays(o, days){
+  days=Math.max(0, Math.min(120, Number(days)||0));
+  o.etaDays=days;
+  const d=new Date(Date.now() + days*86400000);
+  o.etaDate=d.toISOString().slice(0,10);
+  return o.etaDate;
+}
+function etaBoxHTML(o){
+  const st=orderState(o);
+  if(st==="received") return `<div class="eta-box"><div class="eta-days">✓<small>DONE</small></div><div class="eta-txt">Order received<span>Shukriya! Delivery complete ho gayi.</span></div></div>`;
+  if(!o.etaDate) {
+    if(st==="pending") return `<div class="eta-box"><div class="eta-days">⏳<small>WAIT</small></div><div class="eta-txt">Order PENDING hai<span>20% advance payment milte hi admin confirm karega, phir delivery days set honge.</span></div></div>`;
+    return `<div class="eta-box"><div class="eta-days">—<small>ETA</small></div><div class="eta-txt">Delivery timeline admin set karega<span>Confirm hone ke baad yahan days count-down shuru ho jayega.</span></div></div>`;
+  }
+  const d=orderEtaDays(o);
+  const left = d==null ? null : Math.max(0, d);
+  const late = d!=null && d<0;
+  return `<div class="eta-box"><div class="eta-days">${late?"!":left}<small>${late?"LATE":"DAYS"}</small></div>
+    <div class="eta-txt">${late?"⏳ Delivery ETA nikal gayi — team update bhej rahi hai":(left===0?"🚚 Aaj delivery expected hai":"🚚 Delivery me <b>"+left+"</b> din baqi")
+    }<span>Confirmed: ${esc(o.confirmedAt||o.date||"—")} · ETA: ${esc(o.etaDate)} · ${esc(o.etaDays||0)} days admin ne set kiye</span></div></div>`;
+}
+/* Runs on every render: an order that is still moving after its ETA becomes
+   DELAYED automatically (admin can override to ERROR / DAMAGED / RECEIVED). */
+function sweepOrderTimelines(){
+  let changed=false;
+  (orders||[]).forEach(o=>{
+    const st=orderState(o);
+    if((st==="confirmed"||st==="in_transit") && o.etaDate){
+      const d=orderEtaDays(o);
+      if(d!=null && d<0){
+        o.orderStatus="delayed";
+        if(!o.statusNote) o.statusNote="ETA guzar gaya — delivery delay par hai";
+        changed=true;
+      }
+    }
+  });
+  if(changed){ try{ store.set("nukto.orders", orders); }catch(e){} }
+  return changed;
+}
 const CHARGE_RULES=[
   {id:"netflix",emoji:"🎬",name:"Netflix Fund",lo:250,hi:650,text:"Netflix ka paisa bhi to kahin se aayega"},
   {id:"clothes",emoji:"👕",name:"Clothes Charge",lo:700,hi:1100,text:"Nanga thori ghoomna hai"},
@@ -1847,12 +2447,18 @@ function renderHeader(){
   <div class="nav-inner">
     <a href="#products" class="logo" title="Manesh Kumar Commission Agent" aria-label="Manesh Kumar Commission Agent — home"><img class="logo-ico" src="logo.svg" width="40" height="40" alt="" decoding="async"><span class="brand-text"><span class="brand-main">MANESH KUMAR</span><span class="brand-sub">COMMISSION AGENT</span></span></a>
     <nav class="nav"><a href="#categories">Categories</a></nav>
-    <div class="search">
+    <div class="search" id="searchBox">
       <span>${IC.search}</span>
-      <input id="srch" placeholder="Search ${allProducts().length.toLocaleString()} products" oninput="searchSugg(this.value)" onkeydown="searchOnKey(event)">
-      <div class="sugg" id="sugg"></div>
+      <input id="srch" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox"
+             aria-expanded="false" aria-controls="sugg" aria-label="Search products" aria-autocomplete="list"
+             placeholder="Search ${allProducts().length.toLocaleString()} products — try “smart watch”"
+             oninput="searchSugg(this.value)" onkeydown="searchOnKey(event)" onfocus="searchSugg(this.value)">
+      <button class="srch-x" id="srchX" type="button" title="Clear search" aria-label="Clear search" onclick="clearSearch()">✕</button>
+      <div class="sugg" id="sugg" role="listbox" aria-label="Search suggestions"></div>
     </div>
     <div class="icons">
+      <button class="icon-btn${winterMode?" on":""}" id="winterBtn" type="button" title="Winter Mode — snowfall" aria-label="Toggle Winter Mode" aria-pressed="${winterMode?"true":"false"}" onclick="toggleWinter()">❄️</button>
+      <button class="icon-btn${themeObj().dark?" on":""}" id="nightBtn" type="button" title="Lemon / Charcoal Night look" aria-label="Toggle Charcoal Night look" aria-pressed="${themeObj().dark?"true":"false"}" onclick="toggleNight()">${themeObj().dark?"🍋":"🌗"}</button>
       <a href="#wallet" class="icon-btn" title="Top Up / Wallet">${IC.wallet}</a>
       <a href="#cart" class="icon-btn" title="My Cart">${IC.cart}<span class="badge" id="cartBadge" ${c?"":"style='display:none'"}>${c}</span></a>
       <button class="icon-btn" id="userBtn" title="Settings" aria-label="Settings menu">${IC.gear}</button>
@@ -1870,6 +2476,14 @@ function renderHeader(){
       </div>
     </div>
   </div>`;
+  // results view keeps the shopper's query visible in the box (normal search UX)
+  try{
+    const _si=$id("srch");
+    if(_si && /^#?search:/.test(location.hash||"")){
+      _si.value=safeDecode(String(location.hash||"").split(":")[1]||"");
+      const _sb=$id("searchBox"); if(_sb) _sb.classList.add("has-q");
+    }
+  }catch(e){}
   const ub=$id("userBtn"); if(ub){ ub.addEventListener("click",e=>{e.stopPropagation(); $id("userMenu").classList.toggle("open");}); document.addEventListener("click",()=>{const m=$id("userMenu"); if(m)m.classList.remove("open");}); }
   const lo=$id("logout"); if(lo){ lo.addEventListener("click",e=>{e.preventDefault(); user=null; saveAll(); render(); toast("Logged out"); }); }
 }
@@ -2060,63 +2674,177 @@ function relatedSearchTerms(q){
   if(!out.length && toks.length){ out.push(q.trim()); }
   return out.slice(0,8);
 }
+/* ---------- SEARCH BOX (normal behaviour) ----------
+   Owner feedback: "search box thora weird lagta hai — make it normal."
+   Weird before: the dropdown listed eight FULL product titles (300-char supplier
+   names) as "suggestions", re-scanned on every keystroke, had no keyboard
+   navigation, no way to clear the box, and clicking a suggestion jumped to a
+   hash built from the whole title.
+   Normal now:
+     · empty box   → Recent searches + a few popular categories (short chips)
+     · typing      → 6 compact rows: thumbnail · one-line name · price
+     · last row    → "See all results for “…” (N)" — the obvious action
+     · keyboard    → ↑ ↓ to move, Enter to open, Esc to close
+     · ✕ button    → clears the box (and leaves the results view)
+   Nothing re-renders the page while typing; results open on Enter/click only. */
 let _suggT=null;
+let _suggIdx=-1;          // highlighted row (-1 = none)
+let _suggRows=[];         // [{kind:'product'|'all'|'term', ...}]
 function searchSugg(q){
-  // debounced: suggestions used to rescan + re-lowercase all 9,804 products per keystroke
   clearTimeout(_suggT);
-  _suggT=setTimeout(()=>_searchSuggNow(q), 120);
+  const box=$id("searchBox");
+  if(box){ if(String(q||"").trim()) box.classList.add("has-q"); else box.classList.remove("has-q"); }
+  // keep the "has text" state honest even when this fires from a re-render
+  _suggT=setTimeout(()=>_searchSuggNow(q), 130);
 }
+function closeSugg(){
+  const box=$id("sugg"); if(box){ box.style.display="none"; box.innerHTML=""; }
+  _suggIdx=-1; _suggRows=[];
+}
+function clearSearch(){
+  const i=$id("srch"); if(i){ i.value=""; try{ i.focus(); }catch(e){} }
+  const box=$id("searchBox"); if(box) box.classList.remove("has-q");
+  closeSugg();
+  if(/^#search:/.test(location.hash||"")) location.hash="products";
+}
+function recentSearches(){ const r=store.get("nukto.recentSearch",[]); return Array.isArray(r)?r:[]; }
+function pushRecentSearch(q){
+  q=String(q||"").trim(); if(!q) return;
+  let r=recentSearches().filter(x=>x.toLowerCase()!==q.toLowerCase());
+  r.unshift(q); r=r.slice(0,6);
+  store.set("nukto.recentSearch", r);
+}
+function popularSearchTerms(){
+  // short, human terms — category names first, then a few evergreen keywords
+  const out=[];
+  CATEGORIES.forEach(c=>{ if(c && c.name && out.length<6) out.push(c.name); });
+  ["smart watch","wall clock","face wash","led light","shoes","power bank"].forEach(t=>{
+    if(out.length<9 && !out.some(x=>x.toLowerCase()===t)) out.push(t);
+  });
+  return out.slice(0,8);
+}
+function _sgRow(html, kind, data){ _suggRows.push({kind:kind, data:data}); return html; }
 function _searchSuggNow(q){
   const box=$id("sugg"); if(!box) return;
-  const nt=normText(q);
-  if(!nt){ box.style.display="none"; return; }
-  if(!window._suggIdx){ const seen=new Set(); window._suggIdx=[];
-    allProducts().forEach(p=>{ const t=normText(p.name); if(t && !seen.has(t)){ seen.add(t); window._suggIdx.push(t); } });
-    window._suggIdx.sort(); }
-  const pref=window._suggIdx.filter(t=>t.indexOf(nt)===0).slice(0,8);
-  const qesc=esc(q).replace(/'/g,"\\'");
-  let html=`<div style="padding:8px 14px 4px;font-size:11px;letter-spacing:.4px;color:var(--muted);font-weight:700">SUGGESTIONS</div>`;
-  html+=pref.map(t=>`<div onclick="location.hash='search:'+encodeURIComponent('${t.replace(/'/g,"\\'")}')">${esc(t)}</div>`).join("");
-  const n=searchProducts(q).length;
-  html+=`<div onclick="location.hash='search:'+encodeURIComponent('${qesc}')" style="font-weight:700;color:var(--primary)">Search products for \u201c${esc(q)}\u201d${n?" \u2014 "+n.toLocaleString()+" results":""} \u2192</div>`;
-  box.innerHTML=html;
-  box.style.display="block";
+  q=String(q||"").trim();
+  _suggIdx=-1; _suggRows=[];
+  if(!q){
+    const rec=recentSearches(), pop=popularSearchTerms();
+    if(!rec.length && !pop.length){ box.style.display="none"; box.innerHTML=""; return; }
+    let html="";
+    if(rec.length){
+      html+=`<div class="sg-head">Recent searches</div>`;
+      html+=rec.slice(0,4).map(r=>_sgRow(
+        `<div class="sg-item" data-sg="${_suggRows.length}" onclick="runSearch('${esc(r).replace(/'/g,"\\'")}')">`+
+        `<span class="sg-txt"><span class="sg-name">🕘 ${esc(r)}</span></span></div>`,"term",r)).join("");
+    }
+    html+=`<div class="sg-head">Popular</div><div style="display:flex;flex-wrap:wrap;gap:6px;padding:2px 10px 10px">`+
+      pop.map(x=>`<span class="chip" style="cursor:pointer" onclick="runSearch('${esc(x).replace(/'/g,"\\'")}')">${esc(x)}</span>`).join("")+`</div>`;
+    box.innerHTML=html; box.style.display="block";
+    return;
+  }
+  const allHits=searchProducts(q);        // one ranked pass — reused for rows + count
+  const hits=allHits.slice(0,6);
+  const total=allHits.length;
+  let html="";
+  if(hits.length){
+    html+=`<div class="sg-head">Products</div>`;
+    html+=hits.map(p=>{
+      const src=String(p.img||"");
+      const thumb = isVideoUrl(src)
+        ? `<span class="sg-thumb" style="display:grid;place-items:center;font-size:15px;background:#242424;color:#DFFF00;border:2px solid #A78BFA;border-radius:10px">▶</span>`
+        : (src ? `<img class="sg-thumb" src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.style.visibility='hidden'">`
+               : `<span class="sg-thumb" style="display:grid;place-items:center;font-size:17px">${esc(p.emoji||"📦")}</span>`);
+      return _sgRow(
+        `<div class="sg-item" data-sg="${_suggRows.length}" onclick="goProductFromSugg('${esc(p.id)}')">`+
+        thumb+
+        `<span class="sg-txt"><span class="sg-name">${esc(decodeHTML(p.name).slice(0,58))}</span>`+
+        `<span class="sg-meta">${esc(p.catLabel||"")} · ${esc(stockLabel(p)||"In stock")}</span></span>`+
+        `<span class="sg-price">${fmt(salePrice(p))}</span></div>`,"product",p);
+    }).join("");
+  } else {
+    html+=`<div class="sg-empty">“${esc(q)}” se koi product nahi mila — neeche related terms try karein.</div>`;
+  }
+  const rel=relatedToSearch(q, hits, 3);
+  if(rel.length){
+    html+=`<div class="sg-head">Related to your search</div>`;
+    html+=rel.slice(0,3).map(p=>_sgRow(
+      `<div class="sg-item" data-sg="${_suggRows.length}" onclick="goProductFromSugg('${esc(p.id)}')">`+
+      `<span class="sg-txt"><span class="sg-name">${esc(decodeHTML(p.name).slice(0,58))}</span>`+
+      `<span class="sg-meta">${esc(p.catLabel||"")}</span></span>`+
+      `<span class="sg-price">${fmt(salePrice(p))}</span></div>`,"product",p)).join("");
+  }
+  const terms=relatedSearchTerms(q).filter(x=>x.toLowerCase()!==q.toLowerCase()).slice(0,3);
+  html+=_sgRow(`<div class="sg-all" data-sg="${_suggRows.length}" onclick="runSearch(document.getElementById('srch').value)">`+
+    `See all results for “${esc(q)}”${total?" — "+total.toLocaleString():""} →</div>`,"all",q);
+  if(terms.length){
+    html+=`<div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px 4px">`+
+      terms.map(x=>`<span class="chip" style="cursor:pointer" onclick="runSearch('${esc(x).replace(/'/g,"\\'")}')">${esc(x)}</span>`).join("")+`</div>`;
+  }
+  box.innerHTML=html; box.style.display="block";
 }
-// press Enter in the search box → open the full results page
+function runSearch(q){
+  q=String(q||"").trim(); if(!q) return;
+  pushRecentSearch(q);
+  closeSugg();
+  const i=$id("srch"); if(i) i.blur();
+  location.hash="search:"+encodeURIComponent(q);
+}
+function goProductFromSugg(id){
+  closeSugg();
+  const i=$id("srch"); if(i) i.blur();
+  const p=prod(id); if(p) pushRecentSearch(decodeHTML(p.name).split(" ").slice(0,3).join(" "));
+  location.hash="product:"+(p?productSlug(p):id);
+}
+function _suggMove(d){
+  const items=document.querySelectorAll('#sugg [data-sg]');
+  if(!items.length) return;
+  items.forEach(n=>n.classList.remove("cur"));
+  _suggIdx = (_suggIdx + d + items.length) % items.length;
+  const el=items[_suggIdx]; if(el){ el.classList.add("cur"); try{ el.scrollIntoView({block:"nearest"}); }catch(e){} }
+}
+function _suggOpen(){
+  const items=document.querySelectorAll('#sugg [data-sg]');
+  const el=(_suggIdx>=0 && items[_suggIdx]) ? items[_suggIdx] : document.querySelector('#sugg .sg-all');
+  if(el){ el.click(); return true; }
+  return false;
+}
+// Enter opens the results page; ↑/↓ walk the list; Esc closes it.
 function searchOnKey(e){
-  if(e.key==="Enter"){ const q=$id("srch").value.trim(); if(q){ location.hash="search:"+encodeURIComponent(q); } document.activeElement.blur(); }
+  const k=e.key;
+  if(k==="ArrowDown"){ e.preventDefault(); _suggMove(1); return; }
+  if(k==="ArrowUp"){ e.preventDefault(); _suggMove(-1); return; }
+  if(k==="Escape"){ closeSugg(); const i=$id("srch"); if(i) i.blur(); return; }
+  if(k==="Enter"){
+    e.preventDefault();
+    if(_suggIdx>=0 && _suggOpen()) return;
+    const i=$id("srch"); const q=i?i.value.trim():"";
+    if(q) runSearch(q);
+  }
 }
-document.addEventListener("click",()=>{ const s=$id("sugg"); if(s) s.style.display="none"; });
+document.addEventListener("click",function(e){
+  const box=$id("searchBox");
+  if(box && e.target && box.contains && box.contains(e.target)) return;
+  closeSugg();
+});
 
-/* ---------- footer ---------- */
+/* ---------- footer ----------
+   Owner: "i dont want footer because i wanted a loop of page that will keep
+   scrolling the products until its never end. so keep scrolling sys available."
+   The <footer> element stays in the DOM (CSS hides it, and old code paths that
+   call renderFooter() keep working) but renders nothing. Everything a footer used
+   to hold — shop links, payment info, policies, WhatsApp — lives in the header
+   gear menu and on the Support / Contact pages, and the feed below it never ends. */
 function renderFooter(){
-  $id("footer").innerHTML = `
-  <div class="foot-in">
-    <div>
-      <div class="logo"><img class="logo-ico" src="logo.svg" width="38" height="38" alt="" decoding="async"><span class="brand-text"><span class="brand-main">MANESH KUMAR</span><span class="brand-sub">COMMISSION AGENT</span></span></div>
-      <p style="color:#C6D4EE;margin:14px 0 6px">${esc(settings.tagline)} — <span class="urdu">سوچو، دیکھو، خریدو</span></p>
-      <p style="color:#92A6CE;font-size:14px;margin:0">${allProducts().length.toLocaleString()} products · ${esc(settings.deliveryNote)}</p>
-      <div class="foot-contact">💬 <span><b>WhatsApp:</b> <a href="https://wa.me/${waNumber(settings.whatsapp||settings.phone)}" target="_blank" rel="noopener noreferrer">${esc(settings.phone)}</a></span></div>
-    </div>
-    <div><h4>Shop</h4>
-      <a href="#products">All Products</a><a href="#categories">Categories</a><a href="#sections">Sections</a>
-      <a href="#orders">My Orders</a><a href="#tracking">Track Order</a><a href="#wishlist">Wishlist</a>
-    </div>
-    <div><h4>Payments</h4>
-      <a href="#wallet">${esc(WALLET_NAME)}</a><a href="#wallet">EasyPaisa (${esc(settings.easypaisa)})</a>
-      <a href="#wallet">JazzCash (${esc(settings.jazzcash)})</a><a href="#refund-policy">Refunds</a>
-      <a href="#shipping">Shipping &amp; Delivery</a>
-    </div>
-    <div><h4>Company</h4>
-      <a href="#about">About Us</a><a href="#contact">Contact Us</a><a href="#support">Help &amp; Support</a>
-      <a href="#terms">Terms &amp; Conditions</a><a href="#privacy">Privacy &amp; Cookies</a><a href="#complaint">Complaint</a>
-    </div>
-  </div>
-  <div class="foot-bar">
-    <span>© ${new Date().getFullYear()} ${esc(settings.storeName)} — All Rights Reserved.</span>
-    <span class="sep">·</span><span>${esc(SITE_DOMAIN)}</span>
-    <span class="sep">·</span><span>Made in Pakistan 🇵🇰</span>
-  </div>`;
+  const f=(typeof document!=="undefined"&&document.getElementById)?document.getElementById("footer"):null;
+  if(f){ f.innerHTML=""; f.style.display="none"; }
+}
+/* Little line shown at the bottom of the endless feed so the loop reads as
+   intentional ("keep scrolling — more products coming") rather than broken. */
+function endlessBarHTML(){
+  return `<div class="endless-bar" id="endlessBar" role="status" aria-live="polite">`+
+    `<span class="dot"></span> Keep scrolling — ${allProducts().length.toLocaleString()} products, endless feed `+
+    `<span class="muted" style="font-weight:600">· no footer by design</span></div>`;
 }
 
 /* ---------- media (image OR video) with play-button thumbnail ---------- */
@@ -2162,7 +2890,7 @@ function card(p){
   const fav = wishlist.includes(p.id);
   const tags = [];
   if(p.t) tags.push('<span class="tag" style="background:linear-gradient(90deg,#f59e0b,#f43f5e)">🔥 Trending</span>');
-  else if(p.g) tags.push('<span class="tag" style="background:linear-gradient(90deg,#2E57C4,#1E3A8A)">⚡ Gadget</span>');
+  else if(p.g) tags.push('<span class="tag" style="background:linear-gradient(90deg,#A78BFA,#7C5CFA);color:#1A1A1A">⚡ Gadget</span>');
   else if(p.c) tags.push('<span class="tag" style="background:#2E57C4">✨ Viral</span>');
   else if(p.m) tags.push('<span class="tag" style="background:#10b981">⭐ Must Try</span>');
   if(p.new===1 && p.stock>0) tags.push('<span class="tag" style="background:#16a34a">New</span>');
@@ -2288,11 +3016,40 @@ function attachFeedObserver(){
   },{rootMargin:"700px"});
   productsPage._io.observe(sen);
 }
+/* ---------- ENDLESS FEED (owner: "keep scrolling sys available — never end") ----------
+   The filtered pool is remembered in productsPage._pool. When the shopper reaches
+   the last card, the pool is shuffled and appended again — so the feed literally
+   never ends. To keep that safe on low-power phones the DOM is windowed: only the
+   newest FEED_MAX_DOM cards stay mounted, and the scroll offset is compensated by
+   exactly the height that was removed, so the page never jumps. */
+const FEED_MAX_DOM = 360;      // cards kept in the DOM
+const FEED_TRIM_BATCH = 120;   // trim two steps at a time (fewer reflows)
+function trimFeedDOM(grid){
+  if(!grid || !grid.children || !grid.children.length) return;
+  if(grid.children.length <= FEED_MAX_DOM) return;
+  const before = grid.scrollHeight;
+  const remove = Math.min(grid.children.length - (FEED_MAX_DOM - FEED_TRIM_BATCH), FEED_TRIM_BATCH);
+  for(let i=0;i<remove;i++){ if(grid.firstChild) grid.removeChild(grid.firstChild); else break; }
+  const after = grid.scrollHeight;
+  const delta = before - after;
+  if(delta > 0 && typeof window !== "undefined" && window.scrollBy){
+    try{ window.scrollBy(0, delta); }catch(e){}
+  }
+}
 function loadMoreFeed(){
   const grid=$id("feed-grid"); if(!grid) return;
-  const list=productsPage._list||[];
-  const shown=productsPage._shown||FEED_STEP;
-  if(shown>=list.length) return;
+  const pool=productsPage._pool||productsPage._list||[];
+  if(!pool.length) return;
+  let list=productsPage._list||[];
+  let shown=productsPage._shown||FEED_STEP;
+  if(shown>=list.length){
+    // loop: same products, freshly shuffled, appended again — endless by design
+    productsPage._loops=(productsPage._loops||0)+1;
+    list=list.concat(shuffleCopy(pool));
+    productsPage._list=list;
+    const bar=$id("endlessBar");
+    if(bar) bar.innerHTML='<span class="dot"></span> Loop '+(productsPage._loops+1)+' — feed chalti rahegi, khatam nahi hoti 🍋';
+  }
   const next=Math.min(list.length, shown+FEED_STEP);
   const extra=list.slice(shown,next);
   productsPage._shown=next;
@@ -2300,11 +3057,12 @@ function loadMoreFeed(){
   // Append-only: keep the shopper's scroll position exactly (never jump to top).
   const sy=(typeof window!=="undefined")?window.scrollY:0;
   extra.forEach(p=>{ grid.insertAdjacentHTML("beforeend", card(p)); });
-  if(typeof window!=="undefined") window.scrollTo(0, sy);
+  if(typeof window!=="undefined" && window.scrollTo) window.scrollTo(0, sy);
+  trimFeedDOM(grid);
   if(typeof requestAnimationFrame!=="undefined") requestAnimationFrame(function(){ productsPage._appending=false; });
   else productsPage._appending=false;
   const btn=$id("feed-more");
-  if(btn){ if(next>=list.length) btn.style.display="none"; else btn.textContent="Load more"; }
+  if(btn) btn.textContent="Load more";
   try{ smoothMedia(); }catch(e){}   // wire any freshly-appended <video> previews
 }
 function productsPage(q, catSlug, section){
@@ -2339,6 +3097,8 @@ function productsPage(q, catSlug, section){
   productsPage._shown=Math.max(FEED_STEP, productsPage._shown||FEED_STEP);
   const slice=list.slice(0, productsPage._shown);
   productsPage._list=list;
+  productsPage._pool=list;      // the pool the endless loop re-shuffles from
+  if(resetFeed) productsPage._loops=0;
   let related=[], relatedBlock="", suggestBlock="";
   if(search){
     related = relatedToSearch(search, list, 24).filter(p=>p.stock>0 || total===0);
@@ -2414,7 +3174,9 @@ function productsPage(q, catSlug, section){
       </div>`:""}
       <div>
         ${isHome? categoryRailHTML() + `<div class="sec-head" style="margin-top:10px"><h2>Shop all products</h2><span class="sub">${total.toLocaleString()} products · scroll karte jao, feed khatam nahi hoti</span></div>` : ""}<div class="pgrid" id="feed-grid">${slice.map(card).join("")|| (search? "<div class='empty'><div class='e'>🔍</div><p>“"+esc(search)+"” ke liye koi product nahi mila — neeche related products dekhein.</p></div>" : "<div class='empty'><div class='e'>🔍</div><p>No products match your filters.</p></div>")}</div>
-        ${moreLeft?`<div style="text-align:center;margin:16px 0"><button class="btn btn-outline" id="feed-more" onclick="loadMoreFeed()">Load more</button></div><div id="feed-sentinel" class="feed-sentinel"></div>`:""}
+        <div id="feed-sentinel" class="feed-sentinel"></div>
+        <div style="text-align:center;margin:14px 0"><button class="btn btn-outline" id="feed-more" onclick="loadMoreFeed()">Load more products</button></div>
+        ${endlessBarHTML()}
         ${relatedBlock}
         ${suggestBlock||""}
       </div>
@@ -2649,41 +3411,143 @@ function setCheckoutVariant(id,from,to){
   else { item.v=to; item.price=salePrice(p,(p.vars.find(v=>(v.la||v.label)===to)||{}).pr||p.price); }
   saveAll(); render();
 }
+/* ---------- CHECKOUT (Advance Payment / Cash on Delivery) ----------
+   Owner's spec: "checkout ke wqt do options ho — advanced payment, cash on
+   delivery. COD par address/info/email/number liya jaye, order PENDING bane,
+   20% advance milne par admin CONFIRM kare, phir delivery days ka countdown
+   chale." Everything below is that flow, plus the confirmation popup the owner
+   reported missing ("popup while checkout"). */
+let payMode = "advance";        // "advance" | "cod"
+let checkoutDraft = {};         // typed address survives re-renders (coupon, pay switch)
+function loadCheckoutDraft(){
+  try{
+    const d = store.get("nukto.checkoutDraft", null);
+    if(d && typeof d === "object") checkoutDraft = d;
+  }catch(e){}
+}
+function saveCheckoutDraft(){
+  const g = id => { const e=$id(id); return e ? String(e.value==null?"":e.value).trim() : ""; };
+  const next = {name:g("dname"), phone:g("dphone"), email:g("demail"), addr:g("daddr"),
+                city:g("dcity"), province:g("dprov"), postal:g("dpost"), note:g("dnote")};
+  Object.keys(next).forEach(k=>{ if(next[k]) checkoutDraft[k]=next[k]; });
+  store.set("nukto.checkoutDraft", checkoutDraft);
+  return checkoutDraft;
+}
+function clearCheckoutDraft(){ checkoutDraft={}; try{ store.del("nukto.checkoutDraft"); }catch(e){} }
+/* typing in the address fields keeps the draft + refreshes the zone-wise delivery line */
+function onAddrInput(){
+  saveCheckoutDraft();
+  const a=checkoutAddress();
+  const fee=deliveryFee();
+  const lbl=$id("delivLine");
+  if(lbl){
+    lbl.innerHTML = `<span>Delivery <span class="muted" style="font-weight:600">· ${esc(zoneLabelFor(a.city,a.province))}</span></span>`+
+      `<b style="color:var(--emerald-d)">${fee===0?"FREE 🎉":fmt(fee)}</b>`;
+  }
+  const z=$id("delivZoneHint");
+  if(z) z.textContent = a.city||a.province ? ("Zone: "+zoneLabelFor(a.city,a.province)) : "City/Province likhein — delivery charge usi ke hisaab se lagega";
+  const adv=$id("codAdvanceBox");
+  if(adv) adv.innerHTML = codRuleHTML();
+}
+function codRuleHTML(){
+  const sub=cartSubtotal(), disc=cartDisc(), del=deliveryFee(), taxTotal=(typeof checkoutTaxTotal==="function"?checkoutTaxTotal():0);
+  const total=round2(sub-disc+del+taxTotal);
+  const pct=codAdvancePct(), advAmt=codAdvanceAmount(total), due=codDueAmount(total);
+  return `<span class="big">💰 ${pct}% advance payment zaroori hai — Rs. ${fmt2(advAmt)}</span>
+    <b>Order pehle PENDING banta hai.</b> ${pct}% advance (Rs. ${fmt2(advAmt)}) milne ke baad admin aapka order
+    <b>CONFIRMED</b> karta hai, phir delivery days ka countdown shuru hota hai.
+    Baqi <b>Rs. ${fmt2(due)}</b> parcel milte waqt cash (Cash on Delivery).
+    <ol class="cod-steps">
+      <li>Order place karein → status <b>PENDING</b></li>
+      <li>${pct}% advance EasyPaisa / JazzCash par bhejein (number neeche hai)</li>
+      <li>Admin payment check kar ke <b>CONFIRMED</b> karega</li>
+      <li>Admin delivery days set karega → aapko countdown dikhega (5 → 4 → 3 …)</li>
+      <li>Parcel par baqi amount cash dein → <b>ORDER RECEIVED</b></li>
+    </ol>
+    <div style="margin-top:8px;font-size:12.5px"><b>Waja:</b> return ki surat mein delivery charges hamari zimmedari aate hain,
+    is liye <b>without advance koi confirmation nahi</b>.</div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+      <span class="pill info">EasyPaisa: ${esc(settings.easypaisa)}</span>
+      <span class="pill info">JazzCash: ${esc(settings.jazzcash)}</span>
+      <a class="pill ok" style="text-decoration:none" target="_blank" rel="noopener"
+         href="https://wa.me/${waNumber(settings.whatsapp||settings.phone)}?text=${encodeURIComponent("Assalam-o-Alaikum! Mera COD order hai. Main "+pct+"% advance (Rs. "+advAmt+") bhej raha hoon. Order ID: ")}">💬 WhatsApp par advance bhejein</a>
+    </div>`;
+}
+function payModePick(m){
+  saveCheckoutDraft();
+  payMode = (m==="cod") ? "cod" : "advance";
+  render();
+  toast(payMode==="cod" ? "🚚 Cash on Delivery — "+codAdvancePct()+"% advance zaroori hai" : "💳 Advance Payment selected");
+}
+function pmPick(el){ document.querySelectorAll('.radio').forEach(r=>r.classList.remove('on')); el.classList.add('on'); saveCheckoutDraft(); }
 function checkout(){
-  if(!cartLines().length) return `<div class="wrap"><div class="empty">Your cart is empty.</div></div>`;
+  if(!cartLines().length) return `<div class="wrap"><div class="empty"><div class="e">🛒</div><p>Your cart is empty.</p><a class="btn btn-emerald" href="#products">Shop Now</a></div></div>`;
   if(!user) return `<div class="wrap"><div class="auth-card"><h2>Login to Checkout</h2><p class="sub">You need an account to place an order.</p><a href="#login" class="btn btn-emerald" style="width:100%;justify-content:center">Go to Login</a><a href="#signup" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:8px">Create Account</a></div></div>`;
+  loadCheckoutDraft();
   const taxes=ensureCheckoutTaxes();
   const bal=user?user.walletBalance:0, sub=cartSubtotal(), disc=cartDisc(), del=deliveryFee(), taxTotal=taxes.total||0, total=round2(sub-disc+del+taxTotal);
   const canWallet=bal>=total;
+  const addr=checkoutAddress();
+  const pct=codAdvancePct(), advAmt=codAdvanceAmount(total), dueAmt=codDueAmount(total);
+  const d=checkoutDraft;
+  const codOn = settings.codEnabled!==false;
   return `
   <div class="wrap">
     <h1>Checkout</h1>
     <div class="two" style="margin-top:14px;grid-template-columns:2fr 1fr">
       <div>
         <div class="panel"><h3>Step 1 · Delivery Information</h3>
-          <div class="grid2"><div class="field"><label class="label">Full Name *</label><input class="input" id="dname" value="${esc(user.fullName)}"></div><div class="field"><label class="label">Phone *</label><input class="input" type="tel" inputmode="numeric" id="dphone" value="${esc(user.phone)}" maxlength="14" placeholder="03XXXXXXXXX"></div></div>
-          <div class="field"><label class="label">Full Delivery Address * <span class="muted">(house no., street, mohallah/area)</span></label><textarea class="textarea" id="daddr" placeholder="House #, street, area, land-mark — pura address likhein"></textarea></div>
-          <div class="grid2"><div class="field"><label class="label">City * <span class="muted">(khud likhein)</span></label><input class="input" id="dcity" placeholder="City e.g. Gujranwala" value="${esc(user.city||"")}">${user.city?`<div style="font-size:11px;color:var(--muted);margin-top:4px">Profile se: ${esc(user.city)} — badal sakte hain</div>`:""}</div>
-          <div class="field"><label class="label">Province *</label><input class="input" id="dprov" placeholder="Province e.g. Punjab"></div></div>
-          <div class="grid2"><div class="field"><label class="label">Postal Code</label><input class="input" id="dpost"></div><div class="field"><label class="label">Delivery Note</label><input class="input" id="dnote"></div></div>
+          <div class="grid2"><div class="field"><label class="label">Full Name *</label><input class="input" id="dname" value="${esc(d.name||user.fullName||"")}" oninput="saveCheckoutDraft()" autocomplete="name"></div>
+          <div class="field"><label class="label">Phone *</label><input class="input" type="tel" inputmode="numeric" id="dphone" value="${esc(d.phone||user.phone||"")}" maxlength="14" placeholder="03XXXXXXXXX" oninput="saveCheckoutDraft()" autocomplete="tel"></div></div>
+          <div class="field"><label class="label">Email *</label><input class="input" type="email" id="demail" value="${esc(d.email||user.email||"")}" placeholder="you@example.com" oninput="saveCheckoutDraft()" autocomplete="email"><div class="muted" style="font-size:11px;margin-top:4px">Order updates + confirmation isi email par jayenge.</div></div>
+          <div class="field"><label class="label">Full Delivery Address * <span class="muted">(house no., street, mohallah/area)</span></label><textarea class="textarea" id="daddr" oninput="saveCheckoutDraft()" placeholder="House #, street, area, land-mark — pura address likhein">${esc(d.addr||"")}</textarea></div>
+          <div class="grid2"><div class="field"><label class="label">City *</label><input class="input" id="dcity" placeholder="City e.g. Lahore" value="${esc(d.city||user.city||"")}" oninput="onAddrInput()" list="cityList">${user.city&&!d.city?`<div style="font-size:11px;color:var(--muted);margin-top:4px">Profile se: ${esc(user.city)} — badal sakte hain</div>`:""}</div>
+          <div class="field"><label class="label">Province *</label><input class="input" id="dprov" placeholder="Province e.g. Punjab" value="${esc(d.province||user.province||"")}" oninput="onAddrInput()" list="provList"></div></div>
+          <datalist id="cityList">${[...new Set(deliveryZones().map(z=>String(z.cities||"").split(",")[0]).filter(Boolean))].map(c=>`<option value="${esc(c.trim())}">`).join("")}</datalist>
+          <datalist id="provList">${["Sindh","Punjab","Islamabad","Khyber Pakhtunkhwa","Balochistan","Azad Kashmir","Gilgit-Baltistan"].map(c=>`<option value="${c}">`).join("")}</datalist>
+          <div class="grid2"><div class="field"><label class="label">Postal Code</label><input class="input" id="dpost" value="${esc(d.postal||"")}" oninput="saveCheckoutDraft()"></div><div class="field"><label class="label">Delivery Note</label><input class="input" id="dnote" value="${esc(d.note||"")}" oninput="saveCheckoutDraft()" placeholder="e.g. sham ko call karein"></div></div>
+          <div class="notice info" style="margin-bottom:0"><b>🚚 Delivery charge city / province ke hisaab se:</b>
+            <div id="delivZoneHint" class="muted" style="font-size:12.5px;margin-top:4px">${addr.city||addr.province?("Zone: "+esc(zoneLabelFor(addr.city,addr.province))):"City/Province likhein — delivery charge usi ke hisaab se lagega"}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${deliveryZones().map(z=>`<span class="pill neutral">${esc(z.label)} — ${fmt(z.fee)}</span>`).join("")}</div>
+          </div>
         </div>
         ${checkoutVariantEditor()}
         <div class="panel" style="margin-top:16px"><h3>Step 2 · Payment Method</h3>
-          <label class="radio on" onclick="pmPick(this,event)"><input type="radio" name="pm" value="wallet" checked> 👛 MK Wallet — <b>${fmt2(bal)}</b> balance ${canWallet?"":"(insufficient — choose another)"}</label>
-          <label class="radio" onclick="pmPick(this,event)"><input type="radio" name="pm" value="easypaisa"> <span class="pay-brand ep"><span class="pay-mark">e</span><span><b>easypaisa</b><small>Mobile wallet</small></span></span> <span> ${esc(settings.easypaisa)}</span></label>
-          <label class="radio" onclick="pmPick(this,event)"><input type="radio" name="pm" value="jazzcash"> <span class="pay-brand jc"><span class="pay-mark">JC</span><span><b>JazzCash</b><small>Mobile wallet</small></span></span> <span> ${esc(settings.jazzcash)}</span></label>
+          <div class="pay-opts">
+            <label class="pay-opt ${payMode==="advance"?"on":""}" id="po_advance">
+              <span class="po-tag">Foran confirm</span>
+              <span class="po-t">💳 Advance Payment</span>
+              <span class="po-d">Poora amount abhi pay karein (${esc(WALLET_NAME)} / EasyPaisa / JazzCash). Payment verify hote hi order <b>CONFIRMED</b> — koi advance-condition nahi.</span>
+              <input type="radio" name="paymode" value="advance" ${payMode==="advance"?"checked":""} onchange="payModePick('advance')">
+            </label>
+            ${codOn?`<label class="pay-opt ${payMode==="cod"?"on":""}" id="po_cod">
+              <span class="po-tag">${pct}% advance zaroori</span>
+              <span class="po-t">🚚 Cash on Delivery (COD)</span>
+              <span class="po-d">Parcel par cash — lekin order confirm karne ke liye <b>${pct}% advance (Rs. ${fmt2(advAmt)})</b> dena zaroori hai. Pehle <b>PENDING</b>, advance ke baad <b>CONFIRMED</b>.</span>
+              <input type="radio" name="paymode" value="cod" ${payMode==="cod"?"checked":""} onchange="payModePick('cod')">
+            </label>`:`<label class="pay-opt" style="opacity:.6;cursor:not-allowed"><span class="po-t">🚚 Cash on Delivery</span><span class="po-d">Admin ne COD abhi band kar rakha hai.</span></label>`}
+          </div>
+          ${payMode==="cod"&&codOn?`<div class="cod-rule" id="codAdvanceBox" style="margin-top:14px">${codRuleHTML()}</div>`:codOn?"":`<div class="notice warn">COD band hai — Advance Payment se order karein.</div>`}
+          ${payMode==="advance"?`<div class="pay-sub">
+            <label class="radio on" onclick="pmPick(this,event)"><input type="radio" name="pm" value="wallet" checked> 👛 ${esc(WALLET_NAME)} — <b>${fmt2(bal)}</b> balance ${canWallet?"":"(kam hai — doosra tareeqa chunein)"}</label>
+            <label class="radio" onclick="pmPick(this,event)"><input type="radio" name="pm" value="easypaisa"> <span class="pay-brand ep"><span class="pay-mark">e</span><span><b>easypaisa</b><small>Mobile wallet</small></span></span> <span> ${esc(settings.easypaisa)}</span></label>
+            <label class="radio" onclick="pmPick(this,event)"><input type="radio" name="pm" value="jazzcash"> <span class="pay-brand jc"><span class="pay-mark">JC</span><span><b>JazzCash</b><small>Mobile wallet</small></span></span> <span> ${esc(settings.jazzcash)}</span></label>
+          </div>`:`<input type="hidden" name="pm_hidden" value="cod">`}
         </div>
         <div class="panel" style="margin-top:16px"><h3>Step 3 · Order Review</h3>
           <div class="row" style="border-bottom:0"><div style="flex:1"><b>${cartCount()} item(s)</b></div><b>${fmt(sub)}</b></div>
-          <div class="field" style="margin-top:8px"><label class="label">Discount / Coupon Code</label><div class="form-row"><input class="input" id="promo_input" placeholder="" autocomplete="off" spellcheck="false" style="flex:1;margin:0;text-transform:uppercase"><button class="btn btn-gold" style="margin:0" onclick="applyCoupon($id('promo_input').value)">Apply</button></div></div>
+          <div class="field" style="margin-top:8px"><label class="label">Discount / Coupon Code</label><div class="form-row"><input class="input" id="promo_input" placeholder="e.g. MKCA10" autocomplete="off" spellcheck="false" style="flex:1;margin:0;text-transform:uppercase"><button class="btn btn-gold" style="margin:0" onclick="applyCoupon($id('promo_input').value)">Apply</button></div></div>
           ${disc?`<div class="summary-line" style="color:var(--emerald-d)"><span>Discount (${promo.code}${promo.type==="pct"?" — "+promo.value+"%":promo.type==="flat"?" — Rs."+promo.value:""}) <a href="#" onclick="removeCoupon();return false" style="color:var(--err);font-size:12px">remove</a></span><b>−${fmt(disc)}</b></div>`:""}
-          <div class="summary-line"><span>Delivery</span><b style="color:var(--emerald-d)">${del===0?"FREE 🎉":fmt(del)}</b></div>
+          <div class="summary-line" id="delivLine"><span>Delivery <span class="muted" style="font-weight:600">· ${esc(zoneLabelFor(addr.city,addr.province))}</span></span><b style="color:var(--emerald-d)">${del===0?"FREE 🎉":fmt(del)}</b></div>
           ${chargesBoxHTML()}
           <div class="summary-line total"><span>Total Payable</span><span>${fmt2(total)}</span></div>
-          <div class="notice warn"><b>⚠️ Why Advance Payment?</b> To ensure a smooth and trusted shopping experience, we require advance payment before dispatching your order. In the past, some orders were placed but never received by customers, resulting in delivery losses for our team. Advance payment helps us verify genuine buyers, process orders faster, and provide you with the best service. Your trust means everything to us!
-            <span class="urdu"><b>⚠️ ایڈوانس پیمنٹ کیوں ضروری ہے؟</b><br>آپ کے آرڈر کو محفوظ اور بھروسے مند بنانے کے لیے ہم ایڈوانس پیمنٹ لیتے ہیں۔ آپ کا اعتماد ہمارے لیے سب سے اہم ہے!</span></div>
-          <div class="notice info"><b>🚚 Delivery:</b> ${esc(settings.deliveryNote)} — a fixed delivery charge of <b>${fmt(settings.deliveryFee)}</b> applies to this order.<span class="urdu" style="color:#1e40af">🚚 اس آرڈر پر ڈیلیوری چارج ${fmt(settings.deliveryFee)} لاگو ہوگا۔</span></div>
-          <button class="btn btn-emerald" style="width:100%;justify-content:center" onclick="placeOrder()" ${checkoutVariantsValid()?"":"disabled"}>✅ Place Order</button>
+          ${payMode==="cod"?`<div class="summary-line"><span>Advance now (${pct}%)</span><b style="color:#8A5A06">${fmt2(advAmt)}</b></div>
+          <div class="summary-line"><span>Cash on delivery (baqi)</span><b>${fmt2(dueAmt)}</b></div>`:""}
+          ${payMode==="cod"?`<div class="notice warn"><b>⚠️ ${pct}% advance payment zaroori hai.</b> Order <b>PENDING</b> rahega jab tak advance nahi milta. Advance milte hi admin <b>CONFIRMED</b> karega aur delivery days set karega. <b>Without advance — no confirmation.</b>
+            <span class="urdu"><b>⚠️ ${pct}% ایڈوانس پیمنٹ ضروری ہے</b><br>آپ کا آرڈر پہلے <b>PENDING</b> رہے گا۔ ایڈوانس ملنے کے بعد ایڈمن آرڈر کنفرم کرے گا۔ ایڈوانس کے بغیر کوئی کنفرمیشن نہیں۔</span></div>`:
+          `<div class="notice info"><b>💳 Advance Payment:</b> poora amount abhi — order foran confirm, delivery timeline admin set karega.</div>`}
+          <div class="notice info"><b>🚚 Delivery:</b> ${esc(settings.deliveryNote)} — is order par <b>${del===0?"FREE delivery":fmt(del)}</b> (${esc(zoneLabelFor(addr.city,addr.province))}).<span class="urdu" style="color:#4C2FBF">🚚 اس آرڈر پر ڈیلیوری چارج ${del===0?"مفت":fmt(del)} لاگو ہوگا۔</span></div>
+          <button class="btn btn-emerald" style="width:100%;justify-content:center" onclick="reviewOrderPopup()" ${checkoutVariantsValid()?"":"disabled"}>🧾 Review &amp; Place Order</button>
           ${checkoutVariantsValid()?'':'<p style="font-size:12px;color:var(--err);text-align:center;margin:8px 0 0">Select all required size / colour options above.</p>'}
         </div>
       </div>
@@ -2694,11 +3558,69 @@ function checkout(){
         ${chargesBoxHTML("side")}
         <div class="divider"></div>
         <div class="summary-line total"><span>Total</span><span>${fmt2(total)}</span></div>
+        ${payMode==="cod"?`<div class="summary-line"><span>Advance (${pct}%)</span><b style="color:#8A5A06">${fmt2(advAmt)}</b></div><div class="summary-line"><span>Due on delivery</span><b>${fmt2(dueAmt)}</b></div>`:""}
+        <div class="notice ${payMode==="cod"?"warn":"info"}" style="margin-top:12px">${payMode==="cod"?`<b>PENDING → CONFIRMED → ON THE WAY → RECEIVED</b><br>Advance ${pct}% ke baghair confirmation nahi hoti.`:`<b>Advance payment</b> — order foran confirm hota hai.`}</div>
       </div>
     </div>
   </div>`;
 }
-function pmPick(el){ document.querySelectorAll('.radio').forEach(r=>r.classList.remove('on')); el.classList.add('on'); }
+/* ---------- POPUP WHILE CHECKOUT (owner: "ek cheez missing hai — popup while checkout") ----------
+   Nothing is written until the shopper reads the summary in this popup and taps
+   "Confirm & Place Order". It also doubles as the COD advance explainer. */
+function reviewOrderPopup(){
+  saveCheckoutDraft();
+  const bad=cartStockIssues();
+  if(bad.length){ toast("Kuch items out of stock hain — cart update karein"); render(); return; }
+  if(!checkoutVariantsValid()){ toast("Pehle size / colour / option select karein"); return; }
+  const d=checkoutDraft;
+  const emailEl=$id("demail"); const email=emailEl?emailEl.value.trim():(user.email||"");
+  if(!d.name || d.name.length<3){ toast("Delivery ke liye poora naam likhein"); return; }
+  if(!isValidPhone(d.phone)){ toast("Phone number sahi nahi ❌ — 03XXXXXXXXX"); return; }
+  if(!email || !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)){ toast("Sahi email likhein — order updates wahin jayenge"); return; }
+  if(!d.addr || d.addr.length<12){ toast("Poora delivery address likhein (house no, street, area)"); return; }
+  if(!d.city){ toast("City likhein — delivery charge city ke hisaab se lagta hai"); return; }
+  const taxes=ensureCheckoutTaxes();
+  const sub=cartSubtotal(), disc=cartDisc(), del=deliveryFee(), taxTotal=taxes.total||0, total=round2(sub-disc+del+taxTotal);
+  const isCod = payMode==="cod";
+  const pct=codAdvancePct(), advAmt=codAdvanceAmount(total), dueAmt=codDueAmount(total);
+  const pmSel=document.querySelector('input[name="pm"]:checked');
+  const pm = isCod ? "cod" : (pmSel?pmSel.value:"wallet");
+  const pmLabel = {cod:"🚚 Cash on Delivery ("+pct+"% advance)",wallet:"👛 "+WALLET_NAME,easypaisa:"💚 EasyPaisa (advance)",jazzcash:"❤️ JazzCash (advance)"}[pm]||pm;
+  openModal(`<h3>🧾 Confirm your order</h3>
+    <div class="panel" style="box-shadow:none;padding:14px">
+      ${cartLines().map(i=>{const p=prod(i.id);return `<div class="summary-line"><span class="line-clamp2">${esc(decodeHTML(p.name).slice(0,44))}${i.v?` · ${esc(i.v)}`:""} ×${i.qty}</span><b>${fmt(cartUnit(i)*i.qty)}</b></div>`;}).join("")}
+      <div class="divider"></div>
+      <div class="summary-line"><span>Subtotal</span><b>${fmt2(sub)}</b></div>
+      ${disc?`<div class="summary-line"><span>Discount (${esc(promo?promo.code:"")})</span><b>−${fmt2(disc)}</b></div>`:""}
+      <div class="summary-line"><span>Delivery · ${esc(zoneLabelFor(d.city,d.province))}</span><b>${del===0?"FREE":fmt2(del)}</b></div>
+      ${taxTotal?`<div class="summary-line"><span>Taxes &amp; charges</span><b>${fmt2(taxTotal)}</b></div>`:""}
+      <div class="summary-line total"><span>Total Payable</span><span>${fmt2(total)}</span></div>
+      ${isCod?`<div class="summary-line"><span>Advance now (${pct}%)</span><b style="color:#8A5A06">${fmt2(advAmt)}</b></div>
+               <div class="summary-line"><span>Cash on delivery</span><b>${fmt2(dueAmt)}</b></div>`:""}
+    </div>
+    <div class="panel" style="box-shadow:none;padding:14px;margin-top:10px">
+      <div class="summary-line"><span>👤 Name</span><b>${esc(d.name)}</b></div>
+      <div class="summary-line"><span>📞 Phone</span><b>${esc(prettyPhone(d.phone))}</b></div>
+      <div class="summary-line"><span>✉️ Email</span><b>${esc(email)}</b></div>
+      <div class="summary-line"><span>📍 Address</span><b class="muted" style="text-align:right">${esc(d.addr)}, ${esc(d.city)}${d.province?", "+esc(d.province):""}${d.postal?" — "+esc(d.postal):""}</b></div>
+      <div class="summary-line"><span>💳 Payment</span><b>${esc(pmLabel)}</b></div>
+    </div>
+    ${isCod?`<div class="cod-rule" style="margin-top:12px"><span class="big">⏳ Order PENDING banega</span>
+      ${pct}% advance (<b>Rs. ${fmt2(advAmt)}</b>) milne ke baad admin <b>CONFIRMED</b> karega, phir delivery days ka countdown chalega.
+      Baqi <b>Rs. ${fmt2(dueAmt)}</b> parcel par cash. <b>Without advance — no confirmation.</b></div>`
+      :`<div class="notice info" style="margin-top:12px"><b>💳 Advance Payment:</b> order place hote hi payment details khulengi — payment verify hote hi order <b>CONFIRMED</b>.</div>`}
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal()">← Edit order</button>
+      <button class="btn btn-emerald" style="flex:1.4;justify-content:center" onclick='confirmReviewPopup(${JSON.stringify(total)},"${esc(pm)}","${esc(email).replace(/"/g,"&quot;")}")'>✅ Confirm &amp; Place Order</button>
+    </div>`);
+}
+function confirmReviewPopup(total, pm, email){
+  closeModal();
+  const d=saveCheckoutDraft();
+  if(email && d) { d.email=email; }
+  if(pm==="cod"){ finalizeOrder("cod", total, false, undefined, "", null, email); }
+  else { placeOrderWith(pm, total, email); }
+}
 function applyCoupon(code){
   code=String(code||"").trim().toUpperCase();
   const c=coupons.find(x=>x.code.toUpperCase()===code);
@@ -2718,28 +3640,77 @@ function applyCoupon(code){
 }
 function removeCoupon(){ promo=null; saveAll(); render(); toast("Coupon removed"); }
 let pendingOrder={};
-// Order kabhi block nahi hoga — customer jitni bhi info likhe, lagta hai.
-// Aap (admin) confirmation mail + call par naam/number/address verify karte hain.
+/* placeOrder() = the button path (kept for every existing caller); the popup path
+   calls placeOrderWith() with the method the shopper confirmed.
+   COD never opens the "send full payment" modal — it books a PENDING order and
+   shows the advance-payment instructions instead. */
 async function placeOrder(){
-  const bad=cartStockIssues();
-  if(bad.length){ toast("Cart update chahiye \u2014 kuch items out of stock hain"); render(); return; }
-  if(!checkoutVariantsValid()){ toast("Pehle size / colour / option confirm karein"); return; }
-  const pm=document.querySelector('input[name="pm"]:checked').value;
+  saveCheckoutDraft();
+  const isCod = payMode==="cod";
+  const sel = document.querySelector('input[name="pm"]:checked');
+  const pm = isCod ? "cod" : (sel ? sel.value : "wallet");
   const taxTotal=checkoutTaxTotal();
   const sub=cartSubtotal(), disc=cartDisc(), del=deliveryFee(), total=round2(sub-disc+del+taxTotal);
-  if(pm==="wallet" && user.walletBalance<total){ toast("Insufficient wallet balance ❌"); return; }
+  return placeOrderWith(pm, total, ($id("demail")?$id("demail").value.trim():""));
+}
+async function placeOrderWith(pm, total, email){
+  const bad=cartStockIssues();
+  if(bad.length){ toast("Cart update chahiye — kuch items out of stock hain"); render(); return; }
+  if(!checkoutVariantsValid()){ toast("Pehle size / colour / option confirm karein"); return; }
+  total = round2(total);
+  if(pm==="wallet" && (user?user.walletBalance:0) < total){ toast("Insufficient wallet balance ❌"); return; }
   // server-side: stock lock + real prices + coupon/wallet validation (agar backend configured hai)
   const sv=await secureOrder(pm);
   if(sv===false) return;                 // server ne reject kiya — order block
   if(sv) pendingSecure=sv;               // authoritative id/total finalizeOrder use karega
-  if(pm==="wallet"){ finalizeOrder("wallet", sv?sv.total:total, true, sv?sv.id:undefined); }
-  else { paymentModal(pm, sv?sv.total:total); }
+  const authTotal = sv ? sv.total : total;
+  if(pm==="cod"){ codModal(sv?sv.id:undefined, authTotal, email); return; }
+  if(pm==="wallet"){ finalizeOrder("wallet", authTotal, true, sv?sv.id:undefined, "", null, email); }
+  else { paymentModal(pm, authTotal, email); }
 }
-function paymentModal(pm,total){
+/* ---------- COD confirmation popup: 20% advance instructions ---------- */
+function codModal(id, total, email){
+  const pct=codAdvancePct(), adv=codAdvanceAmount(total), due=codDueAmount(total);
+  const oid = id || ("ORD-"+Math.floor(1000+Math.random()*9000));
+  pendingOrder={pm:"cod",total:total,_id:oid,acc:settings.easypaisa,email:email||"",advance:adv,pct:pct};
+  const waText=encodeURIComponent("Assalam-o-Alaikum! Mera COD order "+oid+" hai.\nTotal: Rs. "+total+"\nAdvance ("+pct+"%): Rs. "+adv+"\nMain advance EasyPaisa/JazzCash par bhej raha hoon — order CONFIRM kar dein. Shukriya!");
+  openModal(`<h3>🚚 Cash on Delivery — order PENDING book ho raha hai</h3>
+    <div class="cod-rule"><span class="big">💰 ${pct}% advance = Rs. ${fmt2(adv)}</span>
+      Ye amount abhi bhejein. Admin payment dekh kar aapka order <b>PENDING → CONFIRMED</b> karega
+      aur delivery days set karega. Baqi <b>Rs. ${fmt2(due)}</b> parcel milte waqt cash.
+      <div style="margin-top:6px"><b>Without advance — no confirmation.</b></div></div>
+    <div class="panel" style="box-shadow:none;margin-top:12px">
+      <div class="summary-line"><span>Order ID</span><b>${esc(oid)}</b></div>
+      <div class="summary-line"><span>Total</span><b>${fmt2(total)}</b></div>
+      <div class="summary-line"><span>Advance now (${pct}%)</span><b style="color:#8A5A06">${fmt2(adv)}</b></div>
+      <div class="summary-line"><span>Cash on delivery</span><b>${fmt2(due)}</b></div>
+      <div class="summary-line"><span>easypaisa</span><b>${esc(settings.easypaisa)}</b></div>
+      <div class="summary-line"><span>JazzCash</span><b>${esc(settings.jazzcash)}</b></div>
+    </div>
+    <div style="display:flex;gap:8px;margin:12px 0">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="copyPay('${esc(settings.easypaisa)}',${adv})">📋 Copy advance details</button>
+      <a class="btn btn-gold" style="flex:1;justify-content:center" href="https://wa.me/${waNumber(settings.whatsapp||settings.phone)}?text=${waText}" target="_blank" rel="noopener">💬 WhatsApp</a>
+    </div>
+    <div class="field"><label class="label">Advance Transaction ID (TID) — jaldi confirmation ke liye</label>
+      <input class="input" id="pay_ref" placeholder="e.g. 9135571024" maxlength="40"></div>
+    <div class="field"><label class="label">Advance Screenshot (optional)</label>
+      <input class="input" type="file" accept="image/*" onchange="pickOrderProof(this)">
+      <div id="pay_proof_hint" class="muted" style="font-size:12px;margin-top:4px"></div></div>
+    <button class="btn btn-emerald" style="width:100%;justify-content:center" onclick="confirmCodOrder()">✅ Place COD Order (PENDING)</button>
+    <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:8px" onclick="closeModal()">← Wapas</button>`);
+}
+function confirmCodOrder(){
+  const refEl=$id("pay_ref"); const ref=refEl?refEl.value.trim():"";
+  if(ref && !/^[A-Za-z0-9-]{4,40}$/.test(ref)){ toast("Sahi Transaction ID likhein ya khali chhorein"); return; }
+  const po=pendingOrder||{};
+  finalizeOrder("cod", po.total, false, po._id, ref, _orderProof, po.email||"");
+  _orderProof=null; closeModal();
+}
+function paymentModal(pm,total,email){
   const acc = pm==="easypaisa"?settings.easypaisa:settings.jazzcash;
   const name = pm==="easypaisa"?"EasyPaisa":"JazzCash";
   const link = pm==="easypaisa"?"https://www.easypaisa.com.pk/":"https://www.jazzcash.com.pk/";
-  pendingOrder={pm,total,_id:"ORD-"+Math.floor(1000+Math.random()*9000),acc};
+  pendingOrder={pm,total,_id:"ORD-"+Math.floor(1000+Math.random()*9000),acc,email:email||""};
   const waText=encodeURIComponent("Assalam! Main Manesh Kumar Commission Agent par order karna chahta hoon.\nAmount: "+fmt2(total)+"\nPayment Method: "+name+"\nAccount Number: "+acc+"\nOrder ID: "+pendingOrder._id+"\nScreenshot baad mein bhejunga. Shukriya!");
   openModal(`<h3>${pm==="easypaisa"?"💚":"❤️"} Pay via ${name}</h3>
     <div class="notice info"><b>Send the exact amount to the account below</b>, then tap <b>"I have sent the payment"</b>.</div>
@@ -2772,10 +3743,10 @@ function confirmPaid(){
   const pm=pendingOrder.pm, total=pendingOrder.total, id=pendingOrder._id;
   const refEl=$id("pay_ref"); const ref=refEl?refEl.value.trim():"";
   if(ref && !/^[A-Za-z0-9-]{4,40}$/.test(ref)){ toast("Sahi Transaction ID likhein ya field khali chhorein"); return; }
-  finalizeOrder(pm,total,false,id,ref,_orderProof); _orderProof=null; closeModal();
+  finalizeOrder(pm,total,false,id,ref,_orderProof,pendingOrder.email||""); _orderProof=null; closeModal();
 }
-function finalizeOrder(pm,total,wallet,id,payRef,proof){
-  if(!id){ if(finalizeOrder._busy){ toast("Order already submitting \u2014 please wait"); return; } finalizeOrder._busy=true; }
+function finalizeOrder(pm,total,wallet,id,payRef,proof,email){
+  if(!id){ if(finalizeOrder._busy){ toast("Order already submitting — please wait"); return; } finalizeOrder._busy=true; }
   const taxTotal=checkoutTaxTotal();
   const sub=cartSubtotal(), disc=cartDisc(), del=deliveryFee();
   if(!id && pendingSecure && pendingSecure.id){ id=pendingSecure.id; total=pendingSecure.total; }
@@ -2783,47 +3754,118 @@ function finalizeOrder(pm,total,wallet,id,payRef,proof){
   total=round2(total);
   let oid=id;
   if(!oid){ do{ oid="ORD-"+Date.now().toString(36).toUpperCase().slice(-6)+Math.floor(Math.random()*90+10); } while(orders.some(o=>o.id===oid)); }
-  // validate delivery info before anything is written
-  const dName=$id("dname").value.trim(), dPhone=$id("dphone").value.trim(), dAddr=$id("daddr").value.trim();
-  if(!dName||dName.length<3){ toast("Delivery ke liye poora naam likhein"); return; }
-  if(!isValidPhone(dPhone)){ toast("Phone number is not correct ❌ — 03XXXXXXXXX (11 digits, starts with 03)"); return; }
-  if(!dAddr||dAddr.length<12){ toast("Poora delivery address likhein (house no, street, area)"); return; }
-  if(wallet && (user.walletBalance||0)<total){ toast("Wallet balance kam hai ❌ — pehle Top Up karein"); return; }
-  const order={id:oid,userId:user.id,userEmail:user.email||"",items:cartLines().map(i=>({id:i.id,qty:i.qty,v:i.v||"",price:cartUnit(i)})),total,subtotal:sub,discount:disc,taxTotal,taxes:checkoutTaxLines(),pm,
+  // delivery info: live fields first, saved draft second (the popup path re-renders)
+  const d=saveCheckoutDraft();
+  const gv=k=>{ const e=$id(k); return (e && String(e.value||"").trim()) ? String(e.value).trim() : String(d[({dname:"name",dphone:"phone",daddr:"addr",dcity:"city",dprov:"province",dpost:"postal",dnote:"note",demail:"email"})[k]]||""); };
+  const dName=gv("dname"), dPhone=gv("dphone"), dAddr=gv("daddr"), dCity=gv("dcity"),
+        dProv=gv("dprov"), dPost=gv("dpost"), dNote=gv("dnote"), dEmail=(email||gv("demail")||(user&&user.email)||"").trim();
+  if(!dName||dName.length<3){ toast("Delivery ke liye poora naam likhein"); finalizeOrder._busy=false; return; }
+  if(!isValidPhone(dPhone)){ toast("Phone number is not correct ❌ — 03XXXXXXXXX (11 digits, starts with 03)"); finalizeOrder._busy=false; return; }
+  if(!dAddr||dAddr.length<12){ toast("Poora delivery address likhein (house no, street, area)"); finalizeOrder._busy=false; return; }
+  if(!dEmail || !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(dEmail)){ toast("Sahi email likhein — order updates wahin jayenge"); finalizeOrder._busy=false; return; }
+  if(wallet && (user.walletBalance||0)<total){ toast("Wallet balance kam hai ❌ — pehle Top Up karein"); finalizeOrder._busy=false; return; }
+  const isCod = (pm==="cod");
+  const pct = codAdvancePct();
+  const advanceAmount = isCod ? codAdvanceAmount(total) : (wallet ? total : total);
+  const zone = zoneLabelFor(dCity, dProv);
+  const order={id:oid,userId:user?user.id:"",userEmail:dEmail,
+    items:cartLines().map(i=>({id:i.id,qty:i.qty,v:i.v||"",price:cartUnit(i),name:(prod(i.id)||{}).name||""})),
+    total,subtotal:sub,discount:disc,taxTotal,taxes:checkoutTaxLines(),pm,
     payRef:payRef||"", payProofId:"",
-    paymentStatus:wallet?"verified":"pending",orderStatus:"pending",deliveryStatus:"pending",
+    paymentStatus:wallet?"verified":"pending",
+    orderStatus:"pending", deliveryStatus:"pending",
+    /* --- COD / advance-payment lifecycle (owner's flow) --- */
+    payMode: isCod ? "cod" : "advance",
+    advancePercent: isCod ? pct : 100,
+    advanceAmount: isCod ? codAdvanceAmount(total) : total,
+    dueOnDelivery: isCod ? codDueAmount(total) : 0,
+    advanceStatus: wallet ? "paid" : (isCod ? (payRef ? "claimed" : "unpaid") : (isCod?"unpaid":"pending")),
+    advanceRef: isCod ? (payRef||"") : (payRef||""),
+    confirmedAt:"", etaDays:0, etaDate:"", statusNote:"",
     deliveryName:dName, deliveryPhone:normalizePhone(dPhone),
-    deliveryAddress:dAddr, deliveryCity:$id("dcity").value.trim(),
-    deliveryProvince:$id("dprov").value.trim(), deliveryPostal:$id("dpost").value.trim(),
-    deliveryNote:$id("dnote").value.trim(),
-    date:new Date().toISOString().slice(0,10)};
+    deliveryAddress:dAddr, deliveryCity:dCity,
+    deliveryProvince:dProv, deliveryPostal:dPost,
+    deliveryNote:dNote, deliveryZone:zone, deliveryFee:del,
+    date:new Date().toISOString().slice(0,10),
+    placedAt:new Date().toISOString()};
   if(proof){ const pid="PF-"+oid.replace(/[^A-Z0-9]/gi,"").toUpperCase(); PROOFS[pid]=proof; _saveProofs(); order.payProofId=pid; }
   orders.unshift(order);
   if(wallet){ user.walletBalance=round2(user.walletBalance-total); }
-  txns.unshift({id:"T-"+Date.now().toString(36).toUpperCase().slice(-6),type:"purchase",amount:total,method:pm,status:wallet?"approved":"pending",date:order.date,ref:oid,userId:user.id,userName:user.fullName,userEmail:user.email||""});
+  txns.unshift({id:"T-"+Date.now().toString(36).toUpperCase().slice(-6),type:"purchase",amount:total,method:pm,status:wallet?"approved":"pending",date:order.date,ref:oid,userId:user?user.id:"",userName:user?user.fullName:"",userEmail:dEmail});
   cartLines().forEach(i=>{ const p=prod(i.id); if(p) p.stock=Math.max(0,p.stock-i.qty); });
   if(promo){ const c=coupons.find(x=>x.code===promo.code); if(c) c.uses=(c.uses||0)+1; }
   analytics.addCarts=0; analytics.orders=(analytics.orders||0)+1;
-  cart=[]; promo=null; resetCheckoutTaxes(); saveAll(); renderHeader();
-  toast(wallet?"Order placed successfully! 🎉":"Order placed — payment verification pending ⏳");
+  cart=[]; promo=null; resetCheckoutTaxes(); clearCheckoutDraft(); payMode="advance";
+  finalizeOrder._busy=false;
+  saveAll(); renderHeader(); pushCloudOrder(order);
+  toast(isCod?("🚚 COD order PENDING — "+pct+"% advance (Rs. "+fmt2(order.advanceAmount)+") bhejein")
+             :(wallet?"Order placed successfully! 🎉":"Order placed — payment verification pending ⏳"));
   try{ sendOrderEmail(order); }catch(e){ console.error("order email:", e); }
   location.hash="confirmation:"+oid;
 }
+/* Orders are pushed to Supabase as well as kept locally, so the admin sees the
+   same order on any device (best-effort: offline never blocks a customer). */
+function pushCloudOrder(o){
+  try{
+    if(!supabase.url||!supabase.key||!o) return;
+    const row={id:o.id, user_id:o.userId||"", user_email:o.userEmail||"", items:o.items, total:o.total,
+      subtotal:o.subtotal, discount:o.discount, tax_fee:o.taxTotal||0, pm:o.pm,
+      payment_status:o.paymentStatus, order_status:o.orderStatus, delivery_status:o.deliveryStatus,
+      delivery_name:o.deliveryName||"", delivery_phone:o.deliveryPhone||"", delivery_city:o.deliveryCity||"",
+      delivery_address:o.deliveryAddress||"", delivery_province:o.deliveryProvince||"",
+      delivery_postal:o.deliveryPostal||"", delivery_note:o.deliveryNote||"",
+      pay_mode:o.payMode||"advance", advance_percent:o.advancePercent||0, advance_amount:o.advanceAmount||0,
+      due_on_delivery:o.dueOnDelivery||0, advance_status:o.advanceStatus||"", advance_ref:o.advanceRef||"",
+      eta_days:o.etaDays||0, eta_date:o.etaDate||null, confirmed_at:o.confirmedAt||null,
+      status_note:o.statusNote||"", created_at:o.placedAt||new Date().toISOString()};
+    sbUpsert("nukto_orders",[row]);
+  }catch(e){}
+}
+/* ---------- ORDER PAGE (customer) — PENDING / CONFIRMED / countdown ---------- */
 function confirmation(id){
-  const o=orders.find(x=>x.id===id); if(!o) return "<div class='wrap'><div class='empty'>Order not found.</div></div>";
-  return `<div class="wrap"><div class="auth-card" style="text-align:center">
-    <div style="font-size:64px">🎉</div><h2>Order Confirmed!</h2><p class="sub">Thank you for shopping with Manesh Kumar Commission Agent</p>
+  const o=orders.find(x=>x.id===id);
+  if(!o) return "<div class='wrap'><div class='empty'><div class='e'>🧾</div><p>Order not found.</p><a class='btn btn-emerald' href='#products'>Shop Now</a></div></div>";
+  const isCod=o.pm==="cod";
+  const pct=o.advancePercent||codAdvancePct();
+  const waAdvance=encodeURIComponent("Assalam-o-Alaikum! Order "+o.id+" — main "+pct+"% advance (Rs. "+fmt2(o.advanceAmount||0)+") bhej raha hoon. Please CONFIRM kar dein. Shukriya!");
+  return `<div class="wrap"><div class="auth-card" style="text-align:center;max-width:720px">
+    <div style="font-size:58px">${isCod?"🚚":"🎉"}</div>
+    <h2>${isCod?"Order booked — PENDING":"Order placed!"}</h2>
+    <p class="sub">${isCod?"Advance payment milte hi admin confirm karega":"Thank you for shopping with "+esc(settings.storeName)}</p>
+    <div style="display:flex;justify-content:center;margin:10px 0 4px">${stateChip(o)}</div>
+    ${flowHTML(o)}
+    ${etaBoxHTML(o)}
     <div class="panel" style="text-align:left">
-      <div class="summary-line"><span>Order ID</span><b>${o.id}</b></div>
+      <div class="summary-line"><span>Order ID</span><b>${esc(o.id)}</b></div>
       <div class="summary-line"><span>Total</span><b>${fmt2(o.total)}</b></div>
-      <div class="summary-line"><span>Payment</span><span class="pill ${o.pm==="wallet"?"ok":"pend"}">${o.pm==="wallet"?"Paid via Wallet":"Payment Verification Pending"}</span></div>
-      <div class="summary-line"><span>Delivery</span><b class="muted">${esc(settings.deliveryNote)}</b></div>
-      <div class="summary-line"><span>Name</span><b>${esc(o.deliveryName||user.fullName)}</b></div>
-      <div class="summary-line"><span>Phone</span><b>${esc(o.deliveryPhone||"—")}</b></div>
+      <div class="summary-line"><span>Payment</span><span class="pill ${o.pm==="wallet"?"ok":isCod?"pend":"pend"}">${o.pm==="wallet"?"Paid via "+esc(WALLET_NAME):isCod?"Cash on Delivery · "+pct+"% advance":"Advance payment · verification pending"}</span></div>
+      ${isCod?`<div class="summary-line"><span>Advance (${pct}%)</span><b style="color:#8A5A06">${fmt2(o.advanceAmount||0)} — ${esc(o.advanceStatus==="paid"?"PAID ✓":o.advanceStatus==="claimed"?"submitted, admin verify karega":"UNPAID")}</b></div>
+      <div class="summary-line"><span>Cash on delivery</span><b>${fmt2(o.dueOnDelivery||0)}</b></div>`:""}
+      <div class="summary-line"><span>Delivery</span><b class="muted">${esc(o.deliveryZone||zoneLabelFor(o.deliveryCity,o.deliveryProvince))} — ${fmt(o.deliveryFee||0)}</b></div>
+      <div class="summary-line"><span>Name</span><b>${esc(o.deliveryName||(user?user.fullName:""))}</b></div>
+      <div class="summary-line"><span>Phone</span><b>${esc(prettyPhone(o.deliveryPhone)||"—")}</b></div>
+      <div class="summary-line"><span>Email</span><b>${esc(o.userEmail||"—")}</b></div>
       <div class="summary-line"><span>Address</span><b>${esc(o.deliveryAddress||"—")}${o.deliveryCity?", "+esc(o.deliveryCity):""}${o.deliveryProvince?", "+esc(o.deliveryProvince):""}</b></div>
+      <div class="summary-line"><span>Items</span><b>${(o.items||[]).map(i=>i.qty+"× "+esc(decodeHTML(String(i.name||(prod(i.id)||{}).name||"Item")).slice(0,34))).join(", ")}</b></div>
     </div>
-    <p class="muted">We'll update your order status as it ships. <span class="urdu">شکریہ!</span></p>
-    <a href="#orders" class="btn btn-emerald" style="width:100%;justify-content:center">Track My Orders</a>
+    ${isCod&&o.advanceStatus!=="paid"?`<div class="cod-rule" style="text-align:left;margin-top:14px">
+      <span class="big">⏳ Ab ${pct}% advance bhejein — Rs. ${fmt2(o.advanceAmount||0)}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <span class="pill info">easypaisa: ${esc(settings.easypaisa)}</span>
+        <span class="pill info">JazzCash: ${esc(settings.jazzcash)}</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn btn-outline" style="margin:0" onclick="copyPay('${esc(settings.easypaisa)}',${Number(o.advanceAmount||0)})">📋 Copy details</button>
+        <a class="btn btn-gold" style="margin:0" target="_blank" rel="noopener" href="https://wa.me/${waNumber(settings.whatsapp||settings.phone)}?text=${waAdvance}">💬 Advance WhatsApp karein</a>
+      </div>
+      <div style="margin-top:8px;font-size:12.5px"><b>Without advance — no confirmation.</b> Return ki surat mein delivery charges hamare par aate hain, isi liye ${pct}% advance zaroori hai.</div>
+    </div>`:""}
+    <p class="muted" style="margin-top:12px">Status updates yahan aur <b>My Orders</b> par milte rahenge — PENDING → CONFIRMED → ON THE WAY → ORDER RECEIVED. <span class="urdu">شکریہ!</span></p>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <a href="#orders" class="btn btn-emerald" style="flex:1;justify-content:center">📦 My Orders</a>
+      <a href="#tracking:${esc(o.id)}" class="btn btn-outline" style="flex:1;justify-content:center">🛰️ Track</a>
+    </div>
+    <a href="#products" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:8px">🛍️ Keep shopping — feed kabhi khatam nahi hoti</a>
   </div></div>`;
 }
 function openModal(html){ $id("modal-card").innerHTML=html; $id("modal").classList.add("show"); }
@@ -2876,8 +3918,27 @@ function uniqueUsername(email, fullName){
 }
 function hashPw(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h)+s.charCodeAt(i); h|=0; } return "h"+(h>>>0).toString(36)+"_"+s.length; }
 /* --- secure admin credential (SHA-256 hash — password kabhi source mein nahi) --- */
-const ADMIN_USER = "admin1";
-const ADMIN_HASH = "a7256ce94c29bbc6af8ca36cfb3486763b1c1d6855835a74de1b46481dc45ca2"; // SHA-256 of admin password (owner only)
+/* ---------- ADMIN CREDENTIALS ----------
+   Two admin logins exist (owner + the second admin the owner asked for).
+   SECURITY: only SHA-256 hashes ship in this bundle — the plaintext words are NOT in the
+   repo, not in a comment, and not rendered anywhere in the UI. The same two rows are
+   mirrored into Supabase `nukto_admin_users` (RLS: service-role only, no anon read/write),
+   so the roster lives safely in the database and the `admin-auth` Edge Function can verify
+   a login server-side (with per-IP rate limiting) whenever the site is online.
+   To rotate a password, hash the new one and replace the value below / in Supabase:
+     node -e "console.log(require('crypto').createHash('sha256').update(process.argv[1]).digest('hex'))" 'NEW-PASS' */
+const ADMIN_USER = "Admin";
+const ADMIN_HASH = "42065179a605734438267e630d871655eee6bf86d2df5e0c95ca253ea83807da";   // SHA-256 of the owner password
+/* Second admin — full admin access (no team management). */
+const BUILTIN_TEAM = [
+  { id:"tm-builtin-avinash", name:"Avinash",
+    pass:"6fe6ad2456b798954674866bc31606071347ae599975b65f7fba7ab108dfe16f",              // SHA-256 of the second admin password
+    role:"admin", pin:"", builtin:true, created:"2026-10-28" }
+];
+function allTeamMembers(){
+  const extra = (team||[]).filter(m=>m && !BUILTIN_TEAM.some(b=>String(b.name).toLowerCase()===String(m.name||"").toLowerCase()));
+  return BUILTIN_TEAM.concat(extra);
+}
 // pure-JS SHA-256 (known-correct impl, works offline + file:// too)
 function sha256(ascii) {
   function rightRotate(v,a){return (v>>>a)|(v<<(32-a));}
@@ -3004,33 +4065,41 @@ const myOrders = () => orders.filter(isMyOrder);
 function ordersView(){
   if(!user) return login();
   const mine = myOrders().slice().sort((a,b)=> String(b.date||"").localeCompare(String(a.date||"")));
-  const steps=["Pending","Processing","Shipped","Delivered"];
   return `<div class="wrap"><h1>My Orders <span class="muted" style="font-size:15px">(${mine.length})</span></h1>
-    <div class="notice info" style="margin-top:10px">Sirf <b>aapke</b> orders yahan dikhte hain. Har order par <b>Track</b>, <b>Complaint</b>, <b>Return</b> aur <b>Help</b> ka button hai.</div>
+    <div class="notice info" style="margin-top:10px">Har order ka <b>live status</b> yahan hai: <b>PENDING → CONFIRMED → ON THE WAY → ORDER RECEIVED</b>.
+      COD orders par <b>${codAdvancePct()}% advance</b> milne ke baad hi CONFIRMED hota hai, phir admin ke set kiye hue <b>delivery days</b> ka countdown chalta hai
+      (5 → 4 → 3 …). Masla hone par <b>DELAY</b>, <b>ERROR</b> ya <b>ORDER KHARAB THA</b> dikhai deta hai.</div>
     ${myNotifs().length?`<div class="panel" style="margin-top:12px"><h3 style="margin-top:0">🔔 Order Updates</h3>${myNotifs().slice(0,8).map(n=>`<div class="summary-line"><span>${esc(n.msg)}</span><b class="muted" style="font-size:11px">${esc((n.date||"").slice(5,16).replace("T"," "))}</b></div>`).join("")}</div>`:""}
     ${mine.length?`<div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
-    ${mine.map(o=>{const idx=steps.findIndex(s=>s.toLowerCase()===o.orderStatus);const i=idx>=0?idx:0;const items=(o.items||[]);return `
+    ${mine.map(o=>{const items=(o.items||[]);const isCod=o.pm==="cod";const pct=o.advancePercent||codAdvancePct();return `
     <div class="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
         <div><b>${esc(o.id)}</b> <span class="muted" style="font-size:12px">· ${esc(o.date||"")}</span></div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <span class="pill ${o.orderStatus==="delivered"?"ok":o.orderStatus==="cancelled"?"bad":"pend"}">${esc(o.orderStatus||"pending")}</span>
-          <span class="pill ${o.paymentStatus==="verified"?"ok":"pend"}">${o.pm==="wallet"?"wallet paid ✓":(o.paymentStatus==="verified"?"payment verified":"payment "+esc(o.paymentStatus||"pending"))}</span>
+          ${stateChip(o)}
+          <span class="pill ${o.paymentStatus==="verified"?"ok":"pend"}">${o.pm==="wallet"?esc(WALLET_NAME)+" paid ✓":isCod?"COD · "+pct+"% advance ("+fmt2(o.advanceAmount||0)+")":(o.paymentStatus==="verified"?"payment verified":"payment "+esc(o.paymentStatus||"pending"))}</span>
         </div>
       </div>
-      <div class="progress" style="margin:14px 0">${steps.map((s,j)=>`<div class="pstep ${j<=i?"on":""}"><span class="pdot">${j<=i?"✓":j+1}</span>${s}</div>${j<steps.length-1?`<div class="pbar ${j<i?"on":""}"></div>`:""}`).join("")}</div>
-      <table><tr><th>Item</th><th>Qty</th><th style="text-align:right">Amount</th></tr>${items.map(it=>{const p=prod(it.id);const unit=it.price?it.price:(p?p.price:0);return `<tr><td class="line-clamp2">${esc(p?p.name:"Item")}${it.v?` <span class="muted" style="font-weight:600">· ${esc(it.v)}</span>`:""}</td><td>${it.qty}</td><td style="text-align:right">${fmt(unit*it.qty)}</td></tr>`;}).join("")}</table>
+      ${flowHTML(o)}
+      ${etaBoxHTML(o)}
+      ${isCod?`<div class="summary-line"><span>Advance (${pct}%)</span><b style="color:${o.advanceStatus==="paid"?"#0E6B34":"#8A5A06"}">${fmt2(o.advanceAmount||0)} — ${esc(o.advanceStatus==="paid"?"PAID ✓":o.advanceStatus==="claimed"?"submitted — admin verify karega":"UNPAID ⏳")}</b></div>
+        <div class="summary-line"><span>Cash on delivery</span><b>${fmt2(o.dueOnDelivery||0)}</b></div>
+        ${o.advanceStatus!=="paid"?`<div class="notice warn"><b>${pct}% advance bhejein — warna order confirm nahi hoga.</b>
+          easypaisa / JazzCash: <b>${esc(settings.easypaisa)}</b> · <a class="link" target="_blank" rel="noopener" href="https://wa.me/${waNumber(settings.whatsapp||settings.phone)}?text=${encodeURIComponent("Assalam-o-Alaikum! Order "+o.id+" ka "+pct+"% advance (Rs. "+fmt2(o.advanceAmount||0)+") bhej raha hoon — CONFIRM kar dein.")}">WhatsApp par bhejein 💬</a></div>`:""}`:""}
+      <table><tr><th>Item</th><th>Qty</th><th style="text-align:right">Amount</th></tr>${items.map(it=>{const p=prod(it.id);const unit=it.price?it.price:(p?p.price:0);return `<tr><td class="line-clamp2">${esc(decodeHTML(String(it.name||(p?p.name:"Item"))))}${it.v?` <span class="muted" style="font-weight:600">· ${esc(it.v)}</span>`:""}</td><td>${it.qty}</td><td style="text-align:right">${fmt(unit*it.qty)}</td></tr>`;}).join("")}</table>
       <div class="summary-line"><span>Delivery To</span><b class="muted">${esc(o.deliveryName||"—")} · ${esc(prettyPhone(o.deliveryPhone))} · ${esc(o.deliveryAddress||"—")}${o.deliveryCity?", "+esc(o.deliveryCity):""}${o.deliveryProvince?", "+esc(o.deliveryProvince):""}</b></div>
+      <div class="summary-line"><span>Delivery charge</span><b class="muted">${esc(o.deliveryZone||zoneLabelFor(o.deliveryCity,o.deliveryProvince))} — ${fmt(o.deliveryFee||0)}</b></div>
       ${o.tracking?`<div class="summary-line"><span>Courier Tracking</span><b class="muted">${esc(o.courier||"Courier")} — ${esc(o.tracking)}</b></div>`:""}
       <div class="summary-line total"><span>Total</span><span>${fmt2(o.total)}</span></div>
       <div class="form-row" style="margin-top:12px;flex-wrap:wrap">
-        <a class="btn btn-outline" style="margin:0" href="#tracking:${o.id}">🛰️ Track</a>
-        <a class="btn btn-outline" style="margin:0" href="#complaint" onclick="setTimeout(()=>{const f=document.getElementById('cmp_order');if(f)f.value='${o.id}';},60)">⚠️ Complaint</a>
-        <button class="btn btn-outline" style="margin:0" onclick="requestReturn('${o.id}')">↩️ Return</button>
-        <a class="btn btn-outline" style="margin:0" href="mailto:${esc(settings.supportEmail)}?subject=${encodeURIComponent("Order "+o.id+" — "+settings.storeName)}&body=${encodeURIComponent("Assalam-o-Alaikum,\n\nOrder ID: "+o.id+"\nDate: "+(o.date||"")+"\nTotal: Rs. "+o.total+"\n\nMera masla:\n")}">✉️ Email Support</a>
+        <a class="btn btn-outline" style="margin:0" href="#tracking:${esc(o.id)}">🛰️ Track</a>
+        <a class="btn btn-outline" style="margin:0" href="#complaint" onclick="setTimeout(()=>{const f=document.getElementById('cmp_order');if(f)f.value='${esc(o.id)}';},60)">⚠️ Complaint</a>
+        <button class="btn btn-outline" style="margin:0" onclick="requestReturn('${esc(o.id)}')">↩️ Return</button>
+        <a class="btn btn-outline" style="margin:0" href="${waLink(o,'Salaam! Order '+o.id+' ke baare mein baat karni thi. — '+settings.storeName)}" target="_blank" rel="noopener">💬 WhatsApp</a>
       </div>
     </div>`;}).join("")}
     </div>`:`<div class="panel empty"><div class="e">📦</div><p>You have no orders yet.</p><a href="#products" class="btn btn-emerald">Shop Now</a></div>`}
+    ${endlessBarHTML()}
   </div>`;
 }
 function requestReturn(oid){ openModal(`<h3>↩️ Request Return / Refund</h3><p class="muted">Order <b>${oid}</b></p><div class="field"><label class="label">Reason</label><textarea class="textarea" id="ret_reason"></textarea></div><div class="notice info">Refund to your MK Wallet within 2–3 business days.</div><button class="btn btn-emerald" style="width:100%;justify-content:center" onclick="submitReturn('${oid}')">Submit Return Request</button>`); }
@@ -3068,16 +4137,25 @@ function reconcileUserBalance(uid){
 function rejectReturn(id){ const r=returns.find(x=>x.id===id); if(r)r.status="rejected"; saveAll(); render(); toast("Return rejected"); }
 /* ---------- tracking (order delivery progress) ---------- */
 function trackingView(id){
-  const steps=["Pending","Processing","Shipped","Delivered"];
-  const all=id?orders.filter(o=>o.id===id):orders.filter(o=>o.userId===user.id);
+  const all=id?orders.filter(o=>o.id===id):(user?orders.filter(isMyOrder):[]);
   if(!all.length) return `<div class="wrap"><div class="empty"><div class="e">🛰️</div><h2>No order to track</h2><a href="#orders" class="btn btn-emerald" style="margin-top:10px">View My Orders</a></div></div>`;
-  return `<div class="wrap"><h1>Track My Order 🛰️</h1><div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
-    ${all.map(o=>{const idx=steps.findIndex(s=>s.toLowerCase()===o.orderStatus);const i=idx>=0?idx:0;return `
+  return `<div class="wrap"><h1>Track My Order 🛰️</h1>
+    <div class="notice info" style="margin-top:10px">Live timeline: <b>PENDING → CONFIRMED → ON THE WAY → ORDER RECEIVED</b>.
+      Admin ke set kiye hue delivery days roz kam hote jaate hain; ETA nikal jaye to order khud <b>DELAY</b> par chala jata hai.</div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
+    ${all.map(o=>{const isCod=o.pm==="cod";const pct=o.advancePercent||codAdvancePct();return `
     <div class="panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><b>${o.id}</b><span class="pill ${o.orderStatus==="delivered"?"ok":o.orderStatus==="cancelled"?"bad":"pend"}">${o.orderStatus}</span></div>
-      <div class="progress" style="margin:14px 0">${steps.map((s,j)=>`<div class="pstep ${j<=i?"on":""}"><span class="pdot">${j<=i?"✓":j+1}</span>${s}</div>${j<steps.length-1?`<div class="pbar ${j<i?"on":""}"></div>`:""}`).join("")}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><b>${esc(o.id)}</b>${stateChip(o)}</div>
+      ${flowHTML(o)}
+      ${etaBoxHTML(o)}
+      <div class="summary-line"><span>Payment</span><b>${isCod?`COD · ${pct}% advance ${fmt2(o.advanceAmount||0)} (${esc(o.advanceStatus||"unpaid")}) · baqi ${fmt2(o.dueOnDelivery||0)} delivery par`:(o.pm==="wallet"?esc(WALLET_NAME)+" paid":esc(o.pm)+" — "+esc(o.paymentStatus||"pending"))}</b></div>
       <div class="summary-line"><span>Delivery To</span><b class="muted">${esc(o.deliveryName||"—")} · ${esc(o.deliveryAddress||"—")}${o.deliveryCity?", "+esc(o.deliveryCity):""}${o.deliveryProvince?", "+esc(o.deliveryProvince):""}</b></div>
+      <div class="summary-line"><span>Courier / zone</span><b class="muted">${esc(o.deliveryZone||zoneLabelFor(o.deliveryCity,o.deliveryProvince))}${o.courier?" · "+esc(o.courier):""}${o.tracking?" · "+esc(o.tracking):""}</b></div>
       <div class="summary-line total"><span>Total</span><span>${fmt2(o.total)}</span></div>
+      <div class="form-row" style="margin-top:10px">
+        <a class="btn btn-outline" style="margin:0" href="#orders">📦 All orders</a>
+        <a class="btn btn-outline" style="margin:0" href="${waLink(o,'Salaam! Order '+o.id+' ki delivery status poochhni thi. — '+settings.storeName)}" target="_blank" rel="noopener">💬 Ask on WhatsApp</a>
+      </div>
     </div>`;}).join("")}
   </div></div>`;
 }
@@ -3262,16 +4340,87 @@ function adminLoginForm(){ return `<div class="wrap"><div class="auth-card" styl
   <div class="field"><label class="label">Password</label><input class="input" type="password" id="a_pass"></div>
   <div class="field"><label class="label">2FA PIN (agar aapke account par set hai)</label><input class="input" type="password" id="a_pin" placeholder="••••"></div>
   <button class="btn btn-emerald" style="width:100%;justify-content:center" onclick="adminLogin()">Login to Dashboard</button></div></div>`; }
-function tryLogin(u,p){ const h=sha256(p);
-  if(u===ADMIN_USER && h===ADMIN_HASH) return {name:u, role:"owner"};
-  const m=team.find(x=>x.name.toLowerCase()===u.toLowerCase());
+function tryLogin(u,p){ const h=sha256(String(p==null?"":p));
+  const un=String(u==null?"":u).trim().toLowerCase();
+  if(!un || !h) return null;
+  if(un===ADMIN_USER.toLowerCase() && h===ADMIN_HASH) return {name:ADMIN_USER, role:"owner"};
+  const m=allTeamMembers().find(x=>String(x.name||"").toLowerCase()===un);
   if(m && m.pass===h) return {name:m.name, role:m.role};
   return null; }
-function adminLogin(){ const u=$id("a_user").value.trim(),p=$id("a_pass").value; if(!u||!p){toast("Enter username and password");return;}
-  const ses=tryLogin(u,p); if(!ses){ toast("Invalid credentials ❌"); return; }
-  const needPin = ses.role==="owner" ? (store.get("nukto.ownerPin","")) : ((team.find(m=>m.name.toLowerCase()===ses.name.toLowerCase())||{}).pin||"");
-  if(needPin && sha256($id("a_pin").value||"")!==needPin){ toast("🔐 2FA PIN ghalat hai ❌"); return; }
-  session=ses; admin=true; store.set("nukto.session",session); logAct("logged in ("+ROLES[session.role].label+")"); saveAll(); render(); toast("Welcome "+session.name+" · "+ROLES[session.role].label+" ✅"); location.hash="admin:dashboard"; }
+/* Brute-force guard: 5 wrong tries per username lock that username for 10 minutes.
+   Counters live in localStorage (a static site has no server session), so this is a
+   speed-bump, not a fortress — the real lock is the `admin-auth` Edge Function,
+   which rate-limits per IP inside the database. */
+function loginLockState(u){
+  const all=store.get("nukto.loginLock",{})||{};
+  const k=String(u||"").trim().toLowerCase();
+  return all[k]||{fails:0,until:0};
+}
+function loginLockBump(u){
+  const all=store.get("nukto.loginLock",{})||{};
+  const k=String(u||"").trim().toLowerCase();
+  const st=all[k]||{fails:0,until:0};
+  st.fails=(st.fails||0)+1;
+  if(st.fails>=5){ st.until=Date.now()+10*60*1000; st.fails=0; }
+  all[k]=st; store.set("nukto.loginLock",all);
+  return st;
+}
+function loginLockClear(u){
+  const all=store.get("nukto.loginLock",{})||{};
+  delete all[String(u||"").trim().toLowerCase()];
+  store.set("nukto.loginLock",all);
+}
+function adminLogin(){
+  const u=$id("a_user")?$id("a_user").value.trim():"", p=$id("a_pass")?$id("a_pass").value:"";
+  if(!u||!p){ toast("Enter username and password"); return; }
+  const lock=loginLockState(u);
+  if(lock.until && lock.until>Date.now()){
+    const mins=Math.max(1,Math.ceil((lock.until-Date.now())/60000));
+    toast("🔒 Bahut koshishein — "+mins+" minute baad try karein");
+    return;
+  }
+  const pin=(($id("a_pin")||{}).value||"");
+  /* 1) Local check against the SHA-256 hashes that ship with the site — instant, and it
+        keeps working offline / on file:// / if Supabase is down. No plaintext anywhere. */
+  const ses=tryLogin(u,p);
+  if(ses){ finishAdminLogin(ses,pin); return; }
+  /* 2) Local check failed → count the strike immediately (so a flood of tries is throttled
+        even before the network answers), then ask Supabase (`admin-auth` Edge Function): that
+        is what makes a password rotated in the database work without redeploying the site. */
+  const st=loginLockBump(u);
+  verifyAdminOnServer(u,p).then(remote=>{
+    if(remote){ finishAdminLogin(remote,pin); return; }
+    toast(st.fails>=4 ? "❌ Ghalat credentials ("+st.fails+"/5) — account lock hone wala hai" : "Invalid credentials ❌");
+  }).catch(()=>{ toast("Invalid credentials ❌"); });
+}
+function finishAdminLogin(ses,pin){
+  const mem=allTeamMembers().find(m=>String(m.name).toLowerCase()===String(ses.name).toLowerCase());
+  const needPin = ses.role==="owner" ? (store.get("nukto.ownerPin","")||"") : ((mem||{}).pin||"");
+  if(needPin && sha256(pin||"")!==needPin){ toast("🔐 2FA PIN ghalat hai ❌"); return; }
+  loginLockClear(ses.name);
+  session=ses; admin=true; store.set("nukto.session",session);
+  logAct("logged in ("+(ROLES[session.role]||{}).label+")");
+  saveAll(); render();
+  toast("Welcome "+session.name+" · "+((ROLES[session.role]||{}).label||session.role)+" ✅");
+  location.hash="admin:dashboard";
+}
+/* Server verification (best-effort). Resolves {name, role, token} or null when the function
+   is not deployed / the device is offline — the local hash check has already been tried. */
+async function verifyAdminOnServer(u,p){
+  try{
+    if(!supabase || !supabase.url) return null;
+    const r=await fetch(supaFn("admin-auth"),{method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:u,password:p})});
+    if(!r.ok) return null;
+    const d=await r.json();
+    if(d && d.ok && d.role){
+      if(d.token) store.set("nukto.sessionToken", d.token);
+      return {name:d.username||u, role:d.role};
+    }
+    return null;
+  }catch(e){ return null; }
+}
 function adminLogout(){ logAct('logged out'); admin=false; session=null; store.del("nukto.session"); saveAll(); render(); location.hash="home"; }
 
 const ANAV=[
@@ -3667,17 +4816,17 @@ function applyBulkDisc(){ if(!needEdit())return; allProducts().forEach(p=>{ prod
 
 function adminTeam(){
   return adminLayout(`
-    <h1 style="margin-top:0">Team Members <span class="muted" style="font-size:13px">(${team.length} members)</span></h1>
+    <h1 style="margin-top:0">Team Members <span class="muted" style="font-size:13px">(${allTeamMembers().length} members)</span></h1>
     <div class="notice info"><b>🧑🤝‍ Roles:</b> ${Object.keys(ROLES).map(k=>`<b>${ROLES[k].label}</b>${ROLES[k].edit?"":" (read-only)"}${k==="owner"?" — full control + team":""}`).join(" · ")}.<br>Member add karein (name + password + role) — woh login par apne role ke mutabiq pages aur edits dekh sake ga.</div>
     <div class="toolbar"><button class="btn btn-emerald" onclick="openTeamModal()">➕ Add Member</button></div>
     <div class="panel" style="margin-top:2px;overflow:auto"><table>
       <tr><th>Name</th><th>Role</th><th>Access</th><th>Created</th><th style="text-align:right">Actions</th></tr>
-      <tr><td><b>${esc(ADMIN_USER)}</b> <span class="pill ok">owner</span></td><td>Owner</td><td class="muted" style="font-size:11px">full control + team</td><td class="muted">—</td><td style="text-align:right"><button class="pill info" style="border:0" onclick="setOwnerPin()">🔢 Owner 2FA</button></td></tr>
-      ${team.map(m=>`<tr><td><b>${esc(m.name)}</b></td>
+      <tr><td><b>${esc(ADMIN_USER)}</b> <span class="pill ok">owner</span></td><td>Owner login</td><td class="muted" style="font-size:11px">full control + team</td><td class="muted">—</td><td style="text-align:right"><button class="pill info" style="border:0" onclick="setOwnerPin()">🔢 Owner 2FA</button></td></tr>
+      ${allTeamMembers().map(m=>`<tr><td><b>${esc(m.name)}</b>${m.builtin?` <span class="pill info">built-in</span>`:""}</td>
         <td><select class="select" style="padding:5px;min-width:140px" onchange="setTeamRole('${m.id}',this.value)">${Object.keys(ROLES).map(r=>`<option ${m.role===r?"selected":""} value="${r}">${ROLES[r].label}</option>`).join("")}</select></td>
         <td class="muted" style="font-size:11px">${(ROLES[m.role]||{}).edit?"edit":"read-only"} · ${(ROLES[m.role]||{groups:[]}).groups.length} sections</td>
         <td class="muted">${esc((m.created||"").slice(0,10))}</td>
-        <td style="text-align:right;white-space:nowrap"><button class="pill info" style="border:0" onclick="setTeamPin('${m.id}')">🔢 2FA</button> <button class="pill info" style="border:0" onclick="resetTeamPass('${m.id}')">🔑 Reset Pass</button> <button class="pill bad" style="border:0" onclick="delTeamMember('${m.id}')">🗑️ Remove</button></td></tr>`).join("")}
+        <td style="text-align:right;white-space:nowrap"><button class="pill info" style="border:0" onclick="setTeamPin('${m.id}')">🔢 2FA</button> <button class="pill info" style="border:0" onclick="resetTeamPass('${m.id}')">🔑 Reset Pass</button> ${m.builtin?"":`<button class="pill bad" style="border:0" onclick="delTeamMember('${m.id}')">🗑️ Remove</button>`}</td></tr>`).join("")}
     </table></div>`,"team");
 }
 function openTeamModal(){ if(!needTeam())return;
@@ -3691,16 +4840,19 @@ function openTeamModal(){ if(!needTeam())return;
 function addTeamMember(name,pass,roleKey,pin){ if(!ROLES[roleKey]) return {ok:false,why:"bad role"};
   name=(name||"").trim(); if(!name) return {ok:false,why:"name required"};
   if((pass||"").length<4) return {ok:false,why:"password min 4 chars"};
-  if(name.toLowerCase()===ADMIN_USER || team.some(m=>m.name.toLowerCase()===name.toLowerCase())) return {ok:false,why:"name already taken"};
+  if(name.toLowerCase()===ADMIN_USER.toLowerCase() || allTeamMembers().some(m=>String(m.name).toLowerCase()===name.toLowerCase())) return {ok:false,why:"name already taken"};
   team.push({id:"tm-"+Date.now(),name:name,pass:sha256(pass),role:roleKey,pin:(pin||"")?sha256(pin):"",created:new Date().toISOString()});
   store.set("nukto.team",team); return {ok:true}; }
 function saveTeamMember(){ if(!needTeam())return; const r=addTeamMember($id("tm_name").value,$id("tm_pass").value,$id("tm_role").value,$id("tm_pin").value);
   if(!r.ok){ toast(r.why); return; } closeModal(); saveAll(); render(); toast("Member added ✅ — ab woh login kar sakta hai"); }
-function setTeamRole(id,roleKey){ if(!needTeam())return; const m=team.find(x=>x.id===id); if(m){ m.role=roleKey; store.set("nukto.team",team); render(); toast(m.name+" → "+ROLES[roleKey].label); } }
-function resetTeamPass(id){ if(!needTeam())return; const m=team.find(x=>x.id===id); if(!m)return; const np=prompt("New password for "+m.name+":"); if(!np||np.length<4){toast("min 4 chars");return;} m.pass=sha256(np); store.set("nukto.team",team); toast("Password updated 🔑"); }
-function setTeamPin(id){ if(!needTeam())return; const m=team.find(x=>x.id===id); if(!m)return; const np=prompt("2FA PIN for "+m.name+" (khali chhorein to remove):",""); if(np===null)return; m.pin=np?sha256(np):""; store.set("nukto.team",team); logAct((np?"set":"removed")+" 2FA for "+m.name); render(); toast(np?"2FA PIN set 🔢":"2FA removed"); }
+function setTeamRole(id,roleKey){ if(!needTeam())return; const m=allTeamMembers().find(x=>x.id===id); if(m&&m.builtin){ toast("Built-in admin ka role fix hai"); return; } if(m){ m.role=roleKey; store.set("nukto.team",team); render(); toast(m.name+" → "+ROLES[roleKey].label); } }
+function resetTeamPass(id){ if(!needTeam())return; const m=allTeamMembers().find(x=>x.id===id); if(!m)return;
+  if(m.builtin){ toast("⚠️ Built-in admin ka password code + Supabase mein set hai — owner hi badal sakta hai"); return; } const np=prompt("New password for "+m.name+":"); if(!np||np.length<4){toast("min 4 chars");return;} m.pass=sha256(np); store.set("nukto.team",team); toast("Password updated 🔑"); }
+function setTeamPin(id){ if(!needTeam())return; const m=allTeamMembers().find(x=>x.id===id); if(!m)return;
+  if(m.builtin){ toast("Built-in member ke liye 2FA code-side set hoti hai"); return; } const np=prompt("2FA PIN for "+m.name+" (khali chhorein to remove):",""); if(np===null)return; m.pin=np?sha256(np):""; store.set("nukto.team",team); logAct((np?"set":"removed")+" 2FA for "+m.name); render(); toast(np?"2FA PIN set 🔢":"2FA removed"); }
 function setOwnerPin(){ if(!needTeam())return; const np=prompt("Owner 2FA PIN (khali chhorein to remove):",""); if(np===null)return; store.set("nukto.ownerPin",np?sha256(np):""); logAct((np?"set":"removed")+" owner 2FA"); toast(np?"Owner 2FA set 🔢":"Owner 2FA removed"); }
-function delTeamMember(id){ if(!needTeam())return; const m=team.find(x=>x.id===id); if(!m)return; if(!confirm("Remove "+m.name+"?"))return; team=team.filter(x=>x.id!==id); store.set("nukto.team",team); saveAll(); render(); toast("Member removed"); }
+function delTeamMember(id){ if(!needTeam())return; const m=allTeamMembers().find(x=>x.id===id); if(!m)return;
+  if(m.builtin){ toast("Built-in admin remove nahi ho sakta"); return; } if(!confirm("Remove "+m.name+"?"))return; team=team.filter(x=>x.id!==id); store.set("nukto.team",team); saveAll(); render(); toast("Member removed"); }
 function downloadCSV(name,rows){
   const csv=rows.map(r=>r.map(c=>'"'+String(c==null?"":c).replace(/"/g,'""')+'"').join(",")).join("\n");
   if(typeof Blob==="undefined"||typeof URL==="undefined"||!URL.createObjectURL) return csv;
@@ -3747,7 +4899,6 @@ function adminOrders(){
       <td><select class="select" style="padding:5px" onchange="setOrderStatus('${o.id}',this.value)">${["pending","processing","shipped","delivered","cancelled"].map(s=>`<option ${o.orderStatus===s?"selected":""}>${s}</option>`).join("")}</select></td><td>${esc(o.date||"")}</td></tr>`).join(""):"<tr><td colspan=13 class='muted'>No orders yet.</td></tr>"}
     </table></div>`,"orders");
 }
-function verifyPayment(id){ const o=orders.find(x=>x.id===id); if(!o)return; logAct("verified payment "+id); o.paymentStatus="verified"; notifyCustomer(o,"✅ Payment verify ho gayi — order "+id+" process ho raha hai. — "+settings.storeName); saveAll(); render(); toast("Payment verified ✅ Order "+id); }
 function adminComplaints(){
   return adminLayout(`
     <h1 style="margin-top:0">Complaints ⚠️</h1>
@@ -3759,32 +4910,294 @@ function adminComplaints(){
 }
 function setComplaint(id,s){ const c=complaints.find(x=>x.id===id); if(c)c.status=s; saveAll(); render(); toast("Complaint "+id+" → "+s); }
 function restockItems(o){ (o.items||[]).forEach(i=>{ const pr=prod(i.id); if(pr) pr.stock=(pr.stock||0)+(i.qty||1); }); }
-const ORDER_FLOW={pending:["processing","shipped","delivered","cancelled","returned"],processing:["shipped","delivered","cancelled","returned"],shipped:["delivered","returned"],delivered:["returned"],cancelled:[],returned:["refunded"],refunded:[]};
-function setOrderStatus(id,s){ const o=orders.find(x=>x.id===id); if(o){ const prev=o.orderStatus||"pending";
-    if(prev!==s && ORDER_FLOW[prev] && !ORDER_FLOW[prev].includes(s)){ toast("Not allowed: "+prev+" \u2192 "+s); return; }
-    logAct("order "+id+" \u2192 "+s+" (was "+prev+") by "+(session?session.name:"admin")); o.orderStatus=s;
-    if((s==="cancelled"||s==="returned")&&prev!=="cancelled"&&prev!=="returned"){ restockItems(o); logAct("stock restored for "+id); } notifyCustomer(o,"Salaam! Aapka order "+id+" ab ["+s+"] stage par hai. — "+settings.storeName); } saveAll(); render(); toast("Order "+id+" → "+s+" · customer notified 🔔"); }
-
-function adminDelivery(){
-  return adminLayout(`
-    <h1 style="margin-top:0">Delivery</h1>
-    <div class="toolbar" style="margin-bottom:12px"><label style="font-size:13px">Delivery fee (Rs.)</label><input class="input" type="number" id="dv_fee" style="max-width:110px" value="${settings.deliveryFee}">
-      <label style="font-size:13px">Free above (Rs.)</label><input class="input" type="number" id="dv_free" style="max-width:130px" value="${settings.deliveryFreeAbove||0}">
-      <button class="btn btn-emerald" onclick="saveDeliveryFee()">💾 Save Delivery Fee</button></div>
-    <div class="panel" style="margin-top:14px;overflow:auto"><table>
-      <tr><th>Order</th><th>Customer</th><th>Phone</th><th>Delivery Address</th><th>Items</th><th>Status</th><th>Actions</th></tr>
-      ${orders.length?orders.map(o=>`<tr><td><b>${o.id}</b></td>
-      <td>${esc(o.deliveryName||"—")}</td>
-      <td>${esc(o.deliveryPhone||"—")}</td>
-      <td class="muted" style="max-width:260px">${esc(o.deliveryAddress||"—")}${o.deliveryCity?", "+esc(o.deliveryCity):""}${o.deliveryProvince?", "+esc(o.deliveryProvince):""}${o.deliveryNote?"<br><span style='font-size:11px'>📝 "+esc(o.deliveryNote)+"</span>":""}</td>
-      <td>${o.items.reduce((a,i)=>a+i.qty,0)}</td>
-      <td><select class="select" style="padding:5px" onchange="setDeliveryStatus('${o.id}',this.value)">${["pending","dispatched","in_transit","delivered"].map(s=>`<option ${o.deliveryStatus===s?"selected":""}>${s}</option>`).join("")}</select></td>
-      <td><a class="pill info" style="border:0" href="tel:${o.deliveryPhone||settings.phone}">📞 Call</a></td></tr>`).join(""):"<tr><td colspan=7 class='muted'>No orders yet.</td></tr>"}
-    </table></div>`,"delivery");
+/* Legal moves between states. Legacy values (processing/shipped/delivered) are
+   accepted too so older orders keep working. Everything else is refused with a
+   toast — an order can never silently jump from RECEIVED back to PENDING. */
+const ORDER_FLOW={
+  pending:    ["confirmed","cancelled","error"],
+  confirmed:  ["in_transit","delayed","error","damaged","received","cancelled"],
+  in_transit: ["received","delayed","error","damaged","returned","cancelled"],
+  delayed:    ["in_transit","received","error","damaged","cancelled","returned"],
+  error:      ["confirmed","in_transit","cancelled","returned","damaged"],
+  damaged:    ["returned","cancelled","refunded"],
+  received:   ["returned"],
+  cancelled:  [],
+  returned:   ["refunded"],
+  refunded:   [],
+  processing: ["confirmed","in_transit","shipped","delivered","received","cancelled","returned"],
+  shipped:    ["received","delivered","returned","delayed","error","damaged"],
+  delivered:  ["returned"]
+};
+const ADMIN_STATUS_OPTIONS=["pending","confirmed","in_transit","delayed","error","damaged","received","cancelled","returned"];
+const ADMIN_DELIVERY_OPTIONS=["pending","dispatched","in_transit","delivered","delay","error","damaged","received"];
+function setOrderStatus(id,s){
+  const o=orders.find(x=>x.id===id);
+  if(!o) return;
+  if(!needEdit()) return;
+  s=String(s||"").toLowerCase();
+  const prev=o.orderStatus||"pending";
+  if(prev===s) return;
+  const allowed=ORDER_FLOW[prev]||ORDER_FLOW[orderState({orderStatus:prev})]||[];
+  if(!allowed.includes(s)){ toast("Not allowed: "+prev+" → "+s); render(); return; }
+  logAct("order "+id+" → "+s+" (was "+prev+") by "+(session?session.name:"admin"));
+  o.orderStatus=s;
+  o.statusHistory=o.statusHistory||[];
+  o.statusHistory.push({state:s, at:new Date().toISOString(), by:(session?session.name:"admin")});
+  if(s==="confirmed" && !o.confirmedAt){ o.confirmedAt=new Date().toISOString().slice(0,10); }
+  if(s==="received"){ o.deliveryStatus="received"; o.etaDate=o.etaDate||new Date().toISOString().slice(0,10); }
+  if((s==="cancelled"||s==="returned")&&prev!=="cancelled"&&prev!=="returned"){ restockItems(o); logAct("stock restored for "+id); }
+  notifyCustomer(o, stateMessage(o, s));
+  saveAll(); pushCloudOrder(o); render();
+  toast("Order "+id+" → "+stateLabel(o)+" · customer notified 🔔");
 }
-function saveDeliveryFee(){ if(!needEdit())return; settings.deliveryFee=Number($id("dv_fee").value)||0; settings.deliveryFreeAbove=Number($id("dv_free").value)||0; logAct("delivery fee → Rs. "+settings.deliveryFee+" (free above "+settings.deliveryFreeAbove+")"); markStorefrontDirty(); saveAll(); render(); toast("Delivery fee updated ✅"); }
-function setDeliveryStatus(id,s){ const o=orders.find(x=>x.id===id); if(o){ logAct("delivery "+id+" → "+s); o.deliveryStatus=s; notifyCustomer(o,"📦 Delivery update: order "+id+" ab ["+s+"] hai. — "+settings.storeName); } saveAll(); render(); toast("Delivery "+id+" → "+s+" · customer notified 🔔"); }
-
+/* The exact words a customer receives on every state change. */
+function stateMessage(o,s){
+  const n=esc(settings.storeName);
+  const d=o&&o.etaDays?` Delivery ${o.etaDays} din mein expected hai.`:"";
+  switch(s){
+    case "confirmed": return "✅ Aapka order "+o.id+" CONFIRM ho gaya (advance payment verify ho gayi)."+d+" — "+settings.storeName;
+    case "in_transit": return "🚚 Order "+o.id+" raaste mein hai (ON THE WAY)."+d+" — "+settings.storeName;
+    case "delayed": return "⏳ Order "+o.id+" DELAY par hai — team jald update degi. — "+settings.storeName;
+    case "error": return "⚠️ Order "+o.id+" mein ERROR aaya hai — support se rabta karein. — "+settings.storeName;
+    case "damaged": return "📦 Order "+o.id+" damaged report hua — return/refund ke liye support se baat karein. — "+settings.storeName;
+    case "received": return "🎉 Order "+o.id+" RECEIVE ho gaya — shukriya! — "+settings.storeName;
+    case "cancelled": return "❌ Order "+o.id+" cancel kar diya gaya. — "+settings.storeName;
+    default: return "Salaam! Aapka order "+o.id+" ab ["+stateLabel(o)+"] stage par hai. — "+settings.storeName;
+  }
+}
+/* ---------- COD advance: admin marks the 20% as received, then CONFIRMS ---------- */
+function markAdvancePaid(id){
+  if(!needEdit()) return;
+  const o=orders.find(x=>x.id===id); if(!o) return;
+  o.advanceStatus="paid";
+  o.advancePaidAt=new Date().toISOString().slice(0,10);
+  logAct("advance ("+(o.advancePercent||codAdvancePct())+"%) marked PAID for "+id+" by "+(session?session.name:"admin"));
+  saveAll(); pushCloudOrder(o); render();
+  toast("💰 Advance received — ab CONFIRM karein ✅");
+}
+function confirmCodOrderAdmin(id){
+  if(!needEdit()) return;
+  const o=orders.find(x=>x.id===id); if(!o) return;
+  if(o.advanceStatus!=="paid"){
+    toast("Pehle "+(o.advancePercent||codAdvancePct())+"% advance ko PAID mark karein ❌");
+    return;
+  }
+  if(orderState(o)!=="pending"){ toast("Order already "+stateLabel(o)); return; }
+  o.orderStatus="confirmed";
+  o.confirmedAt=new Date().toISOString().slice(0,10);
+  o.statusHistory=(o.statusHistory||[]).concat([{state:"confirmed",at:new Date().toISOString(),by:(session?session.name:"admin")}]);
+  logAct("COD order "+id+" CONFIRMED (advance paid) by "+(session?session.name:"admin"));
+  notifyCustomer(o, stateMessage(o,"confirmed"));
+  saveAll(); pushCloudOrder(o); render();
+  toast("✅ Order "+id+" CONFIRMED — ab delivery days set karein");
+}
+/* Admin sets the delivery timeline: "kitne din mein delivery hogi?" → countdown
+   for the customer that drops by one every day. */
+function setOrderTimeline(id){
+  if(!needEdit()) return;
+  const o=orders.find(x=>x.id===id); if(!o) return;
+  const cur=o.etaDays||3;
+  const raw=prompt("Kitne din mein delivery ho jayegi? (1-60)", String(cur));
+  if(raw===null) return;
+  const days=Math.max(1,Math.min(60,Number(String(raw).trim())||0));
+  if(!days){ toast("1 se 60 ke beech din likhein"); return; }
+  const eta=setOrderEtaDays(o,days);
+  if(orderState(o)==="confirmed") o.orderStatus="in_transit";
+  o.statusNote="";
+  logAct("delivery timeline for "+id+" → "+days+" days (ETA "+eta+") by "+(session?session.name:"admin"));
+  notifyCustomer(o,"🚚 Order "+id+" ki delivery "+days+" din mein expected hai (ETA "+eta+"). Roz countdown kam hota jayega. — "+settings.storeName);
+  saveAll(); pushCloudOrder(o); render();
+  toast("⏱ "+days+" din set — customer ko "+eta+" tak countdown dikhega");
+}
+function setOrderNote(id){
+  if(!needEdit()) return;
+  const o=orders.find(x=>x.id===id); if(!o) return;
+  const n=prompt("Customer ke liye note (DELAY / ERROR / DAMAGED ki waja):", o.statusNote||"");
+  if(n===null) return;
+  o.statusNote=String(n).slice(0,240);
+  saveAll(); pushCloudOrder(o); render();
+  toast("Note saved 📝");
+}
+function verifyPayment(id){
+  const o=orders.find(x=>x.id===id); if(!o)return;
+  if(!needEdit()) return;
+  logAct("verified payment "+id);
+  o.paymentStatus="verified";
+  if(o.pm==="cod"){ o.advanceStatus="paid"; o.advancePaidAt=new Date().toISOString().slice(0,10); }
+  notifyCustomer(o,"✅ Payment verify ho gayi — order "+id+" process ho raha hai. — "+settings.storeName);
+  saveAll(); pushCloudOrder(o); render();
+  toast("Payment verified ✅ Order "+id);
+}
+function adminOrders(){
+  const pendPay = orders.filter(o=> o.pm!=="wallet" && o.paymentStatus!=="verified" && o.pm!=="cod");
+  const pendTotal = pendPay.reduce((a,o)=>a+(o.total||0),0);
+  const codWaiting = orders.filter(o=> o.pm==="cod" && orderState(o)==="pending");
+  const codWaitingAmt = codWaiting.reduce((a,o)=>a+(Number(o.advanceAmount)||0),0);
+  const running = orders.filter(o=> ["confirmed","in_transit","delayed"].indexOf(orderState(o))>=0);
+  return adminLayout(`
+    <h1 style="margin-top:0">Orders</h1>
+    <div class="toolbar" style="margin-bottom:10px"><button class="btn btn-emerald" onclick="exportOrdersCSV()">📥 Export Orders CSV</button>
+      <span class="pill pend">${codWaiting.length} COD order advance ke intezaar mein · ${fmt2(codWaitingAmt)}</span>
+      <span class="pill info">${running.length} orders timeline par chal rahe hain</span></div>
+    <div class="notice warn"><b>🚚 Cash on Delivery (COD) ka poora flow — step by step:</b>
+      <ol style="margin:8px 0 0 18px;line-height:1.75">
+        <li>Customer checkout par <b>Cash on Delivery</b> chunta hai → order <b>PENDING</b> banta hai aur customer ko order page par <b>PENDING</b> dikhta hai.</li>
+        <li>Customer <b>${codAdvancePct()}% advance</b> (Rs. amount us order ke <b>Advance</b> column mein hai) EasyPaisa / JazzCash par bhejta hai, TID + screenshot yahan aata hai.</li>
+        <li>Aap payment apne account mein dekh kar <b>💰 Advance Paid</b> dabayein — phir <b>✅ Confirm</b> se order <b>PENDING → CONFIRMED</b>. <b>Without advance — no confirmation.</b></li>
+        <li><b>⏱ Days</b> button se poochein "kitne din mein delivery hogi?" — jaise 5 din select kiye to customer ko <b>5 days</b> dikhega aur roz <b>5 → 4 → 3</b> kam hota jayega.</li>
+        <li>Masla ho to status dropdown se <b>DELAY</b>, <b>ERROR</b> ya <b>DAMAGED (order kharab tha)</b> — aur delivery mukammal hone par <b>ORDER RECEIVED</b>.</li>
+        <li>ETA nikal jaye aur order abhi bhi chal raha ho to woh <b>khud DELAY</b> par chala jata hai.</li>
+      </ol>
+      ${codWaiting.length?`<p style="margin-top:8px"><b>⏳ Abhi ${codWaiting.length} COD order(s) ${fmt2(codWaitingAmt)} advance ke intezaar mein PENDING hain.</b></p>`:`<p style="margin-top:8px" class="muted">Koi COD order advance ke intezaar mein nahi.</p>`}
+    </div>
+    <div class="notice info"><b>💳 Advance Payment (EasyPaisa / JazzCash / Wallet) verify karne ka tareeqa:</b>
+      <ol style="margin:8px 0 0 18px;line-height:1.75">
+        <li><b>Pay Ref (TID)</b> column mein customer ka diya hua number hai; <b>Proof</b> se screenshot dekhein.</li>
+        <li>Apne <b>easypaisa (${esc(settings.easypaisa)})</b> / <b>JazzCash (${esc(settings.jazzcash)})</b> mein exact amount + naam match karein.</li>
+        <li>Match? <b>✔ Verify</b> dabayein. Nahi match? 📞 Call kar ke TID lein ya order <b>cancelled</b> karein.</li>
+        <li>${esc(WALLET_NAME)} se pay kiye orders khud verified hain ("auto").</li>
+      </ol>
+      ${pendPay.length?`<p style="margin-top:6px"><b>⏳ ${pendPay.length} order(s) (${fmt2(pendTotal)}) verify hone ke intezaar mein.</b></p>`:""}
+    </div>
+    <div class="panel" style="margin-top:14px;overflow:auto"><table>
+      <tr><th>Order</th><th>Customer</th><th>Phone / Email</th><th>Address</th><th>Items</th><th>Total</th><th>Payment</th>
+          <th>Advance (COD)</th><th>Pay Ref</th><th>Proof</th><th>Status</th><th>Timeline</th><th>Actions</th><th>Date</th></tr>
+      ${orders.length?orders.map(o=>{const st=orderState(o);const isCod=o.pm==="cod";const dLeft=orderEtaDays(o);return `<tr>
+      <td><b>${esc(o.id)}</b> <a class="pill ok" style="border:0;text-decoration:none" target="_blank" rel="noopener" href="${waLink(o,'Salaam! Aapka order '+o.id+' ab '+stateLabel(o)+' hai. — '+settings.storeName)}" title="WhatsApp customer">📲</a></td>
+      <td>${esc(o.deliveryName||"—")}</td>
+      <td style="white-space:nowrap">${esc(prettyPhone(o.deliveryPhone||""))}<br><span class="muted" style="font-size:11px">${esc(o.userEmail||"")}</span><br><a class="pill info" style="border:0" href="tel:${esc(normalizePhone(o.deliveryPhone)||"")}">📞 Call</a></td>
+      <td class="muted" style="max-width:210px">${esc(o.deliveryAddress||"—")}${o.deliveryCity?", "+esc(o.deliveryCity):""}${o.deliveryProvince?", "+esc(o.deliveryProvince):""}<br><span style="font-size:11px">🚚 ${esc(o.deliveryZone||zoneLabelFor(o.deliveryCity,o.deliveryProvince))} · ${fmt(o.deliveryFee||0)}</span></td>
+      <td>${(o.items||[]).reduce((a,i)=>a+(i.qty||1),0)}<div class="muted" style="font-size:10.5px;max-width:150px">${(o.items||[]).map(i=>i.qty+"× "+esc(decodeHTML(String(i.name||(prod(i.id)||{}).name||"")).slice(0,22))).join(", ")}</div></td>
+      <td><b>${fmt2(o.total)}</b></td>
+      <td>${isCod?`<span class="pill pend">COD</span>`:`<span class="pill ${o.paymentStatus==="verified"?"ok":"pend"}">${esc(o.pm)}</span>`}
+          <div class="muted" style="font-size:11px">${esc(o.paymentStatus||"pending")}</div></td>
+      <td>${isCod?`<b>${o.advancePercent||codAdvancePct()}%</b> · ${fmt2(o.advanceAmount||0)}<br>
+          <span class="pill ${o.advanceStatus==="paid"?"ok":o.advanceStatus==="claimed"?"info":"pend"}">${esc(o.advanceStatus||"unpaid")}</span><br>
+          <span class="muted" style="font-size:11px">due on delivery: ${fmt2(o.dueOnDelivery||0)}</span>`:`<span class="muted">—</span>`}</td>
+      <td class="muted"><code>${esc(o.payRef||o.advanceRef||"—")}</code></td>
+      <td>${o.payProofId?`<button class="pill info" style="border:0" onclick="viewProof('${esc(o.payProofId)}')">🖼 Proof</button>`:`<span class="muted">—</span>`}</td>
+      <td>${stateChip(o)}<br><select class="select" style="padding:5px;margin-top:4px" onchange="setOrderStatus('${esc(o.id)}',this.value)">${ADMIN_STATUS_OPTIONS.map(x=>`<option value="${x}" ${st===x||(o.orderStatus===x)?"selected":""}>${x}</option>`).join("")}</select></td>
+      <td style="white-space:nowrap">${o.etaDate?`<b>${dLeft!=null&&dLeft<0?"LATE":Math.max(0,dLeft)} din</b><div class="muted" style="font-size:11px">ETA ${esc(o.etaDate)} · ${esc(o.etaDays||0)}d set</div>`:`<span class="muted" style="font-size:11px">days set nahi</span>`}</td>
+      <td style="white-space:nowrap">
+        ${isCod&&o.advanceStatus!=="paid"?`<button class="pill ok" style="border:0" onclick="markAdvancePaid('${esc(o.id)}')">💰 Advance Paid</button>`:""}
+        ${isCod&&st==="pending"?`<button class="pill ok" style="border:0" onclick="confirmCodOrderAdmin('${esc(o.id)}')">✅ Confirm</button>`:""}
+        ${!isCod&&o.paymentStatus!=="verified"&&o.pm!=="wallet"?`<button class="pill ok" style="border:0" onclick="verifyPayment('${esc(o.id)}')">✔ Verify</button>`:""}
+        <button class="pill info" style="border:0" onclick="setOrderTimeline('${esc(o.id)}')">⏱ Days</button>
+        <button class="pill info" style="border:0" onclick="setOrderNote('${esc(o.id)}')">📝 Note</button>
+      </td>
+      <td>${esc(o.date||"")}</td></tr>`;}).join(""):"<tr><td colspan=14 class='muted'>No orders yet.</td></tr>"}
+    </table></div>`,"orders");
+}
+function adminDelivery(){
+  const zones=deliveryZones();
+  const running=orders.filter(o=>["confirmed","in_transit","delayed"].indexOf(orderState(o))>=0);
+  return adminLayout(`
+    <h1 style="margin-top:0">Delivery &amp; Courier</h1>
+    <div class="notice info"><b>🚚 Delivery charges city / province ke hisaab se lagte hain.</b>
+      Checkout par customer city/province likhta hai → yahan di gayi zone list se rate match hota hai → wahi charge order mein save hota hai.
+      Koi zone match na ho to <b>default ${fmt(settings.deliveryFee)}</b> lagta hai.</div>
+    <div class="panel" style="margin-bottom:14px">
+      <h3 style="margin-top:0">Default charge &amp; COD rules</h3>
+      <div class="toolbar" style="margin-bottom:10px">
+        <label style="font-size:13px">Default fee (Rs.)</label><input class="input" type="number" id="dv_fee" style="max-width:110px" value="${settings.deliveryFee}">
+        <label style="font-size:13px">Free above (Rs.)</label><input class="input" type="number" id="dv_free" style="max-width:130px" value="${settings.deliveryFreeAbove||0}">
+        <label style="font-size:13px">COD advance %</label><input class="input" type="number" id="dv_adv" min="0" max="90" style="max-width:90px" value="${codAdvancePct()}">
+        <label style="font-size:13px"><input type="checkbox" id="dv_cod" ${settings.codEnabled!==false?"checked":""}> COD enabled</label>
+        <button class="btn btn-emerald" onclick="saveDeliveryFee()">💾 Save</button>
+      </div>
+      <div class="muted" style="font-size:12.5px">COD advance % wahi number hai jo checkout par customer ko dikhta hai ("${codAdvancePct()}% advance payment zaroori hai").</div>
+    </div>
+    <div class="panel" style="margin-bottom:14px;overflow:auto">
+      <h3 style="margin-top:0">Zone rates (city / province wise)</h3>
+      <table><tr><th>Zone</th><th>Cities (comma separated)</th><th>Province(s)</th><th style="width:110px">Fee (Rs.)</th></tr>
+      ${zones.map((z,i)=>`<tr>
+        <td><input class="input" style="padding:5px;min-width:150px" value="${esc(z.label||"")}" onchange="editZone(${i},'label',this.value)"></td>
+        <td><input class="input" style="padding:5px;width:100%;min-width:220px" value="${esc(z.cities||"")}" onchange="editZone(${i},'cities',this.value)"></td>
+        <td><input class="input" style="padding:5px;min-width:150px" value="${esc(z.province||"")}" onchange="editZone(${i},'province',this.value)"></td>
+        <td><input class="input" type="number" style="padding:5px" value="${Number(z.fee)||0}" onchange="editZone(${i},'fee',Number(this.value))"></td></tr>`).join("")}
+      </table>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="btn btn-outline" onclick="addZone()">➕ Add zone</button>
+        <button class="btn btn-outline" onclick="resetZones()">↺ Default zones restore</button>
+        <span class="muted" style="font-size:12px">Test: ${esc(zoneLabelFor("Lahore","Punjab"))} → ${fmt(deliveryFeeFor("Lahore","Punjab"))} · Karachi → ${fmt(deliveryFeeFor("Karachi","Sindh"))} · Quetta → ${fmt(deliveryFeeFor("Quetta","Balochistan"))}</span>
+      </div>
+    </div>
+    <div class="panel" style="overflow:auto"><table>
+      <tr><th>Order</th><th>Customer</th><th>Phone</th><th>Delivery Address / Zone</th><th>Items</th><th>State</th><th>Timeline</th><th>Actions</th></tr>
+      ${orders.length?orders.map(o=>{const dLeft=orderEtaDays(o);return `<tr><td><b>${esc(o.id)}</b></td>
+      <td>${esc(o.deliveryName||"—")}</td>
+      <td>${esc(prettyPhone(o.deliveryPhone)||"—")}</td>
+      <td class="muted" style="max-width:260px">${esc(o.deliveryAddress||"—")}${o.deliveryCity?", "+esc(o.deliveryCity):""}${o.deliveryProvince?", "+esc(o.deliveryProvince):""}${o.deliveryNote?"<br><span style='font-size:11px'>📝 "+esc(o.deliveryNote)+"</span>":""}
+        <br><span style="font-size:11px">🚚 ${esc(o.deliveryZone||zoneLabelFor(o.deliveryCity,o.deliveryProvince))} · ${fmt(o.deliveryFee||0)}</span></td>
+      <td>${(o.items||[]).reduce((a,i)=>a+(i.qty||1),0)}</td>
+      <td>${stateChip(o)}<br><select class="select" style="padding:5px;margin-top:4px" onchange="setDeliveryStatus('${esc(o.id)}',this.value)">${ADMIN_DELIVERY_OPTIONS.map(x=>`<option value="${x}" ${String(o.deliveryStatus||"").toLowerCase()===x?"selected":""}>${x}</option>`).join("")}</select></td>
+      <td style="white-space:nowrap">${o.etaDate?`<b>${dLeft!=null&&dLeft<0?"LATE":Math.max(0,dLeft)} din baqi</b><div class="muted" style="font-size:11px">ETA ${esc(o.etaDate)}</div>`:`<span class="muted" style="font-size:11px">set nahi</span>`}</td>
+      <td style="white-space:nowrap"><button class="pill info" style="border:0" onclick="setOrderTimeline('${esc(o.id)}')">⏱ Days</button>
+        <button class="pill info" style="border:0" onclick="setOrderNote('${esc(o.id)}')">📝</button>
+        <a class="pill info" style="border:0;text-decoration:none" href="tel:${esc(normalizePhone(o.deliveryPhone)||settings.phone)}">📞</a>
+        <a class="pill ok" style="border:0;text-decoration:none" target="_blank" rel="noopener" href="${waLink(o,'Salaam! Order '+o.id+' ki delivery update: '+stateLabel(o)+'. — '+settings.storeName)}">📲</a></td></tr>`;}).join(""):"<tr><td colspan=8 class='muted'>No orders yet.</td></tr>"}
+    </table></div>
+    <div class="muted" style="margin-top:10px;font-size:12.5px">Timeline par ${running.length} order(s) chal rahe hain — ETA nikalne par woh khud <b>DELAY</b> ho jaate hain.</div>`,"delivery");
+}
+function saveDeliveryFee(){
+  if(!needEdit())return;
+  /* A blank box means "leave it alone" — never overwrite a good setting with 0. */
+  const num=(id,fb)=>{ const e=$id(id); const v=e?String(e.value==null?"":e.value).trim():"";
+    if(v==="")return fb; const n=Number(v); return isFinite(n)?Math.max(0,Math.round(n)):fb; };
+  settings.deliveryFee=num("dv_fee",Number(settings.deliveryFee)||0);
+  settings.deliveryFreeAbove=num("dv_free",Number(settings.deliveryFreeAbove)||0);
+  settings.codAdvancePct=Math.max(0,Math.min(90,num("dv_adv",codAdvancePct())));
+  const cod=$id("dv_cod"); if(cod) settings.codEnabled=!!cod.checked;
+  logAct("delivery fee → Rs. "+settings.deliveryFee+" (free above "+settings.deliveryFreeAbove+"), COD advance "+codAdvancePct()+"%, COD "+(settings.codEnabled!==false?"on":"off"));
+  markStorefrontDirty(); saveAll(); render();
+  toast("Delivery settings updated ✅");
+}
+/* zone editing — zones live in settings so they sync to every device */
+function _zonesWritable(){
+  if(!Array.isArray(settings.deliveryZones) || !settings.deliveryZones.length){
+    settings.deliveryZones = DEFAULT_DELIVERY_ZONES.map(z=>Object.assign({},z));
+  }
+  return settings.deliveryZones;
+}
+function editZone(i,field,val){
+  if(!needEdit())return;
+  const z=_zonesWritable()[i]; if(!z) return;
+  z[field]= (field==="fee") ? Math.max(0,Math.round(Number(val)||0)) : String(val==null?"":val);
+  logAct("delivery zone "+(z.label||i)+" "+field+" → "+z[field]);
+  markStorefrontDirty(); saveAll(); render();
+}
+function addZone(){
+  if(!needEdit())return;
+  const z=_zonesWritable();
+  z.push({id:"z-"+Date.now().toString(36), label:"New zone", cities:"", province:"", fee:Number(settings.deliveryFee)||199});
+  saveAll(); render(); toast("Zone added — cities/fee bharein ✅");
+}
+function resetZones(){
+  if(!needEdit())return;
+  if(!confirm("Default city/province zones restore karein?"))return;
+  settings.deliveryZones = DEFAULT_DELIVERY_ZONES.map(z=>Object.assign({},z));
+  logAct("delivery zones reset to defaults");
+  markStorefrontDirty(); saveAll(); render(); toast("Default zones restored ↺");
+}
+function setDeliveryStatus(id,s){
+  const o=orders.find(x=>x.id===id);
+  if(!o) return;
+  if(!needEdit()) return;
+  s=String(s||"").toLowerCase();
+  logAct("delivery "+id+" → "+s);
+  o.deliveryStatus=s;
+  // delivery states that mirror an order state keep both columns in step
+  const mirror={delivered:"received", received:"received", delay:"delayed", error:"error", damaged:"damaged"};
+  if(mirror[s] && orderState(o)!==mirror[s]){
+    const prev=o.orderStatus;
+    const allowed=ORDER_FLOW[prev]||[];
+    if(allowed.includes(mirror[s])){ o.orderStatus=mirror[s]; if(mirror[s]==="received") o.etaDate=o.etaDate||new Date().toISOString().slice(0,10); }
+  }
+  if(s==="dispatched" && orderState(o)==="confirmed") o.orderStatus="in_transit";
+  notifyCustomer(o,"📦 Delivery update: order "+id+" ab ["+s.replace(/_/g," ")+"] hai."+(o.etaDate?" ETA "+o.etaDate+".":"")+" — "+settings.storeName);
+  saveAll(); pushCloudOrder(o); render();
+  toast("Delivery "+id+" → "+s+" · customer notified 🔔");
+}
 function adminReviews(){
   const rows=[];
   Object.entries(store.get("nukto.userReviews", {})).forEach(([pid,list])=>{ (list||[]).forEach(r=>rows.push({pid:pid,name:r.name,rating:r.rating,date:r.date||"",text:r.text,src:"local"})); });
@@ -4268,7 +5681,8 @@ function render(){
   const isAdmin=view==="admin";
   // Admin = clean shell only: hide the public storefront header, footer, theme FAB/panel, cookie bar.
   const hdr=$id("header"); if(hdr) hdr.style.display=isAdmin?"none":"block";
-  $id("footer").style.display=isAdmin?"none":"block";
+  // no footer at all — the endless product feed is the bottom of the page
+  const _ftr=$id("footer"); if(_ftr){ _ftr.innerHTML=""; _ftr.style.display="none"; }
   const tf=$id("themeFab"); if(tf) tf.style.display="none"; // floating circle removed (confused with WhatsApp button) — themes in Settings
   const tp=$id("themePanel"); if(tp){ if(isAdmin) tp.classList.remove("open"); }
   const cb=$id("cookiebar"); if(cb) cb.style.display=isAdmin?"none":"";
@@ -4276,6 +5690,8 @@ function render(){
   renderHeader();
   try{ attachFeedObserver(); }catch(e){}   // endless feed: load more as shopper nears the end
   try{ smoothMedia(); }catch(e){}          // pause/play video thumbs only while visible
+  try{ buildSnow(); }catch(e){}            // winter mode snowfall follows the active view
+  try{ sweepOrderTimelines(); }catch(e){}  // COD/ETA: past-due orders flip to DELAYED
   $id("loading").style.display="none";
   if(!productsPage._appending) window.scrollTo(0,0);
   // SEO: dynamic titles/descriptions
@@ -4307,6 +5723,12 @@ function boot(){
   if(booted) return;
   booted=true;
   try{ applyThemeOnce(); injectThemePanel(); }catch(e){}
+  /* Owner: "Nukto.Shop/admin pr admin panel open hona chahye" — a /admin path opens the
+     panel straight away (vercel.json rewrites /admin → index.html, this jumps to #admin). */
+  try{
+    const path=(location.pathname||"").replace(/\/+$/,"");
+    if(/\/admin$/i.test(path) && !/^#admin/i.test(location.hash||"")) location.hash="#admin";
+  }catch(e){}
   try{ initCatalog(); }catch(e){ console.error("initCatalog:", e); }
   try{ purgeStaleData(); }catch(e){ console.warn("purgeStaleData:", e); }
   try{ reconcileWallet(); }catch(e){}
