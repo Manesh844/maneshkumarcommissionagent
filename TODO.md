@@ -83,6 +83,9 @@ see; renaming them would require a live migration. Phone number `03420286170` /
 - [ ] OWNER: sbp_ access token dashboard se REVOKE karein
 - [ ] EasyPaisa integration — merchant approval aate hi store ID + hash key share → payment-webhook mein map
 - [ ] Cloudflare: domain connect → Turnstile CAPTCHA (bot/DDoS protection) → phir Brevo DKIM/SPF records Cloudflare DNS mein
+      ⚠️ 2026-10-28: site par ek **FAKE** Turnstile popup dekha gaya tha jo Win+R → Ctrl+V → Enter karwa raha tha.
+      Wo ClickFix malware tha, is to-do se uska koi taluq nahi — asli Turnstile kabhi keyboard steps nahi maangta.
+      Poori report + IOC sweep: `INCIDENT.md`.
 - [ ] Live hone ke baad: production smoke test (order + reset email + webhook)
 
 ---
