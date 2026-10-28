@@ -119,5 +119,16 @@ new Function(b.join('\n'));console.log('JS OK')"
 
 ```bash
 cd maneshkumarcommissionagent
-python3 -m http.server 8080      # then open http://localhost:8080
+node tests/serve.js 8080         # then open http://localhost:8080
+```
+
+`tests/serve.js` (Node stdlib only, dev tool — never loaded by the site) applies
+the real `headers` and `rewrites` from `vercel.json`, so `/admin` works and the
+Content-Security-Policy is actually sent. That matters: `python3 -m http.server`
+sends no CSP, so the console tests in `INCIDENT.md` §4c would appear to "pass"
+for the wrong reason. Check with:
+
+```bash
+curl -sI http://localhost:8080/ | grep -i content-security-policy
+curl -s  http://localhost:8080/ | grep -oiE '<script[^>]*src="[^"]*"'   # only app.js + catalog.js
 ```

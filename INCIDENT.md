@@ -163,6 +163,17 @@ Merged into the **existing** `headers` block; nothing previously configured was 
 | Kept `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Cross-Origin-Opener-Policy: same-origin` | Already present; verified correct and left alone |
 | **No `Cross-Origin-Embedder-Policy`** added on purpose | `require-corp` would break the DigitalOcean/Bunny CDN media, which does not send `Cross-Origin-Resource-Policy`. Deliberate trade-off, noted here so nobody "fixes" it later and breaks videos |
 
+> ⚠️ **Operational note:** the CSP is a hard allow-list. If the Supabase project
+> is ever changed (the app also accepts an override in `localStorage["nukto.supabase"]`),
+> or the media CDNs move, then `connect-src` / `img-src` / `media-src` in
+> `vercel.json` **must be updated in the same change** — otherwise the storefront
+> fails silently (images blank, videos dead, orders not saved) with errors only in
+> the browser console. Verified today that every `fetch()` destination in the shipped
+> `app.js` is inside `connect-src`: Supabase REST/RPC (`sbTable`, `supaFn` →
+> `checkout`, `admin-auth`, `password-reset`, `storefront-sync`) and
+> `api.brevo.com/v3/smtp/email`. Nothing else is fetched; `wa.me`, JazzCash and
+> EasyPaisa are plain `<a href>` navigations, which CSP does not restrict.
+
 `'unsafe-inline'` is retained in `script-src` **on purpose**, for two reasons: the pre-paint theme bootstrap must stay inline, and the markup uses inline `onclick=`/`oninput=` handlers throughout. The migration plan (and the trap that adding a `sha256-` hash while `'unsafe-inline'` is present *silently disables* `'unsafe-inline'` and would break every inline handler) is documented in an HTML comment directly above that bootstrap in `index.html` — `vercel.json` is strict JSON, so a comment cannot live inside it. **That migration was deliberately NOT performed in this change set.**
 
 ### (3) Hardening — commit `5936098`
