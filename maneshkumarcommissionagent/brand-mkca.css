@@ -140,3 +140,37 @@
   .checkout-link:hover{background:#A8442E;transform:translateY(-2px)}
   .avatar{background:var(--grad-lav);color:#FFFDF9;border:2px solid #fff}
   .user-menu{background:#FFFDF9;border:1.5px solid rgba(193,85,59,.35);box-shadow:0 18px 40px rgba(60,42,24,.18)}
+
+/* ---------- Concept C signature pieces (MKCA only) ----------
+   1. Ink-dark header bar (mockup C): the storefront's top bar is a solid ink
+      band with a light wordmark, so the sand field below reads as the page.
+   2. Editorial split hero: copy on the left, one warm photograph on the right.
+   Both are structural overrides for this brand; the shared components in
+   styles.css are untouched. */
+  header.top{background:#1B1B1B;border-bottom:1px solid rgba(255,255,255,.08);
+    box-shadow:0 6px 22px rgba(20,15,10,.28)}
+  header.top .brand-main{color:#F7F2EB}
+  header.top .brand-sub{color:#E8A184}
+  header.top nav.nav a{color:#E9E1D8}
+  header.top nav.nav a:hover{background:rgba(224,112,79,.22);color:#F7F2EB}
+  header.top .search{background:#FFFDF9;border-color:rgba(255,255,255,.25)}
+  header.top .icon-btn{background:transparent;border-color:rgba(255,255,255,.28);color:#F0EAE2}
+  header.top .icon-btn:hover{background:rgba(224,112,79,.22);border-color:#E0704F;color:#F7F2EB}
+  header.top .icon-btn.on{background:#C1553B;border-color:#C1553B;color:#FFFDF9}
+  header.top .checkout-link{background:#C1553B;color:#FFFDF9;border-color:rgba(0,0,0,.35)}
+  body.dark header.top{background:#141211}
+
+  .hero-split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+    gap:28px;align-items:stretch;overflow:hidden}
+  .hero-split .hero-copy{display:flex;flex-direction:column;justify-content:center;gap:2px}
+  .hero-split .hero-photo{margin:0;position:relative;min-height:280px}
+  .hero-split .hero-photo img{position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+  .hero-split .hero-eyebrow{color:#8F3A24}
+  .hero-split h1{color:#1B1B1B}
+  body.dark .hero-split h1,body.dark .hero-split .hero-eyebrow{color:#F7F2EB}
+  body.dark .hero-split .hero-eyebrow{color:#E8A184}
+  @media (max-width:860px){
+    .hero-split{grid-template-columns:1fr}
+    .hero-split .hero-photo{order:-1;min-height:200px}
+  }

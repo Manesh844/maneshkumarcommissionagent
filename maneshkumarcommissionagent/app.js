@@ -226,14 +226,18 @@ const BRANDS = {
            domain:"nukto.shop", email:"support@nukto.shop", wallet:"Nukto Wallet",
            address:"Pakistan", defaultTheme:"lemon", darkThemes:["charcoal","dark"],
            logo:"logo-nukto.svg", bag:"img/bag-nukto.svg",
-           wordMain:"NUKTO", wordSub:"SHOP SMART · LIVE BETTER" },
+           wordMain:"NUKTO", wordSub:"SHOP SMART · LIVE BETTER",
+           eyebrow:"Online Store · Pakistan", heroLine:"Shop smart, live better.",
+           hero:"" },
   mkca:  { key:"mkca", name:"Manesh Kumar Commission Agent", short:"MK Commission Agent",
            tagline:"Socho · Dekho · Kharido — Bharosay Ke Saath",
            domain:"maneshkumarcommissionagent.dpdns.org",
            email:"support@maneshkumarcommissionagent.dpdns.org", wallet:"MK Wallet",
            address:"Sanghar, Sindh, Pakistan", defaultTheme:"sand", darkThemes:["ink","dark"],
            logo:"logo-mkca.svg", bag:"img/bag-mkca.svg",
-           wordMain:"MANESH KUMAR", wordSub:"COMMISSION AGENT" },
+           wordMain:"MANESH KUMAR", wordSub:"COMMISSION AGENT",
+           eyebrow:"Commission Agent · Pakistan", heroLine:"سوچو، دیکھو، خریدو",
+           hero:"img/hero-mkca.jpg" },
 };
 const BRAND = BRANDS[detectBrand()];
 const STORE_NAME    = BRAND.name;
@@ -979,6 +983,7 @@ function brandLockSettings(){
   settings.storeShort = STORE_SHORT;
   settings.supportEmail = SUPPORT_EMAIL;
   settings.storeUrl = SITE_URL;
+  settings.tagline = BRAND.tagline;
 }
 brandLockSettings();
 if(String(settings.whatsapp||"").replace(/\D/g,"")==="9203420286170") settings.whatsapp=DEFAULT_SETTINGS.whatsapp;
@@ -2434,10 +2439,11 @@ function productsPage(q, catSlug, section){
   return `
   <div class="wrap">
     ${!search ? `
-    <section class="hero" style="margin-bottom:18px">
-      <span class="hero-eyebrow"><i class="pip"></i>Commission Agent · Pakistan</span>
+    <section class="hero${BRAND.hero ? " hero-split" : ""}" style="margin-bottom:18px">
+      <div class="hero-copy">
+      <span class="hero-eyebrow"><i class="pip"></i>${esc(BRAND.eyebrow)}</span>
       <h1>${esc(settings.storeName)}</h1>
-      <p class="urdu">سوچو، دیکھو، خریدو</p>
+      <p class="urdu">${esc(BRAND.heroLine)}</p>
       <p class="banner-line">${esc(settings.banner)}</p>
       <p class="hero-meta">${esc(settings.tagline)} · ${allProducts().length.toLocaleString()} products · delivery ${fmt(settings.deliveryFee)}</p>
       <div class="hero-pills">
@@ -2450,6 +2456,8 @@ function productsPage(q, catSlug, section){
         <a class="btn btn-gold" href="#products">🛍️ Shop all products</a>
         <a class="btn btn-ghost" href="#categories">🗂️ Browse categories</a>
       </div>
+      </div>
+      ${BRAND.hero ? `<figure class="hero-photo" aria-hidden="true"><img src="${BRAND.hero}" alt="" loading="eager" decoding="async"></figure>` : ""}
     </section>` : ""}
     <div class="sec-head"><h2>${pageTitle}</h2>
       <span class="sub">${total.toLocaleString()} products ${search? "— ‘"+esc(search)+"’":""}</span></div>

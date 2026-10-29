@@ -68,6 +68,55 @@ across the storefront, the admin panel and the emails.
 - `supabase_rename_nukta_to_nukto.sql` is a historical one-off from an older rebrand.
   It has already been applied to the live database — **do not run it again**.
 
+## 🏬 Two brands, one codebase, one database
+
+The same repository **and** the same Supabase project (`vneknnmhnbkltkhihbok`)
+serve two storefronts that must never show each other's identity:
+
+| Host | Brand | Look | Shell | Tokens |
+|---|---|---|---|---|
+| `nukto.shop`, `www.nukto.shop` | **Nukto.Shop** | Lemon / Charcoal / Electric Lavender (live design) | `nukto.html` | `brand-lemon.css` |
+| everything else (`…dpdns.org`, `*.vercel.app`, localhost) | **Manesh Kumar Commission Agent** | Concept C — Warm Sand / Ink / Terracotta | `index.html` | `brand-mkca.css` |
+
+- The brand is chosen **by hostname** in `app.js` (`BRANDS` table). Name, short
+  name, tagline, e-mail, canonical domain, wallet label, wordmark, logo, splash
+  and hero all come from that table — so neither storefront can leak the other.
+- Products, orders, customers, admins and settings are **fully shared** in the
+  database (owner decision). `brandLockSettings()` forces name/e-mail/domain/
+  tagline from the brand constants on every load, so one brand's admin can
+  never rename the other storefront.
+- `styles.css` is brand-agnostic (every colour via `var(--token)`); each brand
+  file holds one `:root` token block plus its reskin layer. The pre-paint
+  bootstrap is byte-identical in both shells and reads its theme list from
+  `data-*` attributes on `<html>`.
+- Vercel `rewrites` with a **host condition** send `nukto.shop/*` to
+  `nukto.html`, and `/robots.txt` is served per brand. Sitemaps, manifests,
+  logos, splash animations and og-cards are per brand.
+- Theme sets are per brand: nukto = lemon/charcoal/offwhite, MKCA =
+  sand/ink/linen. Winter mode, search, cart, COD 20% advance, order lifecycle
+  and the admin panel are shared features and work on both.
+- Design reference renders live in `mockups/` (git-ignored, not shipped).
+
+### Owner wiring (once, in the Vercel dashboard)
+
+1. Merge PR #2 into `main`.
+2. Vercel project **`realonenukto`** (the one serving nukto.shop):
+   *Settings → General* → **Git Repository** → connect
+   `Manesh844/maneshkumarcommissionagent`; set **Root Directory** =
+   `maneshkumarcommissionagent`; **Production Branch** = `main`. Keep the
+   existing `nukto.shop` / `www.nukto.shop` domains on this project.
+3. Vercel project **`maneshkumarcommissionagent-…`**: add the domain
+   `maneshkumarcommissionagent.dpdns.org` (or your new custom domain) under
+   *Settings → Domains* and point its DNS at Vercel.
+4. Redeploy both projects, then verify:
+   `curl -sI https://nukto.shop | grep -i content-security-policy` and
+   `curl -s https://nukto.shop | grep -o '<title>[^<]*'` → must say Nukto.Shop;
+   the same on the MKCA domain must say Manesh Kumar Commission Agent.
+5. ⚠️ This repository is **public**: after step 2 the nukto.shop source also
+   lives in a public repo (the catalogue's cost prices were already public via
+   `catalog.js`). If that is not acceptable, keep `realonenukto` private and
+   mirror merges into it instead of re-pointing.
+
 ## 🔒 Security
 
 Audited 2026-10-28 after a **fake Cloudflare Turnstile / ClickFix** popup was

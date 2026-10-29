@@ -302,7 +302,9 @@ t("RELOAD: brand lock wins over any cached/shared store name (two brands, one DB
 t("RELOAD: admin banner (home description) persisted", app2.settings.banner.includes("NEW HOME DESCRIPTION FROM ADMIN"), app2.settings.banner);
 t("RELOAD: admin delivery fee persisted", app2.settings.deliveryFee === 249, app2.settings.deliveryFee);
 t("RELOAD: landing page SHOWS admin banner text", app2.productsPage("", "", "").includes("NEW HOME DESCRIPTION FROM ADMIN"));
-t("RELOAD: landing page SHOWS admin tagline", app2.productsPage("", "", "").includes("Test tagline line"));
+t("RELOAD: tagline is brand identity — the brand line wins over any cached value",
+  app2.productsPage("", "", "").includes(app2.BRAND.tagline) && app2.settings.tagline === app2.BRAND.tagline,
+  app2.settings.tagline);
 t("RELOAD: product price edit persisted", (app2.PRODUCTS.find(p => p.id === pid) || {}).price === 7777, (app2.PRODUCTS.find(p => p.id === pid) || {}).price);
 
 /* ---------- F: team roles + ratio engine (admin control panel) ---------- */
@@ -1355,6 +1357,30 @@ t("m11: sections use Show more instead of weak subs", !src9.includes("High deman
     !/#DFFF00|#A78BFA/.test(srcFile("brand-mkca.css")) && !/#C1553B|#F6EFE6/.test(srcFile("brand-lemon.css")));
   t("tokens: styles.css itself is brand-agnostic (no hard-coded brand hexes)",
     !/#DFFF00|#C1553B|#A78BFA|#1E3A8A/i.test(srcFile("styles.css")));
+}
+
+/* ---------- U: Concept C design layer (MKCA) ---------- */
+{
+  const home = app.productsPage("", "", "");
+  t("design: the MKCA home renders the editorial split hero with its photo",
+    /class="hero hero-split"/.test(home) && /img\/hero-mkca\.jpg/.test(home) && /hero-photo/.test(home));
+  t("design: the hero photo exists on disk and is a real JPEG",
+    (() => { const f = path.join(__dirname, "..", "img", "hero-mkca.jpg");
+      return fs.existsSync(f) && fs.readFileSync(f).slice(0, 3).equals(Buffer.from([0xff, 0xd8, 0xff])); })());
+  t("design: the nukto shell never references the MKCA hero photo",
+    !/hero-mkca/.test(nuktoShell));
+  t("design: ink header + split-hero rules live ONLY in brand-mkca.css",
+    /header\.top\{background:#1B1B1B/.test(srcFile("brand-mkca.css")) &&
+    /\.hero-split\{display:grid/.test(srcFile("brand-mkca.css")) &&
+    !/hero-split/.test(srcFile("brand-lemon.css")) && !/hero-split/.test(srcFile("styles.css")));
+  t("design: both og share cards exist and each shell points at its own",
+    fs.existsSync(path.join(__dirname, "..", "og-cover-mkca.png")) &&
+    fs.existsSync(path.join(__dirname, "..", "og-cover-nukto.png")) &&
+    /og-cover-mkca\.png/.test(rawShell) && /og-cover-nukto\.png/.test(nuktoShell) &&
+    !/og-cover-nukto/.test(rawShell) && !/og-cover-mkca/.test(nuktoShell));
+  t("design: MKCA palette tokens match the approved Concept C mockup",
+    /--bg:#F6EFE6/.test(srcFile("brand-mkca.css")) && /--lemon:#C1553B/.test(srcFile("brand-mkca.css")) &&
+    /--lav:#B87333/.test(srcFile("brand-mkca.css")) && /--ink-strong:#1B1B1B/.test(srcFile("brand-mkca.css")));
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
