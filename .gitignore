@@ -28,3 +28,6 @@ venv/
 Thumbs.db
 .vscode/
 .idea/
+
+# design reference renders (generated, not shipped)
+mockups/

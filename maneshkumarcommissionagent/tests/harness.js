@@ -26,7 +26,13 @@ const appSrc = blocks.join("\n") + "\n" + appJs;
 /* Everything the browser receives for the page: markup + externalised script.
    Assertions about behaviour/CSS/markup read this union, so moving code between
    index.html and app.js can never silently weaken a test. */
-const pageSrc = html + "\n" + appJs;
+const cssSrc = ["styles.css", "brand-lemon.css", "brand-mkca.css"]
+  .filter(f => fs.existsSync(path.join(__dirname, "..", f)))
+  .map(f => fs.readFileSync(path.join(__dirname, "..", f), "utf8")).join("\n");
+const rawShell = html;
+const nuktoShell = fs.existsSync(path.join(__dirname, "..", "nukto.html"))
+  ? fs.readFileSync(path.join(__dirname, "..", "nukto.html"), "utf8") : "";
+const pageSrc = html + "\n" + appJs + "\n" + cssSrc;
 
 /* ---------- tiny DOM stub ---------- */
 function el(id) {
@@ -132,6 +138,9 @@ const hooks = `
   nuktoHost, nuktoHostAllowed, nuktoSrcAllowed, safeCopyText, hostGuard,
   reportSecurity, lockClipboard, startInjectionWatch, copyPay,
   cookieConsent, showConsent, get consent(){ return consent; }, set consent(v){ consent = v; },
+  get BRAND(){ return BRAND; }, get BRANDS(){ return BRANDS; },
+  get NUKTO_THEMES(){ return NUKTO_THEMES; }, get MKCA_THEMES(){ return MKCA_THEMES; },
+  brandLockSettings, detectBrand,
   get NUKTO_HOST_SUFFIXES(){ return NUKTO_HOST_SUFFIXES; },
   get NUKTO_SRC_SUFFIXES(){ return NUKTO_SRC_SUFFIXES; },
   get NUKTO_CMD_PATTERN(){ return NUKTO_CMD_PATTERN; },
@@ -287,7 +296,9 @@ app.editProductField(pid, "price", 7777);
 // --- reload the whole app (fresh instance over the same localStorage) ---
 let app2;
 try { app2 = makeApp(); } catch (e) { console.error("RELOAD INSTANCE FAILED:", e.stack || e); process.exit(2); }
-t("RELOAD: admin store name persisted", app2.settings.storeName === "MKCA TEST", app2.settings.storeName);
+t("RELOAD: brand lock wins over any cached/shared store name (two brands, one DB)",
+  app2.settings.storeName === app2.BRAND.name && app2.settings.supportEmail === app2.BRAND.email,
+  app2.settings.storeName);
 t("RELOAD: admin banner (home description) persisted", app2.settings.banner.includes("NEW HOME DESCRIPTION FROM ADMIN"), app2.settings.banner);
 t("RELOAD: admin delivery fee persisted", app2.settings.deliveryFee === 249, app2.settings.deliveryFee);
 t("RELOAD: landing page SHOWS admin banner text", app2.productsPage("", "", "").includes("NEW HOME DESCRIPTION FROM ADMIN"));
@@ -640,37 +651,43 @@ const imgTag = (logoAnchor.match(/<img[^>]*>/) || [""])[0];
 const srcFile = p => (p === "index.html" ? pageSrc : fs.readFileSync(path.join(__dirname, "..", p), "utf8"));
 
 t("brand: header renders a mark next to the business name", logoAnchor.length > 0);
-t("brand: header mark is an <img> of logo.svg (the favicon asset)",
-  /class="logo-ico"/.test(imgTag) && /src="logo\.svg"/.test(imgTag), imgTag);
+t("brand: header mark is an <img> of THIS brand's favicon asset",
+  /class="logo-ico"/.test(imgTag) && imgTag.includes('src="' + app.BRAND.logo + '"'), imgTag);
 t("brand: old inline purple placeholder tile is gone from the header",
   !/<svg[^>]*class="logo-ico"/.test(logoAnchor) && !/id="lg1"/.test(logoAnchor));
 t("brand: no emoji stands in for the mark", !/\p{Extended_Pictographic}/u.test(logoAnchor));
 t("brand: img has fixed width/height + empty alt (no layout shift, decorative)",
   /width="40"/.test(imgTag) && /height="40"/.test(imgTag) && /alt=""/.test(imgTag), imgTag);
-t("brand: wordmark is the stacked MANESH KUMAR / COMMISSION AGENT lockup",
-  logoAnchor.indexOf("<img") < logoAnchor.indexOf("MANESH KUMAR")
-  && /<span class="brand-main">MANESH KUMAR<\/span>/.test(logoAnchor)
-  && /<span class="brand-sub">COMMISSION AGENT<\/span>/.test(logoAnchor), logoAnchor);
+t("brand: wordmark is the stacked two-line lockup of THIS brand's words",
+  logoAnchor.indexOf("<img") < logoAnchor.indexOf(app.BRAND.wordMain)
+  && logoAnchor.includes('<span class="brand-main">' + app.BRAND.wordMain + "</span>")
+  && logoAnchor.includes('<span class="brand-sub">' + app.BRAND.wordSub + "</span>"), logoAnchor);
 t("brand: no retired nukto/nukta wording left in the header lockup",
   !/nukt[oa]/i.test(logoAnchor), logoAnchor);
 t("brand: anchor is labelled for screen readers",
   /aria-label="Manesh Kumar Commission Agent/.test(logoAnchor));
 
-const logoSvg = srcFile("logo.svg");
-t("brand: logo.svg on disk is the gold shopping-bag mark (tile + bag body + handle)",
-  /M16\.5 24\.5h31/.test(logoSvg) && /a8 8 0 0 1 16 0/.test(logoSvg)
-  && /rect width="64" height="64" rx="15"/.test(logoSvg));
-t("brand: logo.svg is titled and coloured for the new brand (royal blue + gold)",
-  /Manesh Kumar Commission Agent/.test(logoSvg) && /#1E3A8A/.test(logoSvg) && /#E3B23C/.test(logoSvg)
-  && !/nukt/i.test(logoSvg));
+const logoMk = srcFile("logo-mkca.svg");
+const logoNk = srcFile("logo-nukto.svg");
+t("brand: both brand marks are the shopping-bag tile (same geometry, two palettes)",
+  /M16\.5 24\.5h31/.test(logoMk) && /a8 8 0 0 1 16 0/.test(logoMk) && /rect width="64" height="64" rx="15"/.test(logoMk)
+  && /M16\.5 24\.5h31/.test(logoNk) && /rect width="64" height="64" rx="15"/.test(logoNk));
+t("brand: the MKCA mark is terracotta/sand and titled for MKCA only",
+  /Manesh Kumar Commission Agent/.test(logoMk) && /#C1553B/.test(logoMk) && /#FBF7EF/.test(logoMk)
+  && !/#1E3A8A/i.test(logoMk) && !/#E3B23C/i.test(logoMk) && !/nukt/i.test(logoMk));
+t("brand: the nukto mark is lemon/charcoal and titled for Nukto only",
+  /Nukto\.Shop/.test(logoNk) && /#DFFF00/.test(logoNk) && /#242424/.test(logoNk)
+  && !/#1E3A8A/i.test(logoNk) && !/Manesh/i.test(logoNk));
 
 const headSrc = srcFile("index.html");
-t("brand: favicon links untouched (svg + 32px + 192px + apple-touch)",
-  /<link rel="icon" type="image\/svg\+xml" href="logo\.svg" \/>/.test(headSrc)
-  && /href="favicon-32\.png"/.test(headSrc) && /href="logo-192\.png"/.test(headSrc)
-  && /<link rel="apple-touch-icon" href="logo-192\.png" \/>/.test(headSrc));
-t("brand: header and favicon point at the same file",
-  /href="logo\.svg"/.test(headSrc) && /src="logo\.svg"/.test(headSrc));
+t("brand: each shell ships exactly one SVG icon + its own manifest (no stale PNGs)",
+  /<link rel="icon" type="image\/svg\+xml" href="logo-mkca\.svg" \/>/.test(rawShell)
+  && /<link rel="manifest" href="manifest-mkca\.webmanifest" \/>/.test(rawShell)
+  && !/favicon-32\.png|logo-192\.png|apple-touch-icon/.test(rawShell)
+  && /<link rel="icon" type="image\/svg\+xml" href="logo-nukto\.svg" \/>/.test(nuktoShell)
+  && /<link rel="manifest" href="manifest-nukto\.webmanifest" \/>/.test(nuktoShell));
+t("brand: header mark and the shell favicon point at the same brand file",
+  rawShell.includes('href="' + app.BRAND.logo + '"') && imgTag.includes('src="' + app.BRAND.logo + '"'));
 
 // The mobile-first nav block is the multi-line one (the single-line 760px rules for
 // .how/.trust/.foot-in come first in the file), so anchor on the opening brace + newline
@@ -709,12 +726,12 @@ t("endless loop: DOM is trimmed so the page never grows without bound",
 
 const asideMatch = headSrc.match(/<div class="alogo">[\s\S]*?<\/div>/) || [""];
 const asideImg = (asideMatch[0].match(/<img[^>]*>/) || [""])[0];
-t("admin: sidebar brand renders the logo.svg mark",
-  /class="logo-ico"/.test(asideImg) && /src="logo\.svg"/.test(asideImg), asideImg);
+t("admin: sidebar brand renders THIS brand's mark (via the BRAND table)",
+  /class="logo-ico"/.test(asideImg) && /src="\$\{BRAND\.logo\}"/.test(asideImg), asideImg);
 t("admin: old inline placeholder tile is gone from the sidebar brand",
   !/<svg[^>]*class="logo-ico"/.test(asideMatch[0]) && !/id="lg3"/.test(headSrc));
-t("admin: sidebar keeps the business name beside the mark",
-  /<span class="aword">MANESH KUMAR<span>COMMISSION AGENT<\/span><\/span>/.test(asideMatch[0]), asideMatch[0]);
+t("admin: sidebar keeps the brand wordmark beside the mark (via the BRAND table)",
+  /\$\{esc\(BRAND\.wordMain\)\}/.test(asideMatch[0]) && /\$\{esc\(BRAND\.wordSub\)\}/.test(asideMatch[0]), asideMatch[0]);
 t("admin: sidebar row is a flex row (mark and word stay aligned)",
   /\.aside \.alogo\{display:flex;align-items:center/.test(headSrc));
 t("admin: sidebar mark is sized in CSS", /\.aside \.alogo img\.logo-ico\{flex:0 0 auto;width:30px/.test(headSrc));
@@ -726,9 +743,10 @@ t("admin: sidebar wordmark is white with a gold sub-line",
    The boot splash animation is now an SVG, not a GIF: it stays sharp at any DPR,
    weighs ~2 KB instead of ~100 KB, and carries its own prefers-reduced-motion
    rule inside the file. These assert the asset is real, animated and wired up. */
-const animPath = path.join(__dirname, "..", "img", "mkca-shopping-bag-loop.svg");
-const anim = fs.existsSync(animPath) ? fs.readFileSync(animPath, "utf8") : null;
-t("anim: file exists at img/mkca-shopping-bag-loop.svg", !!anim);
+const bagMk = srcFile("img/bag-mkca.svg");
+const bagNk = srcFile("img/bag-nukto.svg");
+const anim = bagMk;
+t("anim: both brand splash animations exist", bagMk.length > 500 && bagNk.length > 500);
 t("anim: valid standalone SVG document", !!anim && /^<svg[\s\S]*<\/svg>\s*$/.test(anim.trim()));
 t("anim: light enough for the web (< 20KB)", !!anim && Buffer.byteLength(anim) < 20 * 1024,
   anim ? Math.round(Buffer.byteLength(anim) / 1024 * 10) / 10 + " KB" : "missing");
@@ -738,25 +756,27 @@ t("anim: the shopping bag actually moves (bob + handle draw + items drop)",
   !!anim && /@keyframes bagBob/.test(anim) && /@keyframes draw/.test(anim) && /@keyframes drop/.test(anim));
 t("anim: transparent background (no opaque backdrop rect)",
   !!anim && !/<rect[^>]*width="120"[^>]*height="120"/.test(anim));
-t("anim: carries the new brand colours, no retired nukto artwork",
-  !!anim && /#1E3A8A/.test(anim) && /#E3B23C/.test(anim) && !/nukt/i.test(anim));
+t("anim: each splash carries its OWN brand colours and never the other brand's",
+  /#C1553B/.test(bagMk) && !/#DFFF00/.test(bagMk) && !/nukt/i.test(bagMk)
+  && /#DFFF00/.test(bagNk) && !/#C1553B/.test(bagNk) && !/Manesh/i.test(bagNk));
 t("anim: honours prefers-reduced-motion from inside the asset",
   !!anim && /@media \(prefers-reduced-motion: reduce\)/.test(anim) && /animation:none/.test(anim));
-t("anim: referenced from the boot splash markup",
-  /img\/mkca-shopping-bag-loop\.svg/.test(headSrc));
+t("anim: each shell references its own splash animation",
+  /img\/bag-mkca\.svg/.test(rawShell) && /img\/bag-nukto\.svg/.test(nuktoShell)
+  && !/mkca-shopping-bag-loop/.test(rawShell + nuktoShell));
 t("anim: retired nukto GIF is gone from disk and from the markup",
   !fs.existsSync(path.join(__dirname, "..", "img", "nukto-shopping-bag-loop.gif"))
   && !/nukto-shopping-bag-loop/.test(headSrc));
-t("anim: splash keeps a static logo.svg fallback for reduced motion",
-  /class="brand-still" src="logo\.svg"/.test(headSrc));
+t("anim: splash keeps a static brand-mark fallback for reduced motion",
+  /class="brand-still" src="logo-mkca\.svg"/.test(rawShell) && /class="brand-still" src="logo-nukto\.svg"/.test(nuktoShell));
 t("anim: reduced-motion users get the still logo, not the animation",
   /@media \(prefers-reduced-motion: reduce\)\{\.load-brand \.brand-anim\{display:none\}\.load-brand \.brand-still\{display:block\}\}/.test(headSrc));
 t("anim: navigation branding stays the static logo.svg (no animated img in header/footer/admin)",
   !/<img[^>]*class="logo-ico"[^>]*\.(gif|svg#)/.test(headSrc)
   && !/<img class="logo-ico" src="img\//.test(headSrc));
-t("anim: logo.svg source file is still the favicon asset",
-  /<link rel="icon" type="image\/svg\+xml" href="logo\.svg" \/>/.test(headSrc)
-  && !/<link[^>]*rel="icon"[^>]*\.gif/.test(headSrc));
+t("anim: the shell favicon is this brand's SVG mark (no GIF, no stale PNG)",
+  rawShell.includes('<link rel="icon" type="image/svg+xml" href="' + app.BRAND.logo + '" />')
+  && !/<link[^>]*rel="icon"[^>]*\.gif/.test(rawShell + nuktoShell));
 
 const deploy = srcFile("DEPLOY_BACKEND.md");
 t("deploy guide: repo link points at main", /blob\/main\/maneshkumarcommissionagent\//.test(deploy));
@@ -875,8 +895,20 @@ t("m11: sections use Show more instead of weak subs", !src9.includes("High deman
     /--card:\s*#FFFFFF/i.test(src));
 
   /* three persistent looks + no flash of the wrong theme */
-  t("themes: lemon / charcoal / offwhite are the three house looks",
-    Object.keys(app.THEMES).sort().join(",") === "charcoal,lemon,offwhite", Object.keys(app.THEMES).join(","));
+  t("themes: this host (localhost -> brand mkca) gets the Sand/Ink/Linen looks",
+    Object.keys(app.THEMES).sort().join(",") === "ink,linen,sand", Object.keys(app.THEMES).join(","));
+  t("themes: the nukto brand keeps its Lemon/Charcoal/Off-White looks",
+    Object.keys(app.NUKTO_THEMES).sort().join(",") === "charcoal,lemon,offwhite");
+  t("brands: host detection maps nukto.shop -> nukto and everything else -> mkca",
+    app.BRANDS.nukto.domain === "nukto.shop" && app.BRAND.key === "mkca" &&
+    app.BRAND.name === "Manesh Kumar Commission Agent");
+  t("brands: the two storefronts never share a customer-facing identity",
+    app.BRANDS.nukto.name !== app.BRANDS.mkca.name &&
+    app.BRANDS.nukto.email !== app.BRANDS.mkca.email &&
+    app.BRANDS.nukto.domain !== app.BRANDS.mkca.domain &&
+    app.BRANDS.nukto.wallet !== app.BRANDS.mkca.wallet);
+  t("brands: the refusal message never mentions the other brand's domain",
+    !/nukto\.shop/.test((appJs.match(/function hostGuard\(\)[\s\S]*?\n}/) || [""])[0]));
   t("themes: legacy saved looks resolve onto the new house themes (no unknown-key flash)",
     /THEME_ALIASES/.test(src) && /royal:"lemon"|royal:\s*"lemon"/.test(src) && /dark:"charcoal"|dark:\s*"charcoal"/.test(src));
   t("themes: pre-paint bootstrap runs in <head> so the first frame is already correct",
@@ -1268,6 +1300,62 @@ t("m11: sections use Show more instead of weak subs", !src9.includes("High deman
     (vercelCfg.headers || []).some(h => h.source === "/catalog.js"));
 }
 
+
+/* ---------- T: two brands, one codebase, one database ---------- */
+{
+  const ids = s => [...s.matchAll(/ id="([a-zA-Z]+)"/g)].map(m => m[1]).sort().join(",");
+  t("shells: both HTML shells exist and carry the same app skeleton",
+    nuktoShell.length > 4000 && ids(rawShell) === ids(nuktoShell), ids(rawShell));
+  t("shells: MKCA shell is lemon-free and nukto-free (no cross-brand strings)",
+    /brand-mkca\.css/.test(rawShell) && /data-brand="mkca"/.test(rawShell) &&
+    !/nukto\.shop/i.test(rawShell) && !/Nukto\.Shop/.test(rawShell));
+  t("shells: nukto shell is MKCA-free (no cross-brand strings)",
+    /brand-lemon\.css/.test(nuktoShell) && /data-brand="nukto"/.test(nuktoShell) &&
+    /Nukto\.Shop/.test(nuktoShell) && !/Manesh Kumar/.test(nuktoShell) &&
+    !/maneshkumarcommissionagent/.test(nuktoShell));
+  const bootOf = s => (s.match(/<script>\n\/\* ---------- NO-FLASH THEME BOOTSTRAP[\s\S]*?<\/script>/) || [""])[0];
+  t("shells: the pre-paint bootstrap is byte-identical in both shells (knows no brand)",
+    bootOf(rawShell).length > 400 && bootOf(rawShell) === bootOf(nuktoShell));
+  t("shells: each shell declares its own themes/dark/default on <html>",
+    /data-themes="sand,ink,linen"/.test(rawShell) && /data-default-theme="sand"/.test(rawShell) &&
+    /data-themes="lemon,charcoal,offwhite"/.test(nuktoShell) && /data-default-theme="lemon"/.test(nuktoShell));
+  t("shells: canonical/og/manifest/icon are per brand",
+    /rel="canonical" href="https:\/\/maneshkumarcommissionagent\.dpdns\.org\/"/.test(rawShell) &&
+    /rel="canonical" href="https:\/\/nukto\.shop\/"/.test(nuktoShell) &&
+    /href="manifest-mkca\.webmanifest"/.test(rawShell) && /href="manifest-nukto\.webmanifest"/.test(nuktoShell) &&
+    /href="logo-mkca\.svg"/.test(rawShell) && /href="logo-nukto\.svg"/.test(nuktoShell));
+
+  const cfg = JSON.parse(srcFile("vercel.json"));
+  const nuktoRw = cfg.rewrites.find(r => r.source === "/(.*)" && (r.has || []).some(h => h.type === "host" && /nukto/.test(h.value)));
+  t("routing: a host-conditional rewrite sends nukto.shop to the nukto shell",
+    !!nuktoRw && nuktoRw.destination === "/nukto.html", JSON.stringify(nuktoRw));
+  t("routing: /robots.txt is served per brand (mkca default, nukto on its hosts)",
+    cfg.rewrites.some(r => r.source === "/robots.txt" && r.destination === "/robots-mkca.txt" && !r.has) &&
+    cfg.rewrites.some(r => r.source === "/robots.txt" && r.destination === "/robots-nukto.txt" && (r.has || []).length));
+  t("routing: the /admin rewrites for the MKCA shell survived",
+    cfg.rewrites.some(r => r.source === "/admin" && r.destination === "/index.html"));
+
+  const manMk = JSON.parse(srcFile("manifest-mkca.webmanifest"));
+  const manNk = JSON.parse(srcFile("manifest-nukto.webmanifest"));
+  t("manifests: names, theme colours and icons are per brand",
+    manMk.name === "Manesh Kumar Commission Agent" && manMk.theme_color === "#F6EFE6" &&
+    manMk.icons[0].src === "logo-mkca.svg" &&
+    manNk.name === "Nukto.Shop" && manNk.theme_color === "#DFFF00" && manNk.icons[0].src === "logo-nukto.svg");
+  t("robots: each brand points crawlers at its own sitemap",
+    /Sitemap: https:\/\/maneshkumarcommissionagent\.dpdns\.org\/sitemap\.xml/.test(srcFile("robots-mkca.txt")) &&
+    /Sitemap: https:\/\/nukto\.shop\/sitemap-nukto\.xml/.test(srcFile("robots-nukto.txt")));
+  t("sitemaps: the nukto sitemap lists nukto.shop URLs only",
+    /<loc>https:\/\/nukto\.shop\/<\/loc>/.test(srcFile("sitemap-nukto.xml")) &&
+    !/maneshkumarcommissionagent/.test(srcFile("sitemap-nukto.xml")));
+
+  const tokens = f => [...srcFile(f).matchAll(/(--[a-z0-9-]+)\s*:/g)].map(m => m[1]).sort().join(",");
+  t("tokens: brand-mkca.css and brand-lemon.css define the SAME variable names",
+    tokens("brand-mkca.css") === tokens("brand-lemon.css"));
+  t("tokens: the two brands share no signature colour",
+    !/#DFFF00|#A78BFA/.test(srcFile("brand-mkca.css")) && !/#C1553B|#F6EFE6/.test(srcFile("brand-lemon.css")));
+  t("tokens: styles.css itself is brand-agnostic (no hard-coded brand hexes)",
+    !/#DFFF00|#C1553B|#A78BFA|#1E3A8A/i.test(srcFile("styles.css")));
+}
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

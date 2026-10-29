@@ -1,0 +1,142 @@
+/* ============================================================
+   BRAND: MANESH KUMAR COMMISSION AGENT — Concept C
+   Warm Sand #F6EFE6 field, Ink #1B1B1B header & letters, Terracotta
+   #C1553B actions & prices, Copper #B87333 secondary accent, off-white
+   #FFFDF9 cards. Same variable names as brand-lemon.css so styles.css is
+   shared; the live values are re-applied by app.js (THEMES sand/ink/linen).
+   ============================================================ */
+:root{
+  --lemon:#C1553B;
+  --lemon-d:#A8442E;
+  --lemon-dd:#8F3A24;
+  --lemon-l:#F7E3DC;
+  --lemon-xl:#FBF0EA;
+  --charcoal:#1B1B1B;
+  --charcoal-2:#171513;
+  --charcoal-3:#3A3532;
+  --lav:#B87333;
+  --lav-d:#96591F;
+  --lav-dd:#7A4718;
+  --lav-l:#F3E4D3;
+  --lav-xl:#FAF1E6;
+  --offwhite:#FAF6EE;
+  --mist:#A89C90;
+  --ink-strong:#1B1B1B;
+  --primary:#C1553B;
+  --primary-d:#A8442E;
+  --primary-l:#F7E3DC;
+  --emerald:#2F6B4F;
+  --emerald-d:#245440;
+  --emerald-l:#E3EFE8;
+  --navy:#1B1B1B;
+  --navy2:#171513;
+  --bg:#F6EFE6;
+  --card:#FFFDF9;
+  --ink:#1B1B1B;
+  --ink2:#3A3532;
+  --muted:#8A7B6C;
+  --err:#B3261E;
+  --ok:#1E7A46;
+  --warn:#8A5300;
+  --line:rgba(27,27,27,.14);
+  --teal:#3E7C8C;
+  --amber:#8A5300;
+  --rose:#B23A5A;
+  --indigo:#4A5A8C;
+  --gold:#B87333;
+  --gold-d:#96591F;
+  --gold-l:#F3E4D3;
+  --pimg-bg:#EFE6D8;
+  --sk1:#F3E4D3;
+  --sk2:#FFFDF9;
+  --dark1:#1B1B1B;
+  --dark2:#171513;
+  --media-ring:1px solid rgba(193,85,59,.35);
+  --media-glow:0 0 0 4px rgba(193,85,59,.14);
+  --grad-brand:linear-gradient(115deg,#FBF7EF 0%,#F0E2CE 30%,#E4C9AC 68%,#C1553B 130%);
+  --grad-lav:linear-gradient(135deg,#E8CDB4 0%,#C1553B 60%,#8F3A24 100%);
+  --grad-gold:linear-gradient(135deg,#F3E4D3 0%,#D9A05B 55%,#B87333 100%);
+  --grad-lemon:linear-gradient(135deg,#FBF7EF 0%,#F0E2CE 55%,#E4C9AC 100%);
+  --radius:16px;
+  --radius-lg:22px;
+  --shadow:0 10px 30px rgba(60,42,24,.12);
+  --shadow-sm:0 2px 8px rgba(60,42,24,.08);
+  --shadow-lg:0 20px 48px rgba(60,42,24,.16);
+  --shadow-lemon:0 8px 22px rgba(193,85,59,.28);
+  --shadow-lav:0 8px 22px rgba(184,115,51,.25);
+  --ring:0 0 0 3px rgba(193,85,59,.4);
+}
+
+/* ---------- CONCEPT C reskin layer (Manesh Kumar Commission Agent) ----------
+   Same selector set as the Lemon reskin layer, warm-sand/ink/terracotta values.
+   Sits LAST so it re-skins the shared components for this brand only. */
+  body{
+    color:#1B1B1B;
+    background:
+      radial-gradient(1100px 520px at 10% -10%, rgba(193,85,59,.16), transparent 62%),
+      radial-gradient(880px 460px at 98% 2%, rgba(255,253,249,.7), transparent 58%),
+      linear-gradient(180deg,#FBF7EF 0%,#F6EFE6 34%,#F1E6D7 72%,#EDE0CD 100%);
+    background-attachment:fixed;
+  }
+  body.dark{
+    color:#F4EFE9;
+    background:
+      radial-gradient(1100px 520px at 10% -10%, rgba(224,112,79,.20), transparent 62%),
+      linear-gradient(180deg,#242120 0%,#1B1917 44%,#141211 100%);
+    background-attachment:fixed;
+  }
+  body.dark h1,body.dark h2,body.dark h3,body.dark .ptitle{color:#F7F2EB}
+  body.dark .pcard,body.dark .panel,body.dark .auth-card,body.dark .cat,body.dark .cat-row,
+  body.dark .tb,body.dark .step,body.dark .search,body.dark .icon-btn,body.dark .modal{background:#242120;border-color:rgba(255,255,255,.13);color:#F4EFE9}
+  body.dark .input,body.dark .select,body.dark .textarea{background:#1B1917;border-color:rgba(255,255,255,.18);color:#F4EFE9}
+  body.dark .btn-outline{background:transparent;border-color:rgba(255,255,255,.28);color:#F4EFE9}
+  body.dark .muted{color:#B4A99D}
+  body.dark .main-admin{background:#141211}
+
+  html.night body{color:#F4EFE9;
+    background:radial-gradient(1100px 520px at 10% -10%, rgba(224,112,79,.20), transparent 62%),
+      linear-gradient(180deg,#242120 0%,#1B1917 44%,#141211 100%);background-attachment:fixed}
+  html.frost body{background:
+      radial-gradient(1200px 620px at 50% -14%, rgba(255,255,255,.92), transparent 62%),
+      radial-gradient(900px 480px at 8% 6%, rgba(184,115,51,.22), transparent 60%),
+      linear-gradient(180deg,#FDFBF6 0%,#F3E9DA 40%,#EADCC6 100%);background-attachment:fixed}
+  html.frost.night body{background:
+      radial-gradient(1200px 620px at 50% -14%, rgba(224,112,79,.24), transparent 62%),
+      linear-gradient(180deg,#2A2624 0%,#1B1917 48%,#141211 100%);background-attachment:fixed}
+
+  /* header: warm sand field, ink letters, terracotta hairline */
+  header.top{background:rgba(246,239,230,.92);backdrop-filter:blur(14px) saturate(150%);
+    border-bottom:2px solid rgba(193,85,59,.55);box-shadow:0 6px 22px rgba(60,42,24,.14)}
+  body.dark header.top{background:rgba(20,18,17,.94);border-bottom-color:rgba(224,112,79,.5)}
+  .brand-main{color:#1B1B1B}
+  .brand-sub{color:#A8442E}
+  body.dark .brand-main{color:#F7F2EB}
+  body.dark .brand-sub{color:#E8A184}
+  .logo .logo-ico{box-shadow:0 4px 12px rgba(193,85,59,.30)}
+  nav.nav a{color:#1B1B1B;font-weight:700}
+  nav.nav a:hover{background:rgba(193,85,59,.14);color:#1B1B1B}
+  body.dark nav.nav a{color:#E9E1D8}
+  body.dark nav.nav a:hover{background:rgba(224,112,79,.18);color:#F0C4B2}
+
+  .search{background:#FFFDF9;border:1.5px solid rgba(27,27,27,.18);border-radius:999px;
+    box-shadow:0 4px 14px rgba(60,42,24,.08);transition:border-color .18s,box-shadow .18s}
+  .search:focus-within{border-color:#C1553B;box-shadow:0 0 0 4px rgba(193,85,59,.18),0 0 0 9px rgba(184,115,51,.16)}
+  .search>span{color:#A8442E;display:grid;place-items:center}
+  .search input{color:#1B1B1B;font-weight:600}
+  .search input::placeholder{color:#8A7B6C;font-weight:500}
+  body.dark .search input{color:#F4EFE9}
+  .srch-x{border:0;background:#F3E4D3;color:#8F3A24;width:24px;height:24px;border-radius:50%;
+    font-size:13px;line-height:1;display:none;place-items:center;flex:0 0 auto;padding:0}
+  .srch-x:hover{background:#C1553B;color:#FFFDF9}
+  .search.has-q .srch-x{display:grid}
+  .icon-btn{background:#FFFDF9;border:1.5px solid rgba(27,27,27,.15);color:#1B1B1B}
+  .icon-btn:hover{background:#F3E4D3;border-color:#C1553B;color:#8F3A24;transform:translateY(-2px)}
+  .icon-btn.on{background:#C1553B;border-color:rgba(27,27,27,.35);color:#FFFDF9}
+  body.dark .icon-btn{background:#242120;border-color:rgba(255,255,255,.16);color:#F4EFE9}
+  body.dark .icon-btn.on{background:#E0704F;color:#171513;border-color:#E0704F}
+  .badge{background:#C1553B;color:#fff}
+  .checkout-link{background:#C1553B;color:#FFFDF9;border:1.5px solid rgba(27,27,27,.35);
+    box-shadow:0 6px 16px rgba(193,85,59,.35)}
+  .checkout-link:hover{background:#A8442E;transform:translateY(-2px)}
+  .avatar{background:var(--grad-lav);color:#FFFDF9;border:2px solid #fff}
+  .user-menu{background:#FFFDF9;border:1.5px solid rgba(193,85,59,.35);box-shadow:0 18px 40px rgba(60,42,24,.18)}

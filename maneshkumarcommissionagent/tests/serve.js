@@ -36,7 +36,14 @@ function toRe(source) {
   catch (e) { return new RegExp("^" + source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"); }
 }
 const headerRules = (cfg.headers || []).map(h => ({ re: toRe(h.source), headers: h.headers }));
-const rewrites = (cfg.rewrites || []).map(r => ({ re: toRe(r.source), to: r.destination }));
+const rewrites = (cfg.rewrites || []).map(r => ({ re: toRe(r.source), to: r.destination, has: r.has || null }));
+function hostOf(req){ return String(req.headers.host || "localhost").split(":")[0].toLowerCase(); }
+function hasOk(req, has){
+  if(!has) return true;
+  return has.every(c => (c.type === "host")
+    ? new RegExp("^(?:" + c.value + ")$").test(hostOf(req))
+    : true);
+}
 
 function headersFor(pathname) {
   const out = {};
@@ -49,7 +56,7 @@ http.createServer((req, res) => {
   try { pathname = decodeURIComponent(new URL(req.url, "http://localhost").pathname); }
   catch (e) { res.writeHead(400).end("bad request"); return; }
 
-  for (const rw of rewrites) if (rw.re.test(pathname)) { pathname = rw.to.replace(/\$1/g, ""); break; }
+  for (const rw of rewrites) if (hasOk(req, rw.has) && rw.re.test(pathname)) { pathname = rw.to.replace(/\$1/g, ""); break; }
 
   let file = path.normalize(path.join(ROOT, pathname));
   if (!file.startsWith(ROOT)) { res.writeHead(403).end("forbidden"); return; }   // no path traversal

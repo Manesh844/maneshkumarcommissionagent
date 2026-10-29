@@ -82,8 +82,8 @@ function hostGuard(){
         '<div class="card" style="max-width:660px;margin:14vh auto;padding:30px;text-align:center">' +
         '<div style="font-size:40px" aria-hidden="true">🛑</div>' +
         '<h2 style="margin:.25em 0 .4em">This copy of the store is not official</h2>' +
-        '<p class="muted">The app refused to run on <b>' + esc(h || "an unknown host") + '</b>. Official domains are ' +
-        '<b>nukto.shop</b>, <b>www.nukto.shop</b>, <b>*.vercel.app</b> and <b>maneshkumarcommissionagent.dpdns.org</b>. ' +
+        '<p class="muted">The app refused to run on <b>' + esc(h || "an unknown host") + '</b>. Official domains for ' +
+        esc(STORE_NAME) + ' are <b>' + esc(BRAND.domain) + '</b>, <b>www.' + esc(BRAND.domain) + '</b> and <b>*.vercel.app</b>. ' +
         'Do not enter an address, card detail or advance payment on this page.</p>' +
         '<p class="muted" style="font-size:13px">Owner: agar yeh aapka apna naya domain hai, to <code>app.js</code> ke top par ' +
         '<code>NUKTO_HOST_SUFFIXES</code> mein add kar dein.</p></div>';
@@ -204,12 +204,44 @@ function lockClipboard(){
    three-line change instead of a 500-place find/replace. The storefront reads
    `settings.*` (admin-editable); these are the factory defaults AND the values
    the rebrand self-heal below forces onto devices that cached the old brand. */
-const STORE_NAME    = "Manesh Kumar Commission Agent";
-const STORE_SHORT   = "MK Commission Agent";
-const SITE_DOMAIN   = "maneshkumarcommissionagent.dpdns.org";
+/* ---------- TWO BRANDS, ONE CODEBASE, ONE DATABASE ----------
+   The same repository + the same Supabase project serve two storefronts:
+     * nukto.shop / www.nukto.shop            -> brand "nukto"  (Lemon edition)
+     * every other host (dpdns, vercel.app…)  -> brand "mkca"  (Sand/Terracotta)
+   The brand is chosen by HOSTNAME, so nukto.shop never shows a Manesh Kumar
+   string and this site never shows a Nukto string. Everything customer-facing
+   (name, short name, tagline, e-mail, canonical domain, wallet label, theme
+   set) comes from this table; products, orders, customers, admins and settings
+   stay shared in the database exactly as before.
+   Add a domain to BRAND_HOSTS when the owner attaches one in Vercel. */
+const BRAND_HOSTS = { nukto: ["nukto.shop", "www.nukto.shop"] };
+function detectBrand(){
+  const h = nuktoHost();
+  if(!h) return (typeof document !== "undefined" && document.documentElement &&
+                 document.documentElement.getAttribute("data-brand") === "nukto") ? "nukto" : "mkca";
+  return (BRAND_HOSTS.nukto.indexOf(h) >= 0) ? "nukto" : "mkca";
+}
+const BRANDS = {
+  nukto: { key:"nukto", name:"Nukto.Shop", short:"Nukto", tagline:"Shop Smart. Live Better.",
+           domain:"nukto.shop", email:"support@nukto.shop", wallet:"Nukto Wallet",
+           address:"Pakistan", defaultTheme:"lemon", darkThemes:["charcoal","dark"],
+           logo:"logo-nukto.svg", bag:"img/bag-nukto.svg",
+           wordMain:"NUKTO", wordSub:"SHOP SMART · LIVE BETTER" },
+  mkca:  { key:"mkca", name:"Manesh Kumar Commission Agent", short:"MK Commission Agent",
+           tagline:"Socho · Dekho · Kharido — Bharosay Ke Saath",
+           domain:"maneshkumarcommissionagent.dpdns.org",
+           email:"support@maneshkumarcommissionagent.dpdns.org", wallet:"MK Wallet",
+           address:"Sanghar, Sindh, Pakistan", defaultTheme:"sand", darkThemes:["ink","dark"],
+           logo:"logo-mkca.svg", bag:"img/bag-mkca.svg",
+           wordMain:"MANESH KUMAR", wordSub:"COMMISSION AGENT" },
+};
+const BRAND = BRANDS[detectBrand()];
+const STORE_NAME    = BRAND.name;
+const STORE_SHORT   = BRAND.short;
+const SITE_DOMAIN   = BRAND.domain;
 const SITE_URL      = "https://" + SITE_DOMAIN;
-const SUPPORT_EMAIL = "support@" + SITE_DOMAIN;
-const WALLET_NAME   = "MK Wallet";
+const SUPPORT_EMAIL = BRAND.email;
+const WALLET_NAME   = BRAND.wallet;
 
 /* ---------- Settings (with fixed delivery charge, admin-editable) ---------- */
 const DEFAULT_SETTINGS = {
@@ -331,19 +363,57 @@ const OFFWHITE_VARS = Object.assign({}, LEMON_VARS, {
   "--bg":"#F7F7F2","--card":"#FFFFFF","--pimg-bg":"#F5F1FF",
   "--shadow":"0 10px 30px rgba(36,36,36,.10)"
 });
-const THEMES = {
+/* ---------- brand: Manesh Kumar Commission Agent (Concept C) ----------
+   Warm Sand field + Ink header/text + Terracotta actions + off-white cards.
+   Mirrors brand-mkca.css, which supplies the same tokens before first paint. */
+const SAND_VARS = {
+  "--primary":"#C1553B","--primary-d":"#A8442E","--primary-l":"#F7E3DC",
+  "--emerald":"#2F6B4F","--emerald-d":"#245440","--emerald-l":"#E3EFE8",
+  "--bg":"#F6EFE6","--card":"#FFFDF9","--ink":"#1B1B1B","--ink2":"#3A3532","--muted":"#8A7B6C",
+  "--err":"#B3261E","--ok":"#1E7A46","--warn":"#8A5300","--line":"rgba(27,27,27,.14)",
+  "--teal":"#3E7C8C","--amber":"#8A5300","--rose":"#B23A5A","--indigo":"#4A5A8C",
+  "--gold":"#B87333","--gold-d":"#96591F","--gold-l":"#F3E4D3",
+  "--pimg-bg":"#EFE6D8","--shadow":"0 10px 30px rgba(60,42,24,.12)",
+  "--grad-brand":"linear-gradient(115deg,#FBF7EF 0%,#F0E2CE 30%,#E4C9AC 68%,#C1553B 130%)",
+  "--grad-lav":"linear-gradient(135deg,#E8CDB4 0%,#C1553B 60%,#8F3A24 100%)",
+  "--grad-gold":"linear-gradient(135deg,#F3E4D3 0%,#D9A05B 55%,#B87333 100%)",
+  "--grad-lemon":"linear-gradient(135deg,#FBF7EF 0%,#F0E2CE 55%,#E4C9AC 100%)",
+  "--media-ring":"1px solid rgba(193,85,59,.35)","--media-glow":"0 0 0 4px rgba(193,85,59,.14)"
+};
+const INK_VARS = Object.assign({}, SAND_VARS, {
+  "--primary":"#E0704F","--primary-d":"#F08A6B","--primary-l":"#3A241D",
+  "--emerald":"#7FB79A","--emerald-d":"#A9D3BE","--emerald-l":"#1E2E26",
+  "--bg":"#171513","--card":"#242120","--ink":"#F4EFE9","--ink2":"#DCD3C9","--muted":"#A89C90",
+  "--err":"#F28B82","--ok":"#7BD8A4","--warn":"#F2C063","--line":"rgba(255,255,255,.14)",
+  "--teal":"#8FC4D4","--amber":"#F2C063","--rose":"#F09BB4","--indigo":"#A9B6DE",
+  "--gold":"#D9A05B","--gold-d":"#E8BE8C","--gold-l":"#33261A",
+  "--pimg-bg":"#2A2624","--shadow":"0 10px 30px rgba(0,0,0,.5)",
+  "--grad-brand":"linear-gradient(115deg,#242120 0%,#4A2C20 40%,#8F3A24 78%,#E0704F 115%)",
+  "--media-ring":"1px solid rgba(224,112,79,.45)","--media-glow":"0 0 0 4px rgba(224,112,79,.18)"
+});
+const LINEN_VARS = Object.assign({}, SAND_VARS, {
+  "--bg":"#FAF6EE","--card":"#FFFFFF","--pimg-bg":"#F2EBDF",
+  "--shadow":"0 10px 30px rgba(60,42,24,.09)"
+});
+const NUKTO_THEMES = {
   lemon:    { name:"🍋 Lemon (default)", bg:"#DFFF00", dark:false, vars:LEMON_VARS },
   charcoal: { name:"🌑 Charcoal Night",  bg:"#242424", dark:true,  vars:CHARCOAL_VARS },
   offwhite: { name:"🤍 Soft Off-White",  bg:"#F7F7F2", dark:false, vars:OFFWHITE_VARS },
 };
+const MKCA_THEMES = {
+  sand:  { name:"🏜️ Warm Sand (default)", bg:"#F6EFE6", dark:false, vars:SAND_VARS },
+  ink:   { name:"🌑 Ink Night",            bg:"#171513", dark:true,  vars:INK_VARS },
+  linen: { name:"🤍 Linen",                bg:"#FAF6EE", dark:false, vars:LINEN_VARS },
+};
+const THEMES = (BRAND.key === "nukto") ? NUKTO_THEMES : MKCA_THEMES;
 // Devices that saved an older look (royal/violet/dark/…) resolve onto the new house
 // themes instead of falling back to an unknown key.
-let themeKey = "lemon";
+let themeKey = BRAND.defaultTheme;
 let winterMode = false;
 const THEME_ALIASES = { royal:"lemon", orange:"lemon", violet:"lemon", confident:"lemon",
   trust:"lemon", premium:"lemon", fresh:"lemon", warm:"lemon", dark:"charcoal", white:"offwhite" };
-function themeObj(){ return THEMES[themeKey] || THEMES.lemon; }
-function resolveThemeKey(k){ k=String(k||""); k=THEME_ALIASES[k]||k; return THEMES[k]?k:"lemon"; }
+function themeObj(){ return THEMES[themeKey] || THEMES[BRAND.defaultTheme]; }
+function resolveThemeKey(k){ k=String(k||""); k=THEME_ALIASES[k]||k; return THEMES[k]?k:BRAND.defaultTheme; }
 function applyTheme(k){
   if(k) themeKey = resolveThemeKey(k);
   const t = themeObj();
@@ -902,8 +972,15 @@ let settings = Object.assign({}, DEFAULT_SETTINGS, store.get("nukto.settings", {
 // Rebrand self-heal: jin devices par purana brand (Nukta/Nukto.Shop) settings me
 // cache hua tha, unhe boot par naye brand par la do — warna Help & Support aur
 // Contact page par purana naam/email dikhta rehta hai.
-if(/@nukt[ao]\.shop$/i.test(settings.supportEmail||"")) settings.supportEmail=SUPPORT_EMAIL;
-if(/^Nukt[ao]\.Shop$/i.test(settings.storeName||"")) settings.storeName=STORE_NAME;
+/* Brand lock: name/e-mail/domain are per-brand constants, never shared DB
+   values — otherwise one brand's admin could rename the other storefront. */
+function brandLockSettings(){
+  settings.storeName = STORE_NAME;
+  settings.storeShort = STORE_SHORT;
+  settings.supportEmail = SUPPORT_EMAIL;
+  settings.storeUrl = SITE_URL;
+}
+brandLockSettings();
 if(String(settings.whatsapp||"").replace(/\D/g,"")==="9203420286170") settings.whatsapp=DEFAULT_SETTINGS.whatsapp;
 let prodEdit = store.get("nukto.prodEdit", {});
 // Per-product promotions are separate from the selling price, so the admin can
@@ -1248,8 +1325,7 @@ function applyStorefrontPull(cloud){
     else settings[k] = String(byKey[k]);
   });
   // cloud pull ke baad bhi purana brand wapas na aa jaye (rebrand self-heal)
-  if(/@nukt[ao]\.shop$/i.test(settings.supportEmail||"")) settings.supportEmail=SUPPORT_EMAIL;
-  if(/^Nukt[ao]\.Shop$/i.test(settings.storeName||"")) settings.storeName=STORE_NAME;
+  brandLockSettings();
   const asJSON = (v, fb) => { try{ const j = JSON.parse(v); return j==null?fb:j; }catch(e){ return fb; } };
   if(byKey.customCategories !== undefined){ const v = asJSON(byKey.customCategories, null); if(Array.isArray(v)) customCategories = v.filter(c=>c&&c.slug).slice(0,500); }
   if(byKey.hiddenCategories !== undefined){ const v = asJSON(byKey.hiddenCategories, null); if(Array.isArray(v)) hiddenCategories = v.filter(x=>typeof x==="string").slice(0,500); }
@@ -1679,7 +1755,7 @@ function renderHeader(){
     gear:'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'};
   $id("header").innerHTML = `
   <div class="nav-inner">
-    <a href="#products" class="logo" title="Manesh Kumar Commission Agent" aria-label="Manesh Kumar Commission Agent — home"><img class="logo-ico" src="logo.svg" width="40" height="40" alt="" decoding="async"><span class="brand-text"><span class="brand-main">MANESH KUMAR</span><span class="brand-sub">COMMISSION AGENT</span></span></a>
+    <a href="#products" class="logo" title="${esc(STORE_NAME)}" aria-label="${esc(STORE_NAME)} — home"><img class="logo-ico" src="${BRAND.logo}" width="40" height="40" alt="" decoding="async"><span class="brand-text"><span class="brand-main">${esc(BRAND.wordMain)}</span><span class="brand-sub">${esc(BRAND.wordSub)}</span></span></a>
     <nav class="nav"><a href="#categories">Categories</a></nav>
     <div class="search" id="searchBox">
       <span>${IC.search}</span>
@@ -3680,7 +3756,7 @@ const ANAV=[
 function adminLayout(content,active){
   const navHelper=group=>ANAV.filter(a=>a[3]===group&&canGroup(group)).map(a=>`<a class="${a[0]===active?"on":""}" href="#admin:${a[0]}">${a[1]} ${a[2]}</a>`).join("");
   return `<div class="admin-body"><aside class="aside">
-    <div class="alogo"><img class="logo-ico" src="logo.svg" width="30" height="30" alt="" decoding="async"><span class="aword">MANESH KUMAR<span>COMMISSION AGENT</span></span></div><div class="asub">ADMIN · ${session?esc(session.name)+" · "+ROLES[session.role].label:""} · ${allProducts().length.toLocaleString()} products</div>
+    <div class="alogo"><img class="logo-ico" src="${BRAND.logo}" width="30" height="30" alt="" decoding="async"><span class="aword">${esc(BRAND.wordMain)}<span>${esc(BRAND.wordSub)}</span></span></div><div class="asub">ADMIN · ${session?esc(session.name)+" · "+ROLES[session.role].label:""} · ${allProducts().length.toLocaleString()} products</div>
     <div class="sect">Overview</div>${navHelper("main")}
     <div class="sect">Catalog</div>${navHelper("catalog")}
     <div class="sect">Operations</div>${navHelper("ops")}
