@@ -20,6 +20,17 @@ const ROOT = path.join(__dirname, "..");
 const PORT = Number(process.argv[2] || process.env.PORT || 8080);
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, "vercel.json"), "utf8"));
 
+/* Sandbox-preview opt-in (ARENA_PREVIEW=1).
+   Arena renders this dev server inside an iframe served from a different
+   origin, which the production framing rules would refuse:
+   `frame-ancestors 'self'` (CSP) and `X-Frame-Options: SAMEORIGIN`.
+   With the flag set this server relaxes ONLY those two, so the preview is
+   visible. Everything else - the whole CSP, HSTS, Permissions-Policy, the
+   host-conditional rewrites - is still sent byte-for-byte as vercel.json
+   declares it, and vercel.json itself is never touched, so production stays
+   locked down. Run without the flag to verify the real production headers. */
+const RELAX_FRAMING = /^(1|true|yes)$/i.test(String(process.env.ARENA_PREVIEW || ""));
+
 const TYPES = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8", ".webmanifest": "application/manifest+json; charset=utf-8",
@@ -48,6 +59,13 @@ function hasOk(req, has){
 function headersFor(pathname) {
   const out = {};
   for (const rule of headerRules) if (rule.re.test(pathname)) for (const h of rule.headers) out[h.key] = h.value;
+  if (RELAX_FRAMING) {
+    delete out["X-Frame-Options"];
+    if (out["Content-Security-Policy"]) {
+      out["Content-Security-Policy"] =
+        out["Content-Security-Policy"].replace(/frame-ancestors\s+'self'/, "frame-ancestors *");
+    }
+  }
   return out;
 }
 
@@ -82,4 +100,7 @@ http.createServer((req, res) => {
   console.log("MKCA preview on http://0.0.0.0:" + PORT + "  (headers + rewrites from vercel.json)");
   const csp = (headerRules[0] && headerRules[0].headers.find(h => h.key === "Content-Security-Policy")) || null;
   console.log(csp ? "CSP active: " + csp.value.slice(0, 96) + "..." : "WARNING: no CSP rule found in vercel.json");
+  console.log(RELAX_FRAMING
+    ? "ARENA_PREVIEW=1 -> X-Frame-Options dropped and frame-ancestors relaxed to * ON THIS DEV SERVER ONLY (vercel.json unchanged)"
+    : "Framing headers are production-strict (frame-ancestors 'self' + X-Frame-Options SAMEORIGIN). Set ARENA_PREVIEW=1 to embed in an iframe.");
 });
