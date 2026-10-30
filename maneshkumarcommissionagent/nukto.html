@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="nukto" data-themes="lemon,charcoal,offwhite" data-dark-themes="charcoal,dark"
+      data-default-theme="lemon" data-color-light="#DFFF00" data-color-dark="#242424">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nukto.Shop — Shop Smart. Live Better.</title>
+<meta name="description" content="Nukto.Shop — Pakistan ka bharosemand online store. 9,800+ products poore Pakistan mein delivery, Nukto Wallet, EasyPaisa &amp; JazzCash, 48 ghanton mein easy returns." />
+<meta name="keywords" content="Nukto.Shop, nukto shop Pakistan, online store Pakistan, Sanghar commission agent, online shopping Pakistan, wholesale Pakistan, MK Wallet, easy returns, EasyPaisa, JazzCash" />
+<meta name="author" content="Nukto.Shop" />
+<meta name="robots" content="index,follow,max-image-preview:large" />
+<meta name="theme-color" content="#DFFF00" />
+<meta name="apple-mobile-web-app-title" content="Nukto.Shop" />
+<meta name="format-detection" content="telephone=yes" />
+<!-- Brand mark: royal-blue tile + gold shopping bag carrying the MK monogram.
+     Real files (tab icon, bookmarks, share cards, home-screen install). -->
+<link rel="icon" type="image/svg+xml" href="logo-nukto.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="logo-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="logo-512.png" />
+<link rel="apple-touch-icon" href="logo-192.png" />
+<link rel="manifest" href="manifest-nukto.webmanifest" />
+<meta property="og:image" content="https://nukto.shop/og-cover-nukto.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Nukto.Shop" />
+<meta property="og:title" content="Nukto.Shop — Shop Smart. Live Better." />
+<meta property="og:description" content="Pakistan ka bharosemand online store. Poore Pakistan mein delivery, MK Wallet, 48 ghanton mein easy returns." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://nukto.shop/" />
+<meta property="og:site_name" content="Nukto.Shop" />
+<meta property="og:locale" content="en_PK" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nukto.Shop — Shop Smart. Live Better." />
+<meta name="twitter:description" content="Pakistan ka bharosemand online store. Poore Pakistan mein delivery, MK Wallet, 48 ghanton mein easy returns." />
+<meta name="twitter:image" content="https://nukto.shop/og-cover-nukto.png" />
+<link rel="canonical" href="https://nukto.shop/" />
+<link rel="preconnect" href="https://hhcnewapp.blr1.cdn.digitaloceanspaces.com" crossorigin />
+<link rel="dns-prefetch" href="https://hhcnewapp.blr1.cdn.digitaloceanspaces.com" />
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"OnlineStore",
+  "name":"Nukto.Shop",
+  "alternateName":["NUKTO.SHOP","Nukto","nukto shop"],
+  "url":"https://nukto.shop/",
+  "logo":"https://nukto.shop/logo-nukto.svg",
+  "image":"https://nukto.shop/og-cover-nukto.png",
+  "description":"Nukto.Shop — Pakistan ka bharosemand online store. Premium products nationwide, Nukto Wallet, easy returns within 48 hours.",
+  "email":"support@nukto.shop",
+  "telephone":"+923420286170",
+  "currenciesAccepted":"PKR",
+  "paymentAccepted":"Nukto Wallet, EasyPaisa, JazzCash",
+  "areaServed":"PK",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"Mohallah Shaikh, Berani",
+    "addressLocality":"Jam Nawaz Ali, Sanghar",
+    "addressRegion":"Sindh",
+    "addressCountry":"PK"
+  },
+  "contactPoint":{
+    "@type":"ContactPoint",
+    "contactType":"customer support",
+    "telephone":"+923420286170",
+    "email":"support@nukto.shop",
+    "areaServed":"PK",
+    "availableLanguage":["ur","en"]
+  },
+  "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"1200"}
+}
+</script>
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="brand-lemon.css" id="brandCss" />
+
+<!-- SECURITY / CSP TODO (2026-10-28 incident hardening):
+     vercel.json is strict JSON, so this note lives here instead of as a
+     comment inside vercel.json. The Content-Security-Policy currently keeps
+     script-src 'self' 'unsafe-inline' because (a) this pre-paint theme
+     bootstrap must stay inline and (b) the markup uses inline onclick/oninput
+     handlers throughout. Plan to drop 'unsafe-inline':
+       1. replace every inline on*= attribute with addEventListener() in app.js;
+       2. then give ONLY this bootstrap a 'sha256-...' source in script-src
+          (adding a hash while 'unsafe-inline' is present silently disables
+          'unsafe-inline', which would break every inline handler - so step 1
+          must land first);
+       3. verify with the console test in INCIDENT.md section "Verify".
+     Do NOT do this migration in the same change as the incident fix. -->
+<script>
+/* ---------- NO-FLASH THEME BOOTSTRAP (brand-aware) ----------
+   Runs in <head> before the first paint. WHICH brand this shell is, which of
+   its looks are dark, and its default look are declared on the <html> tag
+   (data-brand / data-themes / data-dark-themes / data-default-theme), so this
+   exact snippet ships unchanged in both shells and knows no brand names.
+   A theme saved by the OTHER brand simply resolves to this brand's default. */
+(function(){
+  try{
+    var h=document.documentElement;
+    var read=function(k,d){ try{ var v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } };
+    var themes=(h.getAttribute("data-themes")||"").split(",");
+    var dark=(h.getAttribute("data-dark-themes")||"").split(",");
+    var def=h.getAttribute("data-default-theme")||themes[0]||"lemon";
+    var t=String(read("nukto.theme",def));
+    if(themes.length && themes.indexOf(t)<0) t=def;
+    var w=!!read("nukto.winter",false);
+    h.setAttribute("data-theme",t);
+    h.className=h.className.replace(/\b(night|frost)\b/g,"").trim();
+    if(dark.indexOf(t)>=0) h.className+=" night";
+    if(w) h.className+=" frost";
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", dark.indexOf(t)>=0
+      ? (h.getAttribute("data-color-dark")||"#171513")
+      : (h.getAttribute("data-color-light")||"#F6EFE6"));
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+
+<!-- Winter Mode: snow falls from the top of the page (CSS-animated, reduced-motion safe) -->
+<div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
+
+<header class="top" id="header"></header>
+<div id="loading" style="max-width:none;margin:0 auto;padding:20px">
+  <div class="load-brand" aria-hidden="true">
+    <img class="brand-anim" src="img/bag-nukto.svg" width="104" height="104" alt="">
+    <img class="brand-still" src="logo-nukto.svg" width="104" height="104" alt="">
+  </div>
+  <div class="load-word" aria-hidden="true">NUKTO<small>SHOP SMART · LIVE BETTER</small></div>
+  <div class="sk skHero"></div>
+  <div class="skCats"><div class="sk skCat"></div><div class="sk skCat"></div><div class="sk skCat"></div><div class="sk skCat"></div><div class="sk skCat"></div><div class="sk skCat"></div></div>
+  <div class="skGrid"><div class="skCard"><div class="sk s1"></div><div class="sk s2"></div><div class="sk s3"></div><div class="sk s4"></div><div class="sk s5"></div></div><div class="skCard"><div class="sk s1"></div><div class="sk s2"></div><div class="sk s3"></div><div class="sk s4"></div><div class="sk s5"></div></div><div class="skCard"><div class="sk s1"></div><div class="sk s2"></div><div class="sk s3"></div><div class="sk s4"></div><div class="sk s5"></div></div><div class="skCard"><div class="sk s1"></div><div class="sk s2"></div><div class="sk s3"></div><div class="sk s4"></div><div class="sk s5"></div></div><div class="skCard"><div class="sk s1"></div><div class="sk s2"></div><div class="sk s3"></div><div class="sk s4"></div><div class="sk s5"></div></div></div>
+</div>
+<div id="app"></div>
+<footer id="footer"></footer>
+
+<div id="toast"></div>
+<div id="cartpop"></div>
+
+<div class="modal-bg" id="modal"><div class="modal" id="modal-card"></div></div>
+<div class="cookie" id="cookiebar">
+  <div style="flex:1;min-width:240px"><b>🍪 We use cookies &amp; analytics</b> to improve your shopping experience and understand how you use Nukto.Shop. See our <a href="#privacy">Privacy Policy</a>. <span class="muted" style="color:#92A6CE">You can change this anytime in Settings.</span></div>
+  <div class="btns"><button class="btn btn-outline" onclick="cookieConsent(false)">🥨 Essential only</button><button class="btn btn-emerald" onclick="cookieConsent(true)">✅ Accept all</button></div>
+</div>
+
+<script src="catalog.js" defer></script>
+<!-- Same-origin application script. No third-party script is loaded anywhere
+     on this page: the only other <script src> is the generated catalog.js. -->
+<script src="app.js"></script>
+</body>
+</html>

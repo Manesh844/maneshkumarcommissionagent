@@ -1,0 +1,8 @@
+# Nukto.Shop — nukto.shop
+User-agent: *
+Allow: /
+
+# Admin panel is a client-side hash route; keep it out of search results.
+Disallow: /#admin
+
+Sitemap: https://nukto.shop/sitemap-nukto.xml

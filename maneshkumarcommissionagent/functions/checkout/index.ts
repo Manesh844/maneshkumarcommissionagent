@@ -8,10 +8,17 @@
 //   Ab browser DB se baat hi nahi kar sakta (RLS lockdown + zero RPC grants).
 //   Identity yahan SESSION TOKEN se derive hoti hai — request body se nahi.
 //
-// Request:  POST { items:[{id,qty}], coupon?, pm, name, phone, city,
-//                  address, province?, note? }
+// Request:  POST { items:[{id,qty}], coupon?, pm, name, phone, email, city,
+//                  address, province?, postal?, note?, pay_ref? }
 //           header: x-session: <opaque session token>   (guest ke liye optional)
-// Response: { id, total, subtotal, discount, delivery, items }
+// Response: { id, total, subtotal, discount, delivery, delivery_zone, tax, items,
+//             pay_mode, advance_percent, advance_amount, due_on_delivery, order_status }
+//
+// COD (owner's flow): pm="cod" → order PENDING banta hai, advance_percent/advance_amount
+// server calculate karta hai (nukto_config.cod_advance_pct, default 20%). Admin advance
+// verify kar ke CONFIRMED karta hai, phir delivery days set karta hai (eta_date) aur
+// customer ko countdown dikhta hai. Delivery fee city/province ke zone se aati hai
+// (nukto_delivery_zones) — client ka bheja hua number kabhi trust nahi hota.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -22,6 +29,18 @@ const ALLOWED = new Set(
     .split(",").map((s) => s.trim()).filter(Boolean),
 );
 
+// Suffix allow-list: deployment URLs badalte rehte hain (Vercel preview per-deploy,
+// custom domain, local dev). Exact origins env se aate hain, aur ye trusted *suffixes*
+// se har https origin allow hota hai — wildcard "*" kabhi nahi.
+const ALLOWED_SUFFIXES = [".vercel.app", ".e2b.app", ".dpdns.org", "nukto.shop"];
+function originAllowed(origin: string): boolean {
+  if (!origin) return false;
+  if (ALLOWED.has(origin)) return true;
+  if (!origin.startsWith("https://")) return false;
+  const host = origin.slice("https://".length).split("/")[0].toLowerCase();
+  return ALLOWED_SUFFIXES.some((s) => host === s.replace(/^\./, "") || host.endsWith(s));
+}
+
 function corsFor(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") || "";
   const h: Record<string, string> = {
@@ -30,7 +49,7 @@ function corsFor(req: Request): Record<string, string> {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Vary": "Origin",
   };
-  if (origin && ALLOWED.has(origin)) h["Access-Control-Allow-Origin"] = origin;
+  if (originAllowed(origin)) h["Access-Control-Allow-Origin"] = origin;
   return h;
 }
 
@@ -145,7 +164,12 @@ Deno.serve(async (req) => {
       name, phone, address,
       city: String(body.city ?? "").trim(),
       province: String(body.province ?? "").trim(),
+      postal: String(body.postal ?? "").trim().slice(0, 20),
+      email: String(body.email ?? "").trim().slice(0, 160),
       note: String(body.note ?? "").trim(),
+      // COD advance ka TID (customer ne khud likha) — admin panel me dikhta hai.
+      // Amount/percent server side calculate hote hain, client se NAHI aate.
+      pay_ref: String(body.pay_ref ?? "").trim().slice(0, 80),
       // The six displayed checkout charges are generated client-side once per cart;
       // the SQL function clamps the total to the Rs. 120 safety ceiling, preserving paise.
       tax_total: (() => { const n = Number(body.tax_total); return Number.isFinite(n) && n > 0 ? Math.max(0, Math.min(120, Math.round(n*100)/100)) : 0; })(),
